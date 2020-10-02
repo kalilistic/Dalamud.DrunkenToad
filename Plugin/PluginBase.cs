@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Threading.Tasks;
 using Dalamud.Configuration;
 using Dalamud.Game.Chat;
 using Dalamud.Game.Chat.SeStringHandling;
@@ -19,8 +21,12 @@ namespace DalamudPluginCommon
 		{
 			PluginName = pluginName;
 			PluginInterface = pluginInterface;
+			ResourceManager = new ResourceManager(this);
 			Localization = new Localization(this);
+			Task.Run(() => { ResourceManager.UpdateResources(); });
 		}
+
+		public ResourceManager ResourceManager { get; }
 
 		public Localization Localization { get; }
 		public string PluginName { get; }
@@ -96,6 +102,23 @@ namespace DalamudPluginCommon
 		}
 
 		public abstract void Dispose();
+
+		public string PluginFolder()
+		{
+			return Path.Combine(new[]
+			{
+				Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+				"XIVLauncher",
+				"pluginConfigs",
+				PluginName
+			});
+		}
+
+		public void UpdateResources()
+		{
+			var result = ResourceManager.UpdateResources();
+			PrintMessage(result ? "Resource updated check completed successfully." : "Resource update check failed.");
+		}
 
 		protected List<Payload> BuildMessagePayload()
 		{

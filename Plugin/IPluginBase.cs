@@ -20,5 +20,6 @@ namespace DalamudPluginCommon
 		void SaveConfig(dynamic config);
 		dynamic LoadConfig();
 		void Dispose();
+		string PluginFolder();
 	}
 }

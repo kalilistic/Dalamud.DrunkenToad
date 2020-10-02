@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -26,14 +27,36 @@ namespace DalamudPluginCommon
 			var languageCode = GetLanguageCode(language);
 			_plugin.LogInfo("Attempting to load lang {0}", languageCode);
 			if (languageCode != PluginLanguage.English.Code)
-			{
-				var locData = LoadLocData(languageCode);
-				Loc.Setup(locData);
-			}
+				try
+				{
+					string locData;
+					var locPath = _plugin.PluginFolder() + $"\\loc\\{languageCode}.json";
+					_plugin.LogInfo("Loc path set to {0}", locPath);
+					if (File.Exists(locPath))
+					{
+						_plugin.LogInfo("Loading loc from local resource");
+						locData = File.ReadAllText(locPath);
+						if (string.IsNullOrEmpty(locData))
+						{
+							_plugin.LogError("Local loc data is corrupt so falling back to embedded");
+							locData = LoadEmbeddedLocData(languageCode);
+						}
+					}
+					else
+					{
+						_plugin.LogInfo("Loading loc from embedded resource", languageCode);
+						locData = LoadEmbeddedLocData(languageCode);
+					}
+
+					Loc.Setup(locData);
+				}
+				catch (Exception ex)
+				{
+					_plugin.LogError(ex, "Failed to load loc data so using fallback");
+					Loc.SetupWithFallbacks();
+				}
 			else
-			{
 				Loc.SetupWithFallbacks();
-			}
 
 			Result.UpdateLanguage();
 		}
@@ -53,9 +76,9 @@ namespace DalamudPluginCommon
 			return languageCode;
 		}
 
-		internal string LoadLocData(string languageCode)
+		internal string LoadEmbeddedLocData(string languageCode)
 		{
-			var resourceFile = $"{_plugin.PluginName}.Resource.{languageCode}.json";
+			var resourceFile = $"{_plugin.PluginName}.Resource.loc.{languageCode}.json";
 			_plugin.LogInfo("Loading lang resource file {0}", resourceFile);
 			var assembly = GetAssembly();
 			var resourceStream =
