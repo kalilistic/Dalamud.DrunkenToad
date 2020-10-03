@@ -6,7 +6,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 
-namespace DalamudPluginCommon
+namespace PriceCheck
 {
 	public class ResourceManager
 	{
@@ -213,8 +213,8 @@ namespace DalamudPluginCommon
 		public bool UpdateResources()
 		{
 			return IsResourceDictionaryValid() &&
-			       CreateResourceDirectory() &&
 			       IsUpdateAvailable() &&
+			       CreateResourceDirectory() &&
 			       DownloadResources();
 		}
 	}

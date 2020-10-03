@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using CheapLoc;
 
-namespace DalamudPluginCommon
+namespace PriceCheck
 {
 	public class Localization : ILocalization
 	{

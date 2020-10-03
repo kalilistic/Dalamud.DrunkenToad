@@ -1,4 +1,4 @@
-﻿namespace DalamudPluginCommon
+﻿namespace PriceCheck
 {
 	public interface ILocalization
 	{

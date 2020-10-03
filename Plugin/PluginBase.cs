@@ -11,7 +11,7 @@ using Dalamud.Game.Chat.SeStringHandling;
 using Dalamud.Game.Chat.SeStringHandling.Payloads;
 using Dalamud.Plugin;
 
-namespace DalamudPluginCommon
+namespace PriceCheck
 {
 	public abstract class PluginBase : IPluginBase
 	{
@@ -116,8 +116,7 @@ namespace DalamudPluginCommon
 
 		public void UpdateResources()
 		{
-			var result = ResourceManager.UpdateResources();
-			PrintMessage(result ? "Resource updated check completed successfully." : "Resource update check failed.");
+			ResourceManager.UpdateResources();
 		}
 
 		protected List<Payload> BuildMessagePayload()

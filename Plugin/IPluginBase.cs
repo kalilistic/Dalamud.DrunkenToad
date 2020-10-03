@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DalamudPluginCommon
+namespace PriceCheck
 {
 	public interface IPluginBase
 	{
@@ -21,5 +21,6 @@ namespace DalamudPluginCommon
 		dynamic LoadConfig();
 		void Dispose();
 		string PluginFolder();
+		void UpdateResources();
 	}
 }

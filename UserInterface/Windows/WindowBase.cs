@@ -1,6 +1,6 @@
 ﻿// ReSharper disable ConvertToAutoPropertyWhenPossible
 
-namespace DalamudPluginCommon
+namespace PriceCheck
 {
 	public abstract class WindowBase
 	{
