@@ -12,7 +12,7 @@ using Dalamud.Game.Chat.SeStringHandling.Payloads;
 using Dalamud.Game.Command;
 using Dalamud.Plugin;
 
-namespace PriceCheck
+namespace DalamudPluginCommon
 {
 	public abstract class PluginBase : IPluginBase
 	{

@@ -1,6 +1,6 @@
 ﻿using ImGuiNET;
 
-namespace PriceCheck
+namespace DalamudPluginCommon
 {
 	public class CustomWidgets
 	{
