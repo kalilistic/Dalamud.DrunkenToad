@@ -25,7 +25,6 @@ namespace PriceCheck
 			ResourceManager = new ResourceManager(this);
 			Localization = new Localization(this);
 			SetupCommands();
-			Task.Run(() => { ResourceManager.UpdateResources(); });
 		}
 
 		public ResourceManager ResourceManager { get; }

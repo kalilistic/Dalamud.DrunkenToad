@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Text;
 
@@ -90,7 +89,7 @@ namespace PriceCheck
 			try
 			{
 				int remoteVersion;
-				using (var client = new WebClient())
+				using (var client = new CustomWebClient())
 				{
 					remoteVersion =
 						Convert.ToInt32(
@@ -145,7 +144,7 @@ namespace PriceCheck
 		{
 			try
 			{
-				using (var client = new WebClient())
+				using (var client = new CustomWebClient())
 				{
 					var data = client.DownloadData(remoteLocalPath);
 					File.WriteAllBytes(localFilePath, data);
