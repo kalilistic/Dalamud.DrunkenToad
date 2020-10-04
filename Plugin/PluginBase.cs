@@ -9,6 +9,7 @@ using Dalamud.Configuration;
 using Dalamud.Game.Chat;
 using Dalamud.Game.Chat.SeStringHandling;
 using Dalamud.Game.Chat.SeStringHandling.Payloads;
+using Dalamud.Game.Command;
 using Dalamud.Plugin;
 
 namespace PriceCheck
@@ -23,6 +24,7 @@ namespace PriceCheck
 			PluginInterface = pluginInterface;
 			ResourceManager = new ResourceManager(this);
 			Localization = new Localization(this);
+			SetupCommands();
 			Task.Run(() => { ResourceManager.UpdateResources(); });
 		}
 
@@ -109,7 +111,10 @@ namespace PriceCheck
 			return PluginInterface.GetPluginConfig();
 		}
 
-		public abstract void Dispose();
+		public void Dispose()
+		{
+			RemoveCommands();
+		}
 
 		public string PluginFolder()
 		{
@@ -143,6 +148,26 @@ namespace PriceCheck
 			{
 				MessageBytes = payload.Encode()
 			});
+		}
+
+		public void ExportLocalizable(string command, string args)
+		{
+			LogInfo("Running command {0} with args {1}", command, args);
+			Localization.ExportLocalizable();
+		}
+
+		protected void SetupCommands()
+		{
+			PluginInterface.CommandManager.AddHandler("/" + PluginName.ToLower() + "exloc",
+				new CommandInfo(ExportLocalizable)
+				{
+					ShowInHelp = false
+				});
+		}
+
+		protected void RemoveCommands()
+		{
+			PluginInterface.CommandManager.RemoveHandler("/" + PluginName.ToLower() + "exloc");
 		}
 	}
 }
