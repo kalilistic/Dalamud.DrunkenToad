@@ -53,7 +53,15 @@ namespace PriceCheck
 
 		public uint? GetLocalPlayerHomeWorld()
 		{
-			return PluginInterface.ClientState.LocalPlayer.HomeWorld.Id;
+			try
+			{
+				return PluginInterface.ClientState.LocalPlayer.HomeWorld.Id;
+			}
+			catch
+			{
+				LogInfo("LocalPlayer HomeWorldId is not available.");
+				return null;
+			}
 		}
 
 		public void LogInfo(string messageTemplate)
