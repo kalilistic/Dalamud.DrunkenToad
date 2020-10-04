@@ -213,8 +213,8 @@ namespace PriceCheck
 		public bool UpdateResources()
 		{
 			return IsResourceDictionaryValid() &&
-			       IsUpdateAvailable() &&
 			       CreateResourceDirectory() &&
+			       IsUpdateAvailable() &&
 			       DownloadResources();
 		}
 	}
