@@ -1,6 +1,6 @@
 ﻿using ImGuiNET;
 
-namespace PriceCheck
+namespace DalamudPluginCommon
 {
 	public class CustomWidgets
 	{
@@ -15,5 +15,25 @@ namespace PriceCheck
 			ImGui.PopTextWrapPos();
 			ImGui.EndTooltip();
 		}
+
+		public void Text(string label, string value, string hint = "")
+		{
+			ImGui.Text(label + ": ");
+			ImGui.SameLine();
+			if (string.IsNullOrEmpty(hint))
+			{
+				ImGui.Text(value);
+			}
+			else
+			{
+				ImGui.Text(value + "*");
+				if (ImGui.IsItemHovered())
+				{
+					ImGui.SetTooltip(hint);
+				}
+			}
+
+		}
+
 	}
 }

@@ -3,7 +3,7 @@
 using System;
 using System.Net;
 
-namespace PriceCheck
+namespace DalamudPluginCommon
 {
 	internal class CustomWebClient : WebClient
 	{
