@@ -57,8 +57,6 @@ namespace DalamudPluginCommon
 				}
 			else
 				Loc.SetupWithFallbacks();
-
-			Result.UpdateLanguage();
 		}
 
 		internal string GetLanguageCode(PluginLanguage language)

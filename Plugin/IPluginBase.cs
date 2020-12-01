@@ -6,7 +6,6 @@ namespace DalamudPluginCommon
 	{
 		Localization Localization { get; }
 		string PluginName { get; }
-		void SetLanguage(PluginLanguage language);
 		void PrintMessage(string message);
 		string GetSeIcon(SeIconChar seIconChar);
 		uint? GetLocalPlayerHomeWorld();
