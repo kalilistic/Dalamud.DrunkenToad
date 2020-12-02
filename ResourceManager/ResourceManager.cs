@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace DalamudPluginCommon
+namespace PriceCheck
 {
 	public class ResourceManager
 	{

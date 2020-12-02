@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DalamudPluginCommon
+namespace PriceCheck
 {
 	public static class PrimaryKey
 	{
