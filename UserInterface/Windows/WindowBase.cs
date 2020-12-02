@@ -15,7 +15,5 @@ namespace DalamudPluginCommon
 		{
 			return new Vector2(x * Scale, y * Scale);
 		}
-
-
 	}
 }

@@ -37,17 +37,12 @@ namespace DalamudPluginCommon
 		public Localization Localization { get; }
 		public string PluginName { get; }
 
-		public void SetLanguage(PluginLanguage language)
-		{
-			Localization.SetLanguage(language);
-		}
-
 		public void PrintMessage(string message)
 		{
 			var payloadList = BuildMessagePayload();
-			payloadList.Add(new UIForegroundPayload(PluginInterface.Data, 566));
+			payloadList.Add(new UIForegroundPayload(PluginInterface.Data, ChatColor.Blue));
 			payloadList.Add(new TextPayload(message));
-			payloadList.Add(new UIForegroundPayload(PluginInterface.Data, 0));
+			payloadList.Add(new UIForegroundPayload(PluginInterface.Data, ChatColor.White));
 			SendMessagePayload(payloadList);
 		}
 
@@ -136,6 +131,23 @@ namespace DalamudPluginCommon
 			ResourceManager.UpdateResources();
 		}
 
+		public void CreateDataFolder()
+		{
+			try
+			{
+				Directory.CreateDirectory(PluginFolder() + "/data");
+			}
+			catch (Exception ex)
+			{
+				LogError(ex, "Failed to create data folder.");
+			}
+		}
+
+		public void SetLanguage(PluginLanguage language)
+		{
+			Localization.SetLanguage(language);
+		}
+
 		protected List<Payload> BuildMessagePayload()
 		{
 			return new List<Payload>
@@ -179,7 +191,7 @@ namespace DalamudPluginCommon
 			return PluginInterface.ClientState.Actors.Where(actor =>
 					actor is PlayerCharacter character &&
 					actor.ActorId != PluginInterface.ClientState.LocalPlayer?.ActorId &&
-					character.HomeWorld.Id != ushort.MaxValue && 
+					character.HomeWorld.Id != ushort.MaxValue &&
 					character.CurrentWorld.Id != ushort.MaxValue)
 				.Select(actor => actor as PlayerCharacter).ToList();
 		}
@@ -212,8 +224,16 @@ namespace DalamudPluginCommon
 
 		public string PluginVersion()
 		{
-			return Assembly.GetExecutingAssembly()
-				.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+			try
+			{
+				return Assembly.GetExecutingAssembly()
+					.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+			}
+			catch (Exception ex)
+			{
+				LogError(ex, "Failed to get plugin version so defaulting.");
+				return "1.0.0.0";
+			}
 		}
 
 		public string CompressString(string str)
@@ -249,19 +269,8 @@ namespace DalamudPluginCommon
 			}
 
 			return decompressed;
-
 		}
 
-		public void CreateDataFolder()
-		{
-			try
-			{
-				Directory.CreateDirectory(PluginFolder() + "/data");
-			}
-			catch (Exception ex)
-			{
-				LogError(ex, "Failed to create data folder.");
-			}
-		}
+
 	}
 }

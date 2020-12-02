@@ -1,4 +1,5 @@
-﻿using ImGuiNET;
+﻿using Dalamud.Interface;
+using ImGuiNET;
 
 namespace DalamudPluginCommon
 {
@@ -7,7 +8,9 @@ namespace DalamudPluginCommon
 		public void HelpMarker(string desc)
 		{
 			ImGui.SameLine();
-			ImGui.TextDisabled("(?)");
+			ImGui.PushFont(UiBuilder.IconFont);
+			ImGui.TextDisabled(FontAwesomeIcon.InfoCircle.ToIconString());
+			ImGui.PopFont();
 			if (!ImGui.IsItemHovered()) return;
 			ImGui.BeginTooltip();
 			ImGui.PushTextWrapPos(ImGui.GetFontSize() * 35.0f);
@@ -27,13 +30,8 @@ namespace DalamudPluginCommon
 			else
 			{
 				ImGui.Text(value + "*");
-				if (ImGui.IsItemHovered())
-				{
-					ImGui.SetTooltip(hint);
-				}
+				if (ImGui.IsItemHovered()) ImGui.SetTooltip(hint);
 			}
-
 		}
-
 	}
 }
