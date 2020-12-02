@@ -4,15 +4,20 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Threading.Tasks;
+using System.IO.Compression;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 using Dalamud.Configuration;
 using Dalamud.Game.Chat;
 using Dalamud.Game.Chat.SeStringHandling;
 using Dalamud.Game.Chat.SeStringHandling.Payloads;
+using Dalamud.Game.ClientState.Actors.Types;
 using Dalamud.Game.Command;
 using Dalamud.Plugin;
+using Lumina.Excel.GeneratedSheets;
 
-namespace PriceCheck
+namespace DalamudPluginCommon
 {
 	public abstract class PluginBase : IPluginBase
 	{
@@ -32,17 +37,12 @@ namespace PriceCheck
 		public Localization Localization { get; }
 		public string PluginName { get; }
 
-		public void SetLanguage(PluginLanguage language)
-		{
-			Localization.SetLanguage(language);
-		}
-
 		public void PrintMessage(string message)
 		{
 			var payloadList = BuildMessagePayload();
-			payloadList.Add(new UIForegroundPayload(PluginInterface.Data, 566));
+			payloadList.Add(new UIForegroundPayload(PluginInterface.Data, ChatColor.Blue));
 			payloadList.Add(new TextPayload(message));
-			payloadList.Add(new UIForegroundPayload(PluginInterface.Data, 0));
+			payloadList.Add(new UIForegroundPayload(PluginInterface.Data, ChatColor.White));
 			SendMessagePayload(payloadList);
 		}
 
@@ -131,6 +131,23 @@ namespace PriceCheck
 			ResourceManager.UpdateResources();
 		}
 
+		public void CreateDataFolder()
+		{
+			try
+			{
+				Directory.CreateDirectory(PluginFolder() + "/data");
+			}
+			catch (Exception ex)
+			{
+				LogError(ex, "Failed to create data folder.");
+			}
+		}
+
+		public void SetLanguage(PluginLanguage language)
+		{
+			Localization.SetLanguage(language);
+		}
+
 		protected List<Payload> BuildMessagePayload()
 		{
 			return new List<Payload>
@@ -168,5 +185,92 @@ namespace PriceCheck
 		{
 			PluginInterface.CommandManager.RemoveHandler("/" + PluginName.ToLower() + "exloc");
 		}
+
+		public List<PlayerCharacter> GetPlayerCharacters()
+		{
+			return PluginInterface.ClientState.Actors.Where(actor =>
+					actor is PlayerCharacter character &&
+					actor.ActorId != PluginInterface.ClientState.LocalPlayer?.ActorId &&
+					character.HomeWorld.Id != ushort.MaxValue &&
+					character.CurrentWorld.Id != ushort.MaxValue)
+				.Select(actor => actor as PlayerCharacter).ToList();
+		}
+
+		public uint GetTerritoryType()
+		{
+			try
+			{
+				return PluginInterface.ClientState.TerritoryType;
+			}
+			catch
+			{
+				LogInfo("TerritoryType is not available.");
+				return 0;
+			}
+		}
+
+		public string GetPlaceName(uint territoryType)
+		{
+			try
+			{
+				return PluginInterface.Data.GetExcelSheet<TerritoryType>().GetRow(territoryType).PlaceName.Value.Name;
+			}
+			catch
+			{
+				LogInfo("PlaceName is not available.");
+				return null;
+			}
+		}
+
+		public string PluginVersion()
+		{
+			try
+			{
+				return Assembly.GetExecutingAssembly()
+					.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+			}
+			catch (Exception ex)
+			{
+				LogError(ex, "Failed to get plugin version so defaulting.");
+				return "1.0.0.0";
+			}
+		}
+
+		public string CompressString(string str)
+		{
+			string compressed;
+			using (var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(str)))
+			{
+				using (var compressedMemoryStream = new MemoryStream())
+				{
+					var gzipStream = new GZipStream(compressedMemoryStream, CompressionMode.Compress);
+					memoryStream.CopyTo(gzipStream);
+					gzipStream.Dispose();
+					compressed = Convert.ToBase64String(compressedMemoryStream.ToArray());
+				}
+			}
+
+			return compressed;
+		}
+
+		public string DecompressString(string str)
+		{
+			string decompressed;
+			using (var memoryStream = new MemoryStream(Convert.FromBase64String(str)))
+			{
+				using (var decompressedMemoryStream = new MemoryStream())
+				{
+					var gzipStream = new GZipStream(memoryStream, CompressionMode.Decompress);
+					gzipStream.CopyTo(decompressedMemoryStream);
+					gzipStream.Dispose();
+
+					decompressed = Encoding.UTF8.GetString(decompressedMemoryStream.ToArray());
+				}
+			}
+
+			return decompressed;
+		}
+
+
 	}
 }

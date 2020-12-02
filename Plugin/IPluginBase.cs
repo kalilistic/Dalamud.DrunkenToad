@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace PriceCheck
+namespace DalamudPluginCommon
 {
 	public interface IPluginBase
 	{
 		Localization Localization { get; }
 		string PluginName { get; }
-		void SetLanguage(PluginLanguage language);
 		void PrintMessage(string message);
 		string GetSeIcon(SeIconChar seIconChar);
 		uint? GetLocalPlayerHomeWorld();
@@ -22,5 +21,7 @@ namespace PriceCheck
 		void Dispose();
 		string PluginFolder();
 		void UpdateResources();
+		void CreateDataFolder();
+		string PluginVersion();
 	}
 }

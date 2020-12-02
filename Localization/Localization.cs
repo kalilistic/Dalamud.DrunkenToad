@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using CheapLoc;
 
-namespace PriceCheck
+namespace DalamudPluginCommon
 {
 	public class Localization : ILocalization
 	{
@@ -57,8 +57,6 @@ namespace PriceCheck
 				}
 			else
 				Loc.SetupWithFallbacks();
-
-			Result.UpdateLanguage();
 		}
 
 		internal string GetLanguageCode(PluginLanguage language)

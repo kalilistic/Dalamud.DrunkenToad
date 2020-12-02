@@ -1,7 +1,7 @@
 ﻿// ReSharper disable UnusedMember.Global
 // ReSharper disable IdentifierTypo
 
-namespace PriceCheck
+namespace DalamudPluginCommon
 {
 	public enum SeIconChar
 	{
