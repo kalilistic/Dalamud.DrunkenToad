@@ -4,10 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using Dalamud.Configuration;
 using Dalamud.Game.Chat;
 using Dalamud.Game.Chat.SeStringHandling;
@@ -143,6 +141,20 @@ namespace DalamudPluginCommon
 			}
 		}
 
+		public string PluginVersion()
+		{
+			try
+			{
+				return Assembly.GetExecutingAssembly()
+					.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+			}
+			catch (Exception ex)
+			{
+				LogError(ex, "Failed to get plugin version so defaulting.");
+				return "1.0.0.0";
+			}
+		}
+
 		public void SetLanguage(PluginLanguage language)
 		{
 			Localization.SetLanguage(language);
@@ -188,12 +200,14 @@ namespace DalamudPluginCommon
 
 		public List<PlayerCharacter> GetPlayerCharacters()
 		{
-			return PluginInterface.ClientState.Actors.Where(actor =>
+			var actors = PluginInterface.ClientState.Actors;
+			return actors.Where(actor =>
 					actor is PlayerCharacter character &&
 					actor.ActorId != PluginInterface.ClientState.LocalPlayer?.ActorId &&
 					character.HomeWorld.Id != ushort.MaxValue &&
 					character.CurrentWorld.Id != ushort.MaxValue)
-				.Select(actor => actor as PlayerCharacter).ToList();
+				.Select(actor => actor as PlayerCharacter).GroupBy(actor => actor?.ActorId)
+				.Select(actor => actor?.First()).ToList();
 		}
 
 		public uint GetTerritoryType()
@@ -209,6 +223,32 @@ namespace DalamudPluginCommon
 			}
 		}
 
+		public string GetWorldName(uint worldId)
+		{
+			try
+			{
+				return PluginInterface.Data.GetExcelSheet<World>().GetRow(worldId).Name;
+			}
+			catch
+			{
+				LogInfo("WorldName is not available.");
+				return null;
+			}
+		}
+
+		public string GetJobCode(uint classJobId)
+		{
+			try
+			{
+				return PluginInterface.Data.GetExcelSheet<ClassJob>().GetRow(classJobId).Abbreviation;
+			}
+			catch
+			{
+				LogInfo("JobCode is not available.");
+				return null;
+			}
+		}
+
 		public string GetPlaceName(uint territoryType)
 		{
 			try
@@ -221,56 +261,5 @@ namespace DalamudPluginCommon
 				return null;
 			}
 		}
-
-		public string PluginVersion()
-		{
-			try
-			{
-				return Assembly.GetExecutingAssembly()
-					.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
-			}
-			catch (Exception ex)
-			{
-				LogError(ex, "Failed to get plugin version so defaulting.");
-				return "1.0.0.0";
-			}
-		}
-
-		public string CompressString(string str)
-		{
-			string compressed;
-			using (var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(str)))
-			{
-				using (var compressedMemoryStream = new MemoryStream())
-				{
-					var gzipStream = new GZipStream(compressedMemoryStream, CompressionMode.Compress);
-					memoryStream.CopyTo(gzipStream);
-					gzipStream.Dispose();
-					compressed = Convert.ToBase64String(compressedMemoryStream.ToArray());
-				}
-			}
-
-			return compressed;
-		}
-
-		public string DecompressString(string str)
-		{
-			string decompressed;
-			using (var memoryStream = new MemoryStream(Convert.FromBase64String(str)))
-			{
-				using (var decompressedMemoryStream = new MemoryStream())
-				{
-					var gzipStream = new GZipStream(memoryStream, CompressionMode.Decompress);
-					gzipStream.CopyTo(decompressedMemoryStream);
-					gzipStream.Dispose();
-
-					decompressed = Encoding.UTF8.GetString(decompressedMemoryStream.ToArray());
-				}
-			}
-
-			return decompressed;
-		}
-
-
 	}
 }
