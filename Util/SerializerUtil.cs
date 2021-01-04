@@ -12,7 +12,9 @@ namespace DalamudPluginCommon
 				ContractResolver = new DefaultContractResolver
 				{
 					NamingStrategy = new CamelCaseNamingStrategy()
-				}
+				},
+				NullValueHandling = NullValueHandling.Ignore,
+				DefaultValueHandling = DefaultValueHandling.Ignore
 			};
 		}
 	}

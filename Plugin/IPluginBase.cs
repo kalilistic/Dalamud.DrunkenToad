@@ -21,7 +21,6 @@ namespace DalamudPluginCommon
 		void Dispose();
 		string PluginFolder();
 		void UpdateResources();
-		void CreateDataFolder();
 		string PluginVersion();
 	}
 }

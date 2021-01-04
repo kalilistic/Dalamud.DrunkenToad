@@ -10,6 +10,7 @@ using Dalamud.Configuration;
 using Dalamud.Game.Chat;
 using Dalamud.Game.Chat.SeStringHandling;
 using Dalamud.Game.Chat.SeStringHandling.Payloads;
+using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Actors.Types;
 using Dalamud.Game.Command;
 using Dalamud.Plugin;
@@ -129,18 +130,6 @@ namespace DalamudPluginCommon
 			ResourceManager.UpdateResources();
 		}
 
-		public void CreateDataFolder()
-		{
-			try
-			{
-				Directory.CreateDirectory(PluginFolder() + "/data");
-			}
-			catch (Exception ex)
-			{
-				LogError(ex, "Failed to create data folder.");
-			}
-		}
-
 		public string PluginVersion()
 		{
 			try
@@ -200,14 +189,17 @@ namespace DalamudPluginCommon
 
 		public List<PlayerCharacter> GetPlayerCharacters()
 		{
-			var actors = PluginInterface.ClientState.Actors;
+			if (PluginInterface.ClientState.LocalPlayer?.ActorId == 0) return null;
+			var actors = PluginInterface.ClientState.Actors.ToList();
 			return actors.Where(actor =>
 					actor is PlayerCharacter character &&
 					actor.ActorId != PluginInterface.ClientState.LocalPlayer?.ActorId &&
 					character.HomeWorld.Id != ushort.MaxValue &&
 					character.CurrentWorld.Id != ushort.MaxValue)
-				.Select(actor => actor as PlayerCharacter).GroupBy(actor => actor?.ActorId)
-				.Select(actor => actor?.First()).ToList();
+				.Select(actor => actor as PlayerCharacter).ToList()
+				.GroupBy(player => new {player.Name, player.HomeWorld.Id})
+				.Select(player => player.First())
+				.ToList();
 		}
 
 		public uint GetTerritoryType()
@@ -236,6 +228,20 @@ namespace DalamudPluginCommon
 			}
 		}
 
+		public uint? GetWorldId(string worldName)
+		{
+			try
+			{
+				return PluginInterface.Data.GetExcelSheet<World>()
+					.FirstOrDefault(world => world.Name.ToString().Equals(worldName))?.RowId;
+			}
+			catch
+			{
+				LogInfo("WorldId is not available.");
+				return null;
+			}
+		}
+
 		public string GetJobCode(uint classJobId)
 		{
 			try
@@ -249,16 +255,71 @@ namespace DalamudPluginCommon
 			}
 		}
 
-		public string GetPlaceName(uint territoryType)
+		public string GetPlaceName(uint territoryTypeId)
 		{
 			try
 			{
-				return PluginInterface.Data.GetExcelSheet<TerritoryType>().GetRow(territoryType).PlaceName.Value.Name;
+				return PluginInterface.Data.GetExcelSheet<TerritoryType>().GetRow(territoryTypeId).PlaceName.Value.Name;
 			}
 			catch
 			{
 				LogInfo("PlaceName is not available.");
 				return null;
+			}
+		}
+
+		public string GetContentName(uint contentId)
+		{
+			try
+			{
+				return contentId == 0
+					? string.Empty
+					: PluginInterface.Data.GetExcelSheet<ContentFinderCondition>().GetRow(contentId).Name.ToString();
+			}
+			catch
+			{
+				LogInfo("ContentName is not available.");
+				return string.Empty;
+			}
+		}
+
+		public bool IsHighEndDuty(uint contentId)
+		{
+			try
+			{
+				return PluginInterface.Data.GetExcelSheet<ContentFinderCondition>().GetRow(contentId).HighEndDuty;
+			}
+			catch
+			{
+				LogInfo("Content HighEndDuty is not available.");
+				return false;
+			}
+		}
+
+		public uint GetContentId(uint territoryTypeId)
+		{
+			try
+			{
+				return PluginInterface.Data.GetExcelSheet<ContentFinderCondition>()
+					.FirstOrDefault(condition => condition.TerritoryType.Row == territoryTypeId)?.RowId ?? 0;
+			}
+			catch
+			{
+				LogInfo("ContentName is not available.");
+				return 0;
+			}
+		}
+
+		public bool InCombat()
+		{
+			try
+			{
+				return PluginInterface.ClientState.Condition[ConditionFlag.InCombat];
+			}
+			catch
+			{
+				LogInfo("InCombat condition flag is not available.");
+				return false;
 			}
 		}
 	}

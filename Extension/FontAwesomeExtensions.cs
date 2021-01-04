@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DalamudPluginCommon
+﻿namespace DalamudPluginCommon
 {
 	public static class FontAwesomeExtensions
 	{
