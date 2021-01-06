@@ -17,5 +17,10 @@ namespace DalamudPluginCommon
 
 			return colorPalette;
 		}
+
+		public static ImGuiWindowFlags ModalWindowFlags()
+		{
+			return ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.Popup | ImGuiWindowFlags.NoCollapse;
+		}
 	}
 }
