@@ -21,6 +21,7 @@ namespace DalamudPluginCommon
 	public abstract class PluginBase : IPluginBase
 	{
 		public readonly DalamudPluginInterface PluginInterface;
+		private bool _isLoggedIn;
 
 		protected PluginBase(string pluginName, DalamudPluginInterface pluginInterface)
 		{
@@ -29,6 +30,7 @@ namespace DalamudPluginCommon
 			ResourceManager = new ResourceManager(this);
 			Localization = new Localization(this);
 			SetupCommands();
+			AddEventHandlers();
 		}
 
 		public ResourceManager ResourceManager { get; }
@@ -43,12 +45,6 @@ namespace DalamudPluginCommon
 			payloadList.Add(new TextPayload(message));
 			payloadList.Add(new UIForegroundPayload(PluginInterface.Data, ChatColor.White));
 			SendMessagePayload(payloadList);
-		}
-
-		public string GetSeIcon(SeIconChar seIconChar)
-		{
-			return Convert.ToChar(seIconChar, CultureInfo.InvariantCulture)
-				.ToString(CultureInfo.InvariantCulture);
 		}
 
 		public uint? GetLocalPlayerHomeWorld()
@@ -112,6 +108,7 @@ namespace DalamudPluginCommon
 		public void Dispose()
 		{
 			RemoveCommands();
+			RemoveEventHandlers();
 		}
 
 		public string PluginFolder()
@@ -142,6 +139,39 @@ namespace DalamudPluginCommon
 				LogError(ex, "Failed to get plugin version so defaulting.");
 				return "1.0.0.0";
 			}
+		}
+
+		public bool IsLoggedIn()
+		{
+			return _isLoggedIn;
+		}
+
+		public void AddEventHandlers()
+		{
+			PluginInterface.ClientState.OnLogin += ClientStateOnOnLogin;
+			PluginInterface.ClientState.OnLogout += ClientStateOnOnLogout;
+		}
+
+		private void ClientStateOnOnLogout(object sender, EventArgs e)
+		{
+			_isLoggedIn = false;
+		}
+
+		private void ClientStateOnOnLogin(object sender, EventArgs e)
+		{
+			_isLoggedIn = true;
+		}
+
+		public void RemoveEventHandlers()
+		{
+			PluginInterface.ClientState.OnLogin -= ClientStateOnOnLogin;
+			PluginInterface.ClientState.OnLogout -= ClientStateOnOnLogout;
+		}
+
+		public string GetSeIcon(SeIconChar seIconChar)
+		{
+			return Convert.ToChar(seIconChar, CultureInfo.InvariantCulture)
+				.ToString(CultureInfo.InvariantCulture);
 		}
 
 		public void SetLanguage(PluginLanguage language)

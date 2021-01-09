@@ -22,5 +22,6 @@ namespace DalamudPluginCommon
 		string PluginFolder();
 		void UpdateResources();
 		string PluginVersion();
+		bool IsLoggedIn();
 	}
 }
