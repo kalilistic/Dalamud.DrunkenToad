@@ -22,6 +22,7 @@ namespace DalamudPluginCommon
 	{
 		public readonly DalamudPluginInterface PluginInterface;
 		private bool _isLoggedIn;
+		private bool _showPlugin;
 
 		protected PluginBase(string pluginName, DalamudPluginInterface pluginInterface)
 		{
@@ -31,6 +32,7 @@ namespace DalamudPluginCommon
 			Localization = new Localization(this);
 			SetupCommands();
 			AddEventHandlers();
+			UpdateLoggedInState();
 		}
 
 		public ResourceManager ResourceManager { get; }
@@ -146,6 +148,17 @@ namespace DalamudPluginCommon
 			return _isLoggedIn;
 		}
 
+		public string GetSeIcon(SeIconChar seIconChar)
+		{
+			return Convert.ToChar(seIconChar, CultureInfo.InvariantCulture)
+				.ToString(CultureInfo.InvariantCulture);
+		}
+
+		public void UpdateLoggedInState()
+		{
+			if (PluginInterface.Data.IsDataReady && PluginInterface.ClientState.LocalPlayer != null) _isLoggedIn = true;
+		}
+
 		public void AddEventHandlers()
 		{
 			PluginInterface.ClientState.OnLogin += ClientStateOnOnLogin;
@@ -166,12 +179,6 @@ namespace DalamudPluginCommon
 		{
 			PluginInterface.ClientState.OnLogin -= ClientStateOnOnLogin;
 			PluginInterface.ClientState.OnLogout -= ClientStateOnOnLogout;
-		}
-
-		public string GetSeIcon(SeIconChar seIconChar)
-		{
-			return Convert.ToChar(seIconChar, CultureInfo.InvariantCulture)
-				.ToString(CultureInfo.InvariantCulture);
 		}
 
 		public void SetLanguage(PluginLanguage language)
