@@ -1,4 +1,5 @@
 ﻿// ReSharper disable UnusedMemberInSuper.Global
+// ReSharper disable ConvertIfStatementToReturnStatement
 
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace DalamudPluginCommon
 	{
 		public readonly DalamudPluginInterface PluginInterface;
 		private bool _isLoggedIn;
+		private List<string> _worldNames;
 
 		protected PluginBase(string pluginName, DalamudPluginInterface pluginInterface)
 		{
@@ -251,6 +253,22 @@ namespace DalamudPluginCommon
 			}
 		}
 
+		public List<string> GetWorldNames()
+		{
+			try
+			{
+				if (_worldNames != null) return _worldNames;
+				_worldNames = PluginInterface.Data.GetExcelSheet<World>().Where(world => world.IsPublic)
+					.Select(world => world.Name.ToString()).OrderBy(worldName => worldName).ToList();
+				return _worldNames;
+			}
+			catch
+			{
+				LogInfo("WorldNames are not available.");
+				return null;
+			}
+		}
+
 		public string GetWorldName(uint worldId)
 		{
 			try
@@ -359,6 +377,26 @@ namespace DalamudPluginCommon
 				LogInfo("InCombat condition flag is not available.");
 				return false;
 			}
+		}
+
+		public bool IsValidCharacterName(string name)
+		{
+			if (string.IsNullOrEmpty(name)) return false;
+			var names = name.Split(' ');
+			if (names.Length != 2) return false;
+			if (names[0].Length < 2 || names[0].Length > 15) return false;
+			if (names[1].Length < 2 || names[1].Length > 15) return false;
+			if (names[0].Length + names[1].Length > 20) return false;
+			if (!char.IsLetter(names[0][0])) return false;
+			if (!char.IsLetter(names[1][0])) return false;
+			if (!char.IsUpper(names[0][0])) return false;
+			if (!char.IsUpper(names[1][0])) return false;
+			if (name.Contains("  ")) return false;
+			if (name.Contains("--")) return false;
+			if (name.Contains("\'-")) return false;
+			if (name.Contains("-\'")) return false;
+			if (name.Any(c => !char.IsLetter(c) && !c.Equals('\'') && !c.Equals('-') && !c.Equals(' '))) return false;
+			return true;
 		}
 	}
 }
