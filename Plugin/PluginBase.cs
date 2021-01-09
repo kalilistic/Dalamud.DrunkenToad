@@ -22,7 +22,6 @@ namespace DalamudPluginCommon
 	{
 		public readonly DalamudPluginInterface PluginInterface;
 		private bool _isLoggedIn;
-		private bool _showPlugin;
 
 		protected PluginBase(string pluginName, DalamudPluginInterface pluginInterface)
 		{
@@ -296,7 +295,8 @@ namespace DalamudPluginCommon
 		{
 			try
 			{
-				return PluginInterface.Data.GetExcelSheet<TerritoryType>().GetRow(territoryTypeId).PlaceName.Value.Name;
+				return PluginInterface.Data.GetExcelSheet<TerritoryType>().GetRow(territoryTypeId).PlaceName.Value.Name
+					.ToString().Sanitize();
 			}
 			catch
 			{
@@ -311,7 +311,8 @@ namespace DalamudPluginCommon
 			{
 				return contentId == 0
 					? string.Empty
-					: PluginInterface.Data.GetExcelSheet<ContentFinderCondition>().GetRow(contentId).Name.ToString();
+					: PluginInterface.Data.GetExcelSheet<ContentFinderCondition>().GetRow(contentId).Name.ToString()
+						.Sanitize();
 			}
 			catch
 			{

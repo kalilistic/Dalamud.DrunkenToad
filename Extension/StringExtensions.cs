@@ -1,12 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using static System.String;
 
 namespace DalamudPluginCommon
 {
 	public static class StringExtensions
 	{
+		private static readonly List<KeyValuePair<string, string>> SanitizeList = new List<KeyValuePair<string, string>>
+		{
+			new KeyValuePair<string, string>("\u0002\u001F\u0001\u0003", "-"),
+			new KeyValuePair<string, string>("\u0002\u001a\u0002\u0002\u0003", Empty),
+			new KeyValuePair<string, string>("\u0002\u001a\u0002\u0001\u0003", Empty)
+		};
+
+
 		public static string Compress(this string value)
 		{
 			string compressed;
@@ -40,6 +50,14 @@ namespace DalamudPluginCommon
 			}
 
 			return decompressed;
+		}
+
+		public static string Sanitize(this string value)
+		{
+			var sanitizedValue = new StringBuilder(value);
+			foreach (var item in SanitizeList) sanitizedValue.Replace(item.Key, item.Value);
+
+			return sanitizedValue.ToString();
 		}
 	}
 }
