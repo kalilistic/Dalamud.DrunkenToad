@@ -17,7 +17,6 @@ namespace DalamudPluginCommon
 			new KeyValuePair<string, string>("\u0002\u001a\u0002\u0001\u0003", Empty)
 		};
 
-
 		public static string Compress(this string value)
 		{
 			string compressed;
@@ -59,6 +58,12 @@ namespace DalamudPluginCommon
 			foreach (var item in SanitizeList) sanitizedValue.Replace(item.Key, item.Value);
 
 			return sanitizedValue.ToString();
+		}
+
+		public static string EnsureEndsWithDot(this string str)
+		{
+			if (!str.EndsWith(".")) return str + ".";
+			return str;
 		}
 	}
 }
