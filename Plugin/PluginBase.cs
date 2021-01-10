@@ -22,6 +22,8 @@ namespace DalamudPluginCommon
 	public abstract class PluginBase : IPluginBase
 	{
 		public readonly DalamudPluginInterface PluginInterface;
+		private uint[] _contentIds;
+		private string[] _contentNames;
 		private bool _isLoggedIn;
 		private List<string> _worldNames;
 
@@ -155,6 +157,16 @@ namespace DalamudPluginCommon
 				.ToString(CultureInfo.InvariantCulture);
 		}
 
+		public string[] GetContentNames()
+		{
+			return _contentNames;
+		}
+
+		public uint[] GetContentIds()
+		{
+			return _contentIds;
+		}
+
 		public void UpdateLoggedInState()
 		{
 			if (PluginInterface.Data.IsDataReady && PluginInterface.ClientState.LocalPlayer != null) _isLoggedIn = true;
@@ -266,6 +278,28 @@ namespace DalamudPluginCommon
 			{
 				LogInfo("WorldNames are not available.");
 				return null;
+			}
+		}
+
+		protected void InitContent()
+		{
+			try
+			{
+				var excludedContent = new List<uint> {69, 70, 71};
+				var contentTypes = new List<uint> {2, 4, 5, 6, 26, 28, 29};
+				var contentList = PluginInterface.Data.GetExcelSheet<ContentFinderCondition>()
+					.Where(content =>
+						contentTypes.Contains(content.ContentType.Row) && !excludedContent.Contains(content.RowId))
+					.ToList();
+				var contentNames = contentList.Select(content => content.Name.ToString().Sanitize()).ToArray();
+				var contentIds = contentList.Select(content => content.RowId).ToArray();
+				Array.Sort(contentNames, contentIds);
+				_contentIds = contentIds;
+				_contentNames = contentNames;
+			}
+			catch
+			{
+				LogInfo("Failed to initialize content list.");
 			}
 		}
 

@@ -11,6 +11,7 @@ namespace DalamudPluginCommon
 	{
 		private static readonly List<KeyValuePair<string, string>> SanitizeList = new List<KeyValuePair<string, string>>
 		{
+			new KeyValuePair<string, string>("the ", Empty),
 			new KeyValuePair<string, string>("\u0002\u001F\u0001\u0003", "-"),
 			new KeyValuePair<string, string>("\u0002\u001a\u0002\u0002\u0003", Empty),
 			new KeyValuePair<string, string>("\u0002\u001a\u0002\u0001\u0003", Empty)
