@@ -1,4 +1,5 @@
-﻿using Dalamud.Interface;
+﻿using System.Numerics;
+using Dalamud.Interface;
 using ImGuiNET;
 
 namespace DalamudPluginCommon
@@ -32,6 +33,18 @@ namespace DalamudPluginCommon
 				ImGui.Text(value + "*");
 				if (ImGui.IsItemHovered()) ImGui.SetTooltip(hint);
 			}
+		}
+
+		public static bool IconButton(FontAwesomeIcon icon, string id)
+		{
+			ImGui.PushStyleColor(ImGuiCol.Button, Vector4.Zero);
+			ImGui.PushStyleColor(ImGuiCol.ButtonActive, Vector4.Zero);
+			ImGui.PushStyleColor(ImGuiCol.ButtonHovered, Vector4.Zero);
+			ImGui.PushFont(UiBuilder.IconFont);
+			var button = ImGui.Button($"{icon.ToIconString()}{id}");
+			ImGui.PopFont();
+			ImGui.PopStyleColor(3);
+			return button;
 		}
 	}
 }
