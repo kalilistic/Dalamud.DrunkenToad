@@ -265,12 +265,26 @@ namespace DalamudPluginCommon
 			}
 		}
 
-		public List<string> GetWorldNames()
+		public uint GetDataCenterId()
+		{
+			try
+			{
+				return PluginInterface.Data.GetExcelSheet<World>().First(world => world.RowId == PluginInterface.ClientState.LocalPlayer.HomeWorld.Id)
+					.DataCenter.Value.RowId;
+			}
+			catch
+			{
+				LogInfo("DataCenterId is not available.");
+				return 0;
+			}
+		}
+
+		public List<string> GetWorldNames(uint dcId)
 		{
 			try
 			{
 				if (_worldNames != null) return _worldNames;
-				_worldNames = PluginInterface.Data.GetExcelSheet<World>().Where(world => world.IsPublic)
+				_worldNames = PluginInterface.Data.GetExcelSheet<World>().Where(world => world.IsPublic && world.DataCenter.Value.RowId == dcId )
 					.Select(world => world.Name.ToString()).OrderBy(worldName => worldName).ToList();
 				return _worldNames;
 			}
