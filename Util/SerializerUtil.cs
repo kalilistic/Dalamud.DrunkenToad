@@ -17,5 +17,18 @@ namespace DalamudPluginCommon
 				DefaultValueHandling = DefaultValueHandling.Ignore
 			};
 		}
+
+		public static JsonSerializerSettings CamelCaseIncludeJsonSerializer()
+		{
+			return new JsonSerializerSettings
+			{
+				ContractResolver = new DefaultContractResolver
+				{
+					NamingStrategy = new CamelCaseNamingStrategy()
+				},
+				NullValueHandling = NullValueHandling.Include,
+				DefaultValueHandling = DefaultValueHandling.Include
+			};
+		}
 	}
 }
