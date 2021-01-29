@@ -10,7 +10,7 @@ namespace DalamudPluginCommon
 	{
 		public readonly List<Vector4> ColorPalette = new List<Vector4>();
 		public CustomWidgets CustomWidgets = new CustomWidgets();
-		public bool IsVisible { get; protected set; }
+		public bool IsVisible { get; set; }
 		public float Scale => ImGui.GetIO().FontGlobalScale;
 
 		public abstract void DrawView();

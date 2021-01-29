@@ -3,7 +3,7 @@
 	public interface IWindowBase
 	{
 		float Scale { get; }
-		bool IsVisible { get; }
+		bool IsVisible { get; set; }
 		void DrawView();
 		void ToggleView();
 		void ShowView();
