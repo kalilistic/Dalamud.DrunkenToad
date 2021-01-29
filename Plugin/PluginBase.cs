@@ -12,6 +12,7 @@ using Dalamud.Game.Chat;
 using Dalamud.Game.Chat.SeStringHandling;
 using Dalamud.Game.Chat.SeStringHandling.Payloads;
 using Dalamud.Game.ClientState;
+using Dalamud.Game.ClientState.Actors;
 using Dalamud.Game.ClientState.Actors.Types;
 using Dalamud.Game.Command;
 using Dalamud.Plugin;
@@ -292,6 +293,76 @@ namespace DalamudPluginCommon
 			{
 				LogInfo("WorldNames are not available.");
 				return null;
+			}
+		}
+
+		public string GetGender(int? genderId)
+		{
+			try
+			{
+				switch (genderId)
+				{
+					case 0:
+						return FontAwesomeIcon.Mars.ToIconString();
+					case 1:
+						return FontAwesomeIcon.Venus.ToIconString();
+					default:
+						return string.Empty;
+				}
+			}
+			catch
+			{
+				LogInfo("Gender is not available.");
+				return null;
+			}
+
+		}
+
+		public string GetTribe(int id, int genderId)
+		{
+			try
+			{
+				if (id == 0) return string.Empty;
+				var tribe = PluginInterface.Data.GetExcelSheet<Tribe>().FirstOrDefault(tribeEntry => tribeEntry.RowId == id);
+				if (tribe == null) return string.Empty;
+				switch (genderId)
+				{
+					case 0:
+						return tribe.Masculine;
+					case 1:
+						return tribe.Feminine;
+					default:
+						return string.Empty;
+				}
+			}
+			catch
+			{
+				LogInfo("Tribe is not available.");
+				return string.Empty;
+			}
+		}
+
+		public string GetRace(int id, int genderId)
+		{
+			try
+			{
+				if (id == 0) return string.Empty;
+				var race = PluginInterface.Data.GetExcelSheet<Race>().FirstOrDefault(raceEntry => raceEntry.RowId == id);
+				if (race == null) return string.Empty;
+				switch (genderId)
+				{
+					case 0:
+						return race.Masculine;
+					case 1:
+						return race.Feminine;
+					default:
+						return string.Empty;
+				}
+			}
+			catch
+			{
+				LogInfo("Race is not available.");
+				return string.Empty;
 			}
 		}
 
