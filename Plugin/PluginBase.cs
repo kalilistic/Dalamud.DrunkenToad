@@ -17,6 +17,8 @@ using Dalamud.Game.Command;
 using Dalamud.Plugin;
 using Lumina.Excel.GeneratedSheets;
 
+// ReSharper disable UseNegatedPatternMatching
+
 namespace DalamudPluginCommon
 {
 	public abstract class PluginBase : IPluginBase
@@ -260,7 +262,9 @@ namespace DalamudPluginCommon
 					actor is PlayerCharacter character &&
 					actor.ActorId != PluginInterface.ClientState.LocalPlayer?.ActorId &&
 					character.HomeWorld.Id != ushort.MaxValue &&
-					character.CurrentWorld.Id != ushort.MaxValue)
+					character.CurrentWorld.Id != ushort.MaxValue &&
+					character.ClassJob != null && character.ClassJob.Id != 0 &&
+					IsValidCharacterName(character.Name))
 				.Select(actor => actor as PlayerCharacter).ToList()
 				.GroupBy(player => new {player.Name, player.HomeWorld.Id})
 				.Select(player => player.First())
