@@ -534,5 +534,48 @@ namespace DalamudPluginCommon
 			if (name.Any(c => !char.IsLetter(c) && !c.Equals('\'') && !c.Equals('-') && !c.Equals(' '))) return false;
 			return true;
 		}
+
+		public Actor GetActorById(int actorId)
+		{
+			try
+			{
+				return PluginInterface.ClientState.Actors.ToList().FirstOrDefault(actor => actor.ActorId == actorId);
+			}
+			catch
+			{
+				LogInfo("Failed to find actor by id " + actorId);
+				return null;
+			}
+		}
+
+		public void SetCurrentTarget(int actorId)
+		{
+			try
+			{
+				if (actorId == 0) return;
+				var actor = GetActorById(actorId);
+				if (actor == null) return;
+				PluginInterface.ClientState.Targets.SetCurrentTarget(actor);
+			}
+			catch
+			{
+				LogInfo("Failed to target actor with id " + actorId);
+			}
+		}
+
+		public void SetFocusTarget(int actorId)
+		{
+			try
+			{
+				if (actorId == 0) return;
+				var actor = GetActorById(actorId);
+				if (actor == null) return;
+				PluginInterface.ClientState.Targets.SetFocusTarget(actor);
+			}
+			catch
+			{
+				LogInfo("Failed to focus target actor with id " + actorId);
+			}
+		}
 	}
 }
