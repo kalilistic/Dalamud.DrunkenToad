@@ -12,7 +12,6 @@ using Dalamud.Game.Chat;
 using Dalamud.Game.Chat.SeStringHandling;
 using Dalamud.Game.Chat.SeStringHandling.Payloads;
 using Dalamud.Game.ClientState;
-using Dalamud.Game.ClientState.Actors;
 using Dalamud.Game.ClientState.Actors.Types;
 using Dalamud.Game.Command;
 using Dalamud.Plugin;
@@ -158,6 +157,21 @@ namespace DalamudPluginCommon
 				.ToString(CultureInfo.InvariantCulture);
 		}
 
+		public double ConvertHeightToInches(int raceId, int tribeId, int genderId, int sliderHeight)
+		{
+			try
+			{
+				var charHeight = CharHeight.GetCharHeight(raceId, tribeId, genderId);
+				if (charHeight == null) return 0;
+				return charHeight.MinHeight + Math.Round(sliderHeight * charHeight.Ratio, 1);
+			}
+			catch
+			{
+				LogInfo("Failed to calculate height.");
+				return 0;
+			}
+		}
+
 		public string[] GetContentNames()
 		{
 			return _contentNames;
@@ -270,7 +284,8 @@ namespace DalamudPluginCommon
 		{
 			try
 			{
-				return PluginInterface.Data.GetExcelSheet<World>().First(world => world.RowId == PluginInterface.ClientState.LocalPlayer.HomeWorld.Id)
+				return PluginInterface.Data.GetExcelSheet<World>().First(world =>
+						world.RowId == PluginInterface.ClientState.LocalPlayer.HomeWorld.Id)
 					.DataCenter.Value.RowId;
 			}
 			catch
@@ -285,7 +300,8 @@ namespace DalamudPluginCommon
 			try
 			{
 				if (_worldNames != null) return _worldNames;
-				_worldNames = PluginInterface.Data.GetExcelSheet<World>().Where(world => world.IsPublic && world.DataCenter.Value.RowId == dcId )
+				_worldNames = PluginInterface.Data.GetExcelSheet<World>()
+					.Where(world => world.IsPublic && world.DataCenter.Value.RowId == dcId)
 					.Select(world => world.Name.ToString()).OrderBy(worldName => worldName).ToList();
 				return _worldNames;
 			}
@@ -315,7 +331,6 @@ namespace DalamudPluginCommon
 				LogInfo("Gender is not available.");
 				return null;
 			}
-
 		}
 
 		public string GetTribe(int id, int genderId)
@@ -323,7 +338,8 @@ namespace DalamudPluginCommon
 			try
 			{
 				if (id == 0) return string.Empty;
-				var tribe = PluginInterface.Data.GetExcelSheet<Tribe>().FirstOrDefault(tribeEntry => tribeEntry.RowId == id);
+				var tribe = PluginInterface.Data.GetExcelSheet<Tribe>()
+					.FirstOrDefault(tribeEntry => tribeEntry.RowId == id);
 				if (tribe == null) return string.Empty;
 				switch (genderId)
 				{
@@ -347,7 +363,8 @@ namespace DalamudPluginCommon
 			try
 			{
 				if (id == 0) return string.Empty;
-				var race = PluginInterface.Data.GetExcelSheet<Race>().FirstOrDefault(raceEntry => raceEntry.RowId == id);
+				var race = PluginInterface.Data.GetExcelSheet<Race>()
+					.FirstOrDefault(raceEntry => raceEntry.RowId == id);
 				if (race == null) return string.Empty;
 				switch (genderId)
 				{

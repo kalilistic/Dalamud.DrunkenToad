@@ -23,5 +23,6 @@ namespace DalamudPluginCommon
 		void UpdateResources();
 		string PluginVersion();
 		bool IsLoggedIn();
+		double ConvertHeightToInches(int raceId, int tribeId, int genderId, int sliderHeight);
 	}
 }
