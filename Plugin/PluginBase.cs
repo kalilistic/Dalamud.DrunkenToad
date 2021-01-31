@@ -211,11 +211,6 @@ namespace DalamudPluginCommon
 			PluginInterface.ClientState.OnLogout -= ClientStateOnOnLogout;
 		}
 
-		public void SetLanguage(PluginLanguage language)
-		{
-			Localization.SetLanguage(language);
-		}
-
 		protected List<Payload> BuildMessagePayload()
 		{
 			return new List<Payload>
@@ -266,9 +261,10 @@ namespace DalamudPluginCommon
 					character.ClassJob != null && character.ClassJob.Id != 0 &&
 					IsValidCharacterName(character.Name))
 				.Select(actor => actor as PlayerCharacter).ToList()
-				.GroupBy(player => new {player.Name, player.HomeWorld.Id})
+				.GroupBy(player => new {player.Name, player.ActorId})
 				.Select(player => player.First())
 				.ToList();
+
 		}
 
 		public uint GetTerritoryType()
