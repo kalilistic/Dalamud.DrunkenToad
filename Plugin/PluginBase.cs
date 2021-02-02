@@ -1,5 +1,5 @@
 ﻿// ReSharper disable UnusedMemberInSuper.Global
-// ReSharper disable ConvertIfStatementToReturnStatement
+// ReSharper disable ConvertIfStatementToReturnStatement// ReSharper disable UseNegatedPatternMatching
 
 using System;
 using System.Collections.Generic;
@@ -17,8 +17,6 @@ using Dalamud.Game.Command;
 using Dalamud.Plugin;
 using Lumina.Excel.GeneratedSheets;
 
-// ReSharper disable UseNegatedPatternMatching
-
 namespace DalamudPluginCommon
 {
 	public abstract class PluginBase : IPluginBase
@@ -27,6 +25,7 @@ namespace DalamudPluginCommon
 		private uint[] _contentIds;
 		private string[] _contentNames;
 		private bool _isLoggedIn;
+		private int _previousFocusTarget;
 		private List<string> _worldNames;
 
 		protected PluginBase(string pluginName, DalamudPluginInterface pluginInterface)
@@ -255,6 +254,7 @@ namespace DalamudPluginCommon
 			var actors = PluginInterface.ClientState.Actors.ToList();
 			return actors.Where(actor =>
 					actor is PlayerCharacter character &&
+					actor.ActorId != 0 &&
 					actor.ActorId != PluginInterface.ClientState.LocalPlayer?.ActorId &&
 					character.HomeWorld.Id != ushort.MaxValue &&
 					character.CurrentWorld.Id != ushort.MaxValue &&
@@ -264,7 +264,6 @@ namespace DalamudPluginCommon
 				.GroupBy(player => new {player.Name, player.ActorId})
 				.Select(player => player.First())
 				.ToList();
-
 		}
 
 		public uint GetTerritoryType()
@@ -563,6 +562,21 @@ namespace DalamudPluginCommon
 			}
 		}
 
+		public void RevertFocusTarget()
+		{
+			try
+			{
+				if (_previousFocusTarget == 0) return;
+				var actor = GetActorById(_previousFocusTarget);
+				if (actor == null) return;
+				PluginInterface.ClientState.Targets.SetFocusTarget(actor);
+			}
+			catch
+			{
+				LogInfo("Failed to focus target actor with id " + _previousFocusTarget);
+			}
+		}
+
 		public void SetFocusTarget(int actorId)
 		{
 			try
@@ -570,6 +584,8 @@ namespace DalamudPluginCommon
 				if (actorId == 0) return;
 				var actor = GetActorById(actorId);
 				if (actor == null) return;
+				if (PluginInterface.ClientState.Targets.FocusTarget != null)
+					_previousFocusTarget = PluginInterface.ClientState.Targets.FocusTarget.ActorId;
 				PluginInterface.ClientState.Targets.SetFocusTarget(actor);
 			}
 			catch
