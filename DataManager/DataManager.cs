@@ -101,7 +101,6 @@ namespace DalamudPluginCommon
 		{
 			try
 			{
-				Plugin.LogInfo(DataPath + fileName);
 				var data = new List<string> {string.Empty};
 				using (var sr = new StreamReader(DataPath + fileName))
 				{
@@ -119,11 +118,11 @@ namespace DalamudPluginCommon
 			return null;
 		}
 
-		internal void CreateBackup()
+		internal void CreateBackup(string dirPrefix = "")
 		{
 			try
 			{
-				var backupDir = DataPath + DateUtil.CurrentTime() + "/";
+				var backupDir = DataPath + dirPrefix + DateUtil.CurrentTime() + "/";
 				Directory.CreateDirectory(backupDir);
 				var files = Directory.GetFiles(DataPath);
 				foreach (var file in files)
@@ -148,7 +147,9 @@ namespace DalamudPluginCommon
 				foreach (var dir in dirs)
 					try
 					{
-						dirNames.Add(Convert.ToInt64(new DirectoryInfo(dir).Name));
+						var dirName = new DirectoryInfo(dir).Name;
+						if (dirName.Any(char.IsLetter)) continue;
+						dirNames.Add(Convert.ToInt64(dirName));
 					}
 					catch (Exception)
 					{
