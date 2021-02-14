@@ -173,6 +173,21 @@ namespace DalamudPluginCommon
 			}
 		}
 
+		public int PluginVersionNumber()
+		{
+			try
+			{
+				var pluginVersion = PluginVersion();
+				pluginVersion = pluginVersion.Replace(".", "");
+				return Convert.ToInt32(pluginVersion);
+			}
+			catch (Exception ex)
+			{
+				LogError(ex, "Failed to parse plugin version.");
+				return 0;
+			}
+		}
+
 		public string[] GetContentNames()
 		{
 			return _contentNames;
