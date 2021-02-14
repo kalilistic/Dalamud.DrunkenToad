@@ -1,4 +1,6 @@
-﻿using System;
+﻿// ReSharper disable ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,14 +32,44 @@ namespace DalamudPluginCommon
 			}
 		}
 
-		internal void InitDataFiles(string[] fileNames)
+		internal void InitDataFiles(string[] fileNames, bool force = false)
 		{
 			foreach (var fileName in fileNames)
-				if (!File.Exists(DataPath + fileName))
-					SaveData(fileName, string.Empty);
+				if (!File.Exists(DataPath + fileName) || force)
+					CreateDataFile(DataPath + fileName);
 		}
 
-		internal void SaveData(string fileName, string data)
+		internal void CreateDataFile(string fileName)
+		{
+			var file = File.Create(fileName);
+			file.Close();
+		}
+
+		internal void SaveDataList(string fileName, List<string> data)
+		{
+			var dataFile = DataPath + fileName;
+			var tempFile = DataPath + fileName + ".tmp";
+			try
+			{
+				File.Delete(tempFile);
+				CreateDataFile(tempFile);
+				using (var sw = new StreamWriter(tempFile, false))
+				{
+					foreach (var entry in data)
+						if (!string.IsNullOrEmpty(entry))
+							sw.WriteLine(entry);
+				}
+
+				File.Delete(dataFile);
+				File.Move(tempFile, dataFile);
+			}
+			catch (Exception ex)
+			{
+				Plugin.LogError(ex, "Failed to write data file.");
+			}
+		}
+
+		internal void SaveDataStr(string fileName, string data)
 		{
 			try
 			{
@@ -49,11 +81,35 @@ namespace DalamudPluginCommon
 			}
 		}
 
-		internal string ReadData(string fileName)
+
+		internal string ReadDataStr(string fileName)
 		{
 			try
 			{
 				return File.ReadAllText(DataPath + fileName);
+			}
+			catch (Exception ex)
+			{
+				Plugin.LogError(ex, "Failed to read data file.");
+			}
+
+			return null;
+		}
+
+
+		internal List<string> ReadDataList(string fileName)
+		{
+			try
+			{
+				Plugin.LogInfo(DataPath + fileName);
+				var data = new List<string> {string.Empty};
+				using (var sr = new StreamReader(DataPath + fileName))
+				{
+					string line;
+					while ((line = sr.ReadLine()) != null) data.Add(line);
+				}
+
+				return data;
 			}
 			catch (Exception ex)
 			{
