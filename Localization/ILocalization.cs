@@ -1,6 +1,6 @@
 ﻿namespace DalamudPluginCommon
 {
-	public interface ILocalization
-	{
-	}
+    public interface ILocalization
+    {
+    }
 }
