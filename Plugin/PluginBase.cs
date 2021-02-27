@@ -22,8 +22,6 @@ namespace DalamudPluginCommon
     public abstract class PluginBase : IPluginBase
     {
         public readonly DalamudPluginInterface PluginInterface;
-        private uint[] _contentIds;
-        private string[] _contentNames;
         private bool _isLoggedIn;
         private int _previousFocusTarget;
         private List<string> _worldNames;
@@ -38,6 +36,14 @@ namespace DalamudPluginCommon
             AddEventHandlers();
             UpdateLoggedInState();
         }
+
+        public uint[] ContentIds { get; set; }
+        public string[] ContentNames { get; set; }
+        public uint[] ItemIds { get; set; }
+        public string[] ItemNames { get; set; }
+        public uint[] ItemCategoryIds { get; set; }
+        public string[] ItemCategoryNames { get; set; }
+        public List<KeyValuePair<uint, ItemList>> ItemLists { get; set; }
 
         public ResourceManager ResourceManager { get; }
 
@@ -64,6 +70,16 @@ namespace DalamudPluginCommon
                 LogInfo("LocalPlayer HomeWorldId is not available.");
                 return null;
             }
+        }
+
+        public void LogVerbose(string messageTemplate)
+        {
+            PluginLog.LogVerbose(messageTemplate);
+        }
+        
+        public void LogDebug(string messageTemplate)
+        {
+            PluginLog.LogDebug(messageTemplate);
         }
 
         public void LogInfo(string messageTemplate)
@@ -173,6 +189,31 @@ namespace DalamudPluginCommon
             }
         }
 
+        public ushort ClientLanguage()
+        {
+            try
+            {
+                return (ushort) PluginInterface.ClientState.ClientLanguage;
+            }
+            catch
+            {
+                return (ushort) Dalamud.ClientLanguage.English;
+            }
+        }
+
+        public string GetLocalPlayerName()
+        {
+            try
+            {
+                return PluginInterface.ClientState.LocalPlayer.Name;
+            }
+            catch
+            {
+                LogInfo("LocalPlayer Name is not available.");
+                return null;
+            }
+        }
+
         public int PluginVersionNumber()
         {
             try
@@ -186,16 +227,6 @@ namespace DalamudPluginCommon
                 LogError(ex, "Failed to parse plugin version.");
                 return 0;
             }
-        }
-
-        public string[] GetContentNames()
-        {
-            return _contentNames;
-        }
-
-        public uint[] GetContentIds()
-        {
-            return _contentIds;
         }
 
         public void UpdateLoggedInState()
@@ -410,8 +441,56 @@ namespace DalamudPluginCommon
                 var contentNames = contentList.Select(content => content.Name.ToString().Sanitize()).ToArray();
                 var contentIds = contentList.Select(content => content.RowId).ToArray();
                 Array.Sort(contentNames, contentIds);
-                _contentIds = contentIds;
-                _contentNames = contentNames;
+                ContentIds = contentIds;
+                ContentNames = contentNames;
+            }
+            catch
+            {
+                LogInfo("Failed to initialize content list.");
+            }
+        }
+
+        protected void InitItems()
+        {
+            try
+            {
+                // create item list
+                var itemDataList = PluginInterface.Data.GetExcelSheet<Item>().Where(item => item != null
+                    && !string.IsNullOrEmpty(item.Name)).ToList();
+
+                // add all items
+                var itemIds = itemDataList.Select(item => item.RowId).ToArray();
+                var itemNames = itemDataList.Select(item => item.Name.ToString().Sanitize()).ToArray();
+                ItemIds = itemIds;
+                ItemNames = itemNames;
+
+                // item categories
+                var categoryList = PluginInterface.Data.GetExcelSheet<ItemUICategory>()
+                    .Where(category => category.RowId != 0).ToList();
+                var categoryNames = categoryList.Select(category => category.Name.ToString().Sanitize()).ToArray();
+                var categoryIds = categoryList.Select(category => category.RowId).ToArray();
+                Array.Sort(categoryNames, categoryIds);
+                ItemCategoryIds = categoryIds;
+                ItemCategoryNames = categoryNames;
+
+                // populate item lists by category
+                var itemLists = new List<KeyValuePair<uint, ItemList>>();
+                foreach (var categoryId in categoryIds)
+                {
+                    var itemCategoryDataList =
+                        itemDataList.Where(item => item.ItemUICategory.Row == categoryId).ToList();
+                    var itemCategoryIds = itemCategoryDataList.Select(item => item.RowId).ToArray();
+                    var itemCategoryNames = itemCategoryDataList.Select(item => item.Name.ToString().Sanitize()).ToArray();
+                    Array.Sort(itemCategoryNames, itemCategoryIds);
+                    var itemList = new ItemList
+                    {
+                        ItemIds = itemCategoryIds,
+                        ItemNames = itemCategoryNames
+                    };
+                    itemLists.Add(new KeyValuePair<uint, ItemList>(categoryId, itemList));
+                }
+
+                ItemLists = itemLists;
             }
             catch
             {

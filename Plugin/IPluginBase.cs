@@ -9,6 +9,8 @@ namespace DalamudPluginCommon
         void PrintMessage(string message);
         string GetSeIcon(SeIconChar seIconChar);
         uint? GetLocalPlayerHomeWorld();
+        void LogVerbose(string messageTemplate);
+        void LogDebug(string messageTemplate);
         void LogInfo(string messageTemplate);
         void LogInfo(string messageTemplate, params object[] values);
         void LogError(string messageTemplate);
