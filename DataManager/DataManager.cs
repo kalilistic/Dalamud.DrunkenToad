@@ -17,6 +17,23 @@ namespace DalamudPluginCommon
             DataPath = plugin.PluginFolder() + "/data/";
             CreateDataDirectory();
         }
+        
+        internal bool DoesDataFileExist(string fileName)
+        {
+            return File.Exists(DataPath + fileName);
+        }
+        
+        internal void AppendDataStr(string fileName, List<string> data)
+        {
+            try
+            {
+                File.AppendAllLines(DataPath + fileName, data);
+            }
+            catch (Exception ex)
+            {
+                Plugin.LogError(ex, "Failed to write data file.");
+            }
+        }
 
         public string DataPath { get; set; }
 
