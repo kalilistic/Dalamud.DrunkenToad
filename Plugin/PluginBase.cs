@@ -76,7 +76,7 @@ namespace DalamudPluginCommon
         {
             PluginLog.LogVerbose(messageTemplate);
         }
-        
+
         public void LogDebug(string messageTemplate)
         {
             PluginLog.LogDebug(messageTemplate);

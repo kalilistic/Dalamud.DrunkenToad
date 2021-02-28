@@ -1,6 +1,7 @@
 ﻿// ReSharper disable CommentTypo
 // ReSharper disable ConvertIfStatementToSwitchStatement
 // ReSharper disable IdentifierTypo
+// ReSharper disable MemberCanBePrivate.Global
 
 using System.Collections.Generic;
 using System.Linq;

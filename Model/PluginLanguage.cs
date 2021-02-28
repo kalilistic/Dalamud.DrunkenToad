@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// ReSharper disable CollectionNeverQueried.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable InconsistentNaming
+
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DalamudPluginCommon

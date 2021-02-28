@@ -1,4 +1,5 @@
 ﻿// ReSharper disable ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
+// ReSharper disable MemberCanBePrivate.Global
 
 using System;
 using System.Collections.Generic;
@@ -17,12 +18,14 @@ namespace DalamudPluginCommon
             DataPath = plugin.PluginFolder() + "/data/";
             CreateDataDirectory();
         }
-        
+
+        public string DataPath { get; set; }
+
         internal bool DoesDataFileExist(string fileName)
         {
             return File.Exists(DataPath + fileName);
         }
-        
+
         internal void AppendDataStr(string fileName, List<string> data)
         {
             try
@@ -34,8 +37,6 @@ namespace DalamudPluginCommon
                 Plugin.LogError(ex, "Failed to write data file.");
             }
         }
-
-        public string DataPath { get; set; }
 
         internal void CreateDataDirectory()
         {

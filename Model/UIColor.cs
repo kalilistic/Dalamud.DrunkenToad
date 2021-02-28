@@ -1,4 +1,6 @@
-﻿using System.Numerics;
+﻿// ReSharper disable InconsistentNaming
+
+using System.Numerics;
 
 namespace DalamudPluginCommon
 {
