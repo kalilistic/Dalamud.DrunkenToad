@@ -13,16 +13,18 @@ namespace DalamudPluginCommon
     {
         protected readonly IPluginBase Plugin;
 
-        public ResourceManager(IPluginBase plugin)
+        public ResourceManager(IPluginBase plugin, string repoName = "")
         {
             Plugin = plugin;
             EmbeddedResourcePath = $"{Plugin.PluginName}.Resource";
             LocalResourcePath = Plugin.PluginFolder();
+            RepoName = string.IsNullOrEmpty(repoName) ? Plugin.PluginName : repoName;
             RemoteResourcePath =
-                $"https://raw.githubusercontent.com/kalilistic/{Plugin.PluginName}/master/src/{Plugin.PluginName}/Resource";
+                $"https://raw.githubusercontent.com/kalilistic/{RepoName}/master/src/{Plugin.PluginName}/Resource";
             AddLocResources();
         }
 
+        public string RepoName { get; set; }
         public string EmbeddedResourcePath { get; set; }
         public string LocalResourcePath { get; set; }
         public string RemoteResourcePath { get; set; }
