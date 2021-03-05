@@ -26,11 +26,11 @@ namespace DalamudPluginCommon
         private int _previousFocusTarget;
         private List<string> _worldNames;
 
-        protected PluginBase(string pluginName, DalamudPluginInterface pluginInterface)
+        protected PluginBase(string pluginName, DalamudPluginInterface pluginInterface, string repoName = "")
         {
             PluginName = pluginName;
             PluginInterface = pluginInterface;
-            ResourceManager = new ResourceManager(this);
+            ResourceManager = new ResourceManager(this, repoName);
             Localization = new Localization(this);
             SetupCommands();
             AddEventHandlers();
