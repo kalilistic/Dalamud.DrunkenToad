@@ -309,6 +309,8 @@ namespace DalamudPluginCommon
                 .Select(actor => actor as PlayerCharacter).ToList()
                 .GroupBy(player => new {player.Name, player.ActorId})
                 .Select(player => player.First())
+                .GroupBy(player => new {player.Name, player.HomeWorld.Id})
+                .Select(player => player.First())
                 .ToList();
         }
 
