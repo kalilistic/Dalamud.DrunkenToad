@@ -14,13 +14,13 @@ namespace DalamudPluginCommon
         public static Vector4 Red = new Vector4(.863f, 0f, 0f, 1f);
         public static Vector4 Violet = new Vector4(0.770f, 0.700f, 0.965f, 1.000f);
         
-        public static Vector4 Common = new Vector4(102, 102, 102, 1);
-        public static Vector4 Uncommon = new Vector4(30, 255, 0, 1);
-        public static Vector4 Rare = new Vector4(0, 112, 255, 1);
-        public static Vector4 Epic = new Vector4(163,53,238, 1);
-        public static Vector4 Legendary = new Vector4(255,128,0, 1);
-        public static Vector4 Astounding = new Vector4(226,104,168, 1);
-        public static Vector4 Artifact = new Vector4(229, 204, 128, 1);
+        public static Vector4 Common = new Vector4(0.4f, 0.4f, 0.4f, 1f);
+        public static Vector4 Uncommon = new Vector4(0.117f, 1f, 0f, 1f);
+        public static Vector4 Rare = new Vector4(0f, 0.439f, 1f, 1f);
+        public static Vector4 Epic = new Vector4(0.639f,0.207f,0.933f, 1f);
+        public static Vector4 Legendary = new Vector4(1f,0.501f,0f, 1f);
+        public static Vector4 Astounding = new Vector4(0.886f,0.407f,0.658f, 1f);
+        public static Vector4 Artifact = new Vector4(0.898f, 0.8f, 0.501f, 1f);
 
         public static Vector4 GetColorByNumber(uint num)
         {
