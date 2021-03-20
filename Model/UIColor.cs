@@ -24,6 +24,7 @@ namespace DalamudPluginCommon
 
         public static Vector4 GetColorByNumber(uint num)
         {
+            if (num == 0) return White;
             if (num < 25) return Common;
             if (num >= 25 && num <= 49) return Uncommon;
             if (num >= 50 && num <= 74) return Rare;
