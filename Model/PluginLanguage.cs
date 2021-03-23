@@ -22,6 +22,7 @@ namespace DalamudPluginCommon
         public static readonly PluginLanguage Norwegian = new PluginLanguage(7, "Norsk", "no");
         public static readonly PluginLanguage PortugueseBR = new PluginLanguage(8, "Português (BR)", "pt");
         public static readonly PluginLanguage Russian = new PluginLanguage(9, "Русский язык", "ru");
+        public static readonly PluginLanguage Chinese = new PluginLanguage(10, "Chinese", "zh");
 
         public PluginLanguage()
         {
