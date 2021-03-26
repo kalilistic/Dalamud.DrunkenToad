@@ -135,13 +135,7 @@ namespace DalamudPluginCommon
 
         public string PluginFolder()
         {
-            return Path.Combine(new[]
-            {
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "XIVLauncher",
-                "pluginConfigs",
-                PluginName
-            });
+            return PluginInterface.GetPluginConfigDirectory();
         }
 
         public void UpdateResources()
