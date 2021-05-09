@@ -1,0 +1,63 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Nullable>enable</Nullable>
+        <Version>1.5.0</Version>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Title>DalamudPluginCommon</Title>
+        <Authors>kalilistic</Authors>
+        <RepositoryUrl>https://github.com/kalilistic/DalamudPluginCommon</RepositoryUrl>
+        <Description>A set of common utilities to use in dalamud plugins.</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Reference Include="CheapLoc">
+            <HintPath>$(AppData)\XIVLauncher\addon\Hooks\dev\CheapLoc.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Dalamud">
+          <HintPath>$(AppData)\XIVLauncher\addon\Hooks\dev\Dalamud.dll</HintPath>
+        </Reference>
+        <Reference Include="Lumina">
+            <HintPath>$(AppData)\XIVLauncher\addon\Hooks\dev\Lumina.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Lumina.Excel">
+            <HintPath>$(AppData)\XIVLauncher\addon\Hooks\dev\Lumina.Excel.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="ImGui.NET">
+            <HintPath>$(AppData)\XIVLauncher\addon\Hooks\dev\ImGui.NET.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="Newtonsoft.Json">
+            <HintPath>$(AppData)\XIVLauncher\addon\Hooks\dev\Newtonsoft.Json.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="stylecop.json" />
+    </ItemGroup>
+    <ItemGroup>
+        <AdditionalFiles Include="stylecop.json" />
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="MinVer" Version="2.5.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+</Project>

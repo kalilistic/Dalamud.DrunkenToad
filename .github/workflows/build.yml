@@ -1,0 +1,35 @@
+name: Build
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET for Build
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.100
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Restore dependencies
+        run: dotnet restore
+          
+      - name: Download Dalamud
+        run: |
+          Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/latest.zip -OutFile latest.zip
+          Expand-Archive -Force latest.zip "$env:AppData\XIVLauncher\addon\Hooks\dev\"
+          
+      - name: Build
+        run: |
+          dotnet build --no-restore --configuration Release --nologo
+
+      - name: Publish to GPR
+        run: dotnet nuget push .\DalamudPluginCommon\bin\Release\*.nupkg --skip-duplicate --no-symbols true --source https://nuget.pkg.github.com/${{github.repository_owner}}/index.json -k ${{secrets.GITHUB_TOKEN}}
