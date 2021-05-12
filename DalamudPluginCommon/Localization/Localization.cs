@@ -41,7 +41,7 @@ namespace DalamudPluginCommon
                 try
                 {
                     string locData;
-                    var resourceFile = $"{this.plugin.PluginName}.{this.plugin.PluginName}.Resource.loc.{languageCode}.json";
+                    var resourceFile = $"{this.plugin.PluginName}.{this.plugin.PluginName}.Resource.translation.{languageCode}.json";
                     var resourceStream = this.plugin.Assembly.GetManifestResourceStream(resourceFile);
                     using (var reader = new StreamReader(resourceStream ?? throw new InvalidOperationException()))
                     {
