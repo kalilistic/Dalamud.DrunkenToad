@@ -49,8 +49,9 @@
     </ItemGroup>
     <ItemGroup>
         <AdditionalFiles Include="..\stylecop.json">
-          <Link>stylecop.json</Link>
-    </AdditionalFiles>
+				    <Link>stylecop.json</Link>
+        </AdditionalFiles>
+    </ItemGroup>
     <ItemGroup>
       <PackageReference Include="MinVer" Version="2.5.0">
         <PrivateAssets>all</PrivateAssets>
