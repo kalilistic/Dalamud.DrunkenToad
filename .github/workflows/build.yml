@@ -20,7 +20,7 @@ jobs:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore src
           
       - name: Download Dalamud
         run: |
@@ -29,7 +29,7 @@ jobs:
           
       - name: Build
         run: |
-          dotnet build --no-restore --configuration Release --nologo
+          dotnet build src --no-restore --configuration Release --nologo
 
       - name: Publish to nuget.org
         run: dotnet nuget push .\src\DalamudPluginCommon\bin\Release\*.nupkg --skip-duplicate --no-symbols true --source https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}}
