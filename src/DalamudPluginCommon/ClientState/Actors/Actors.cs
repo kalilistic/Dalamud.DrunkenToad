@@ -27,7 +27,7 @@ namespace DalamudPluginCommon
         /// </summary>
         /// <param name="actorId">actor id.</param>
         /// <returns>actor.</returns>
-        public Actor? FindActor(int actorId)
+        public Actor? Actor(int actorId)
         {
             try
             {

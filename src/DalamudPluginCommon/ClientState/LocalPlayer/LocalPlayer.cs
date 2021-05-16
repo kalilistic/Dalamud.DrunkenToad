@@ -25,7 +25,7 @@ namespace DalamudPluginCommon
         /// Get local player home world id.
         /// </summary>
         /// <returns>local player home world id.</returns>
-        public uint HomeWorld()
+        public uint HomeWorldId()
         {
             try
             {
@@ -42,7 +42,7 @@ namespace DalamudPluginCommon
         /// Gets data center id.
         /// </summary>
         /// <returns>data center id.</returns>
-        public uint DataCenter()
+        public uint DataCenterId()
         {
             try
             {

@@ -5,21 +5,21 @@ using System.Linq;
 using Dalamud.Plugin;
 using Lumina.Excel.GeneratedSheets;
 
-namespace DalamudPluginCommon.Data
+namespace DalamudPluginCommon
 {
     /// <summary>
     /// Get plugin data.
     /// </summary>
-    public class Data
+    public class GameData
     {
         private readonly DalamudPluginInterface pluginInterface;
         private List<string>? worldNames;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Data"/> class.
+        /// Initializes a new instance of the <see cref="GameData"/> class.
         /// </summary>
         /// <param name="pluginInterface">dalamud plugin interface.</param>
-        public Data(DalamudPluginInterface pluginInterface)
+        public GameData(DalamudPluginInterface pluginInterface)
         {
             this.pluginInterface = pluginInterface;
             this.InitContent();
@@ -92,7 +92,7 @@ namespace DalamudPluginCommon.Data
         /// </summary>
         /// <param name="worldId">world id.</param>
         /// <returns>world name.</returns>
-        public string FindWorldName(uint worldId)
+        public string WorldName(uint worldId)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace DalamudPluginCommon.Data
         /// </summary>
         /// <param name="worldName">world name.</param>
         /// <returns>world id.</returns>
-        public uint? FindWorldId(string worldName)
+        public uint? WorldId(string worldName)
         {
             try
             {
@@ -129,7 +129,7 @@ namespace DalamudPluginCommon.Data
         /// </summary>
         /// <param name="classJobId">job code id.</param>
         /// <returns>job code.</returns>
-        public string FindJobCode(uint classJobId)
+        public string ClassJobCode(uint classJobId)
         {
             try
             {
@@ -147,7 +147,7 @@ namespace DalamudPluginCommon.Data
         /// </summary>
         /// <param name="territoryTypeId">territory type id.</param>
         /// <returns>place name.</returns>
-        public string FindPlaceName(uint territoryTypeId)
+        public string PlaceName(uint territoryTypeId)
         {
             try
             {
@@ -166,7 +166,7 @@ namespace DalamudPluginCommon.Data
         /// </summary>
         /// <param name="contentId">content id.</param>
         /// <returns>content name.</returns>
-        public string FindContentName(uint contentId)
+        public string ContentName(uint contentId)
         {
             try
             {
@@ -188,7 +188,7 @@ namespace DalamudPluginCommon.Data
         /// </summary>
         /// <param name="territoryTypeId">territory type id.</param>
         /// <returns>content id.</returns>
-        public uint FindContentId(uint territoryTypeId)
+        public uint ContentId(uint territoryTypeId)
         {
             try
             {
@@ -199,6 +199,24 @@ namespace DalamudPluginCommon.Data
             {
                 Logger.LogInfo("ContentName is not available.");
                 return 0;
+            }
+        }
+
+        /// <summary>
+        /// Get item by item id.
+        /// </summary>
+        /// <param name="itemId">item id.</param>
+        /// <returns>Item.</returns>
+        public Item? Item(uint itemId)
+        {
+            try
+            {
+                return this.pluginInterface.Data.Excel.GetSheet<Item>().GetRow(itemId);
+            }
+            catch
+            {
+                Logger.LogInfo("Can't find item for item id.");
+                return null;
             }
         }
 

@@ -35,7 +35,7 @@ namespace DalamudPluginCommon
                     return;
                 }
 
-                var actor = this.actors.FindActor(actorId);
+                var actor = this.actors.Actor(actorId);
                 if (actor == null)
                 {
                     return;
@@ -61,7 +61,7 @@ namespace DalamudPluginCommon
                     return;
                 }
 
-                var actor = this.actors.FindActor(this.previousFocusTarget);
+                var actor = this.actors.Actor(this.previousFocusTarget);
                 if (actor == null)
                 {
                     return;
@@ -88,7 +88,7 @@ namespace DalamudPluginCommon
                     return;
                 }
 
-                var actor = this.actors.FindActor(this.previousFocusTarget);
+                var actor = this.actors.Actor(this.previousFocusTarget);
                 if (actor == null)
                 {
                     return;

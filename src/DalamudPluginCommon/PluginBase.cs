@@ -24,6 +24,7 @@ namespace DalamudPluginCommon
             this.PluginName = pluginName;
             this.PluginInterface = pluginInterface;
             this.Assembly = assembly;
+            this.GameData = new GameData(pluginInterface);
             this.ClientState = new ClientState(pluginInterface);
             this.Chat = new Chat(pluginName, pluginInterface);
             this.localization = new Localization(this);
@@ -38,6 +39,11 @@ namespace DalamudPluginCommon
         /// Gets plugin interface.
         /// </summary>
         public DalamudPluginInterface PluginInterface { get; }
+
+        /// <summary>
+        /// Gets game data.
+        /// </summary>
+        public GameData GameData { get; }
 
         /// <summary>
         /// Gets current client state.
@@ -124,6 +130,29 @@ namespace DalamudPluginCommon
             {
                 Logger.LogError(ex, "Failed to parse plugin version.");
                 return 0;
+            }
+        }
+
+        /// <summary>
+        /// Returns indicator if player is in content.
+        /// </summary>
+        /// <returns>indicator if in content.</returns>
+        public bool InContent()
+        {
+            try
+            {
+                var territoryTypeId = this.ClientState.TerritoryType();
+                if (territoryTypeId == 0)
+                {
+                    return false;
+                }
+
+                var contentId = this.GameData.ContentId(territoryTypeId);
+                return contentId != 0;
+            }
+            catch
+            {
+                return false;
             }
         }
     }

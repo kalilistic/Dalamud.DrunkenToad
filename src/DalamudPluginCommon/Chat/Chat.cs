@@ -39,6 +39,16 @@ namespace DalamudPluginCommon
         }
 
         /// <summary>
+        /// Print message with plugin name in default channel.
+        /// </summary>
+        /// <param name="payloadList">list of chat payloads.</param>
+        public void Print(List<Payload> payloadList)
+        {
+            var payload = new SeString(payloadList);
+            this.pluginInterface.Framework.Gui.Chat.Print(payload);
+        }
+
+        /// <summary>
         /// Print message with plugin name in notice channel.
         /// </summary>
         /// <param name="message">print notice chat message.</param>
