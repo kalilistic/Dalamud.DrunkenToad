@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Text;
 
 namespace DalamudPluginCommon
@@ -10,6 +11,8 @@ namespace DalamudPluginCommon
     /// </summary>
     public static class StringExtensions
     {
+        private static readonly char[] TerminationChars = { '!', '.', '?' };
+
         /// <summary>
         /// Compress string to base64.
         /// </summary>
@@ -48,16 +51,46 @@ namespace DalamudPluginCommon
         /// <summary>
         /// Adds dot to end of string if doesn't exist.
         /// </summary>
-        /// <param name="str">string to evaluate.</param>
+        /// <param name="value">string to add dot to.</param>
         /// <returns>string with dot on end.</returns>
-        public static string EnsureEndsWithDot(this string str)
+        public static string EnsureEndsWithDot(this string value)
         {
-            if (!str.EndsWith("."))
+            if (!TerminationChars.Contains(value.Last()))
             {
-                return str + ".";
+                return value + ".";
             }
 
-            return str;
+            return value;
+        }
+
+        /// <summary>
+        /// Capitalize first word of sentence.
+        /// </summary>
+        /// <param name="value">sentence to capitalize.</param>
+        /// <returns>sentence with proper capitalization.</returns>
+        public static string CapitalizeFirst(this string value)
+        {
+            var isNewSentence = true;
+            var result = new StringBuilder(value.Length);
+            foreach (var t in value)
+            {
+                if (isNewSentence && char.IsLetter(t))
+                {
+                    result.Append(char.ToUpper(t));
+                    isNewSentence = false;
+                }
+                else
+                {
+                    result.Append(t);
+                }
+
+                if (t is '!' or '?' || t == '.')
+                {
+                    isNewSentence = true;
+                }
+            }
+
+            return result.ToString();
         }
     }
 }
