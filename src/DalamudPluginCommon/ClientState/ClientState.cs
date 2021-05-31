@@ -29,6 +29,17 @@ namespace DalamudPluginCommon
         }
 
         /// <summary>
+        /// TerritoryChanged delegate.
+        /// </summary>
+        /// <param name="territoryType">territory type.</param>
+        public delegate void TerritoryChangedEventHandler(ushort territoryType);
+
+        /// <summary>
+        /// TerritoryChanged Event.
+        /// </summary>
+        public event TerritoryChangedEventHandler OnTerritoryChanged = null!;
+
+        /// <summary>
         /// Gets condition.
         /// </summary>
         public Condition Condition { get; }
@@ -84,6 +95,7 @@ namespace DalamudPluginCommon
         {
             this.pluginInterface.ClientState.OnLogin += this.ClientStateOnLogin;
             this.pluginInterface.ClientState.OnLogout += this.ClientStateOnLogout;
+            this.pluginInterface.ClientState.TerritoryChanged += this.TerritoryChanged;
         }
 
         /// <summary>
@@ -140,6 +152,11 @@ namespace DalamudPluginCommon
         private void ClientStateOnLogin(object sender, EventArgs e)
         {
             this.isLoggedIn = true;
+        }
+
+        private void TerritoryChanged(object sender, ushort e)
+        {
+            this.OnTerritoryChanged(e);
         }
     }
 }
