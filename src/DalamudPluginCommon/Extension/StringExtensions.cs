@@ -92,5 +92,76 @@ namespace DalamudPluginCommon
 
             return result.ToString();
         }
+
+        /// <summary>
+        /// Validate if character name is valid.
+        /// </summary>
+        /// <param name="value">character name to validate.</param>
+        /// <returns>indicator if character is name is valid.</returns>
+        public static bool IsValidCharacterName(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return false;
+            }
+
+            var values = value.Split(' ');
+            if (values.Length != 2)
+            {
+                return false;
+            }
+
+            if (values[0].Length is < 2 or > 15)
+            {
+                return false;
+            }
+
+            if (values[0].Length + values[1].Length > 20)
+            {
+                return false;
+            }
+
+            if (!char.IsLetter(values[0][0]))
+            {
+                return false;
+            }
+
+            if (!char.IsLetter(values[1][0]))
+            {
+                return false;
+            }
+
+            if (!char.IsUpper(values[0][0]))
+            {
+                return false;
+            }
+
+            if (!char.IsUpper(values[1][0]))
+            {
+                return false;
+            }
+
+            if (value.Contains("  "))
+            {
+                return false;
+            }
+
+            if (value.Contains("--"))
+            {
+                return false;
+            }
+
+            if (value.Contains("\'-"))
+            {
+                return false;
+            }
+
+            if (value.Contains("-\'"))
+            {
+                return false;
+            }
+
+            return !value.Any(c => !char.IsLetter(c) && !c.Equals('\'') && !c.Equals('-') && !c.Equals(' '));
+        }
     }
 }
