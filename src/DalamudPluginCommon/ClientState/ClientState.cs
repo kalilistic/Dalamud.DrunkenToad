@@ -105,6 +105,7 @@ namespace DalamudPluginCommon
         {
             this.pluginInterface.ClientState.OnLogin -= this.ClientStateOnLogin;
             this.pluginInterface.ClientState.OnLogout -= this.ClientStateOnLogout;
+            this.pluginInterface.ClientState.TerritoryChanged -= this.TerritoryChanged;
         }
 
         /// <summary>
@@ -156,7 +157,19 @@ namespace DalamudPluginCommon
 
         private void TerritoryChanged(object sender, ushort e)
         {
-            this.OnTerritoryChanged(e);
+            try
+            {
+                if (e == 0)
+                {
+                    return;
+                }
+
+                this.OnTerritoryChanged(e);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Failed territoryChanged event.");
+            }
         }
     }
 }
