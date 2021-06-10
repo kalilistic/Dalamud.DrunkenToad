@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Dalamud.Interface;
 using Dalamud.Plugin;
 using Lumina.Excel.GeneratedSheets;
 
@@ -235,6 +236,93 @@ namespace DalamudPluginCommon
             {
                 Logger.LogInfo("Content HighEndDuty is not available.");
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Gender in font awesome icon format.
+        /// </summary>
+        /// <param name="gender">gender id.</param>
+        /// <returns>gender icon.</returns>
+        public string GenderIcon(byte gender)
+        {
+            return gender switch
+            {
+                0 => FontAwesomeIcon.Mars.ToIconString(),
+                1 => FontAwesomeIcon.Venus.ToIconString(),
+                _ => string.Empty,
+            };
+        }
+
+        /// <summary>
+        /// Get race name by race/gender id.
+        /// </summary>
+        /// <param name="id">race id.</param>
+        /// <param name="genderId">gender id.</param>
+        /// <returns>race name.</returns>
+        public string RaceName(int id, int genderId)
+        {
+            try
+            {
+                if (id == 0)
+                {
+                    return string.Empty;
+                }
+
+                var race = this.pluginInterface.Data.GetExcelSheet<Race>()
+                                          .FirstOrDefault(raceEntry => raceEntry.RowId == id);
+                if (race == null)
+                {
+                    return string.Empty;
+                }
+
+                return genderId switch
+                {
+                    0 => race.Masculine,
+                    1 => race.Feminine,
+                    _ => string.Empty,
+                };
+            }
+            catch
+            {
+                Logger.LogInfo("Race is not available.");
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Get tribe name by race/gender id.
+        /// </summary>
+        /// <param name="id">tribe id.</param>
+        /// <param name="genderId">gender id.</param>
+        /// <returns>race name.</returns>
+        public string TribeName(int id, int genderId)
+        {
+            try
+            {
+                if (id == 0)
+                {
+                    return string.Empty;
+                }
+
+                var tribe = this.pluginInterface.Data.GetExcelSheet<Tribe>()
+                                           .FirstOrDefault(tribeEntry => tribeEntry.RowId == id);
+                if (tribe == null)
+                {
+                    return string.Empty;
+                }
+
+                return genderId switch
+                {
+                    0 => tribe.Masculine,
+                    1 => tribe.Feminine,
+                    _ => string.Empty,
+                };
+            }
+            catch
+            {
+                Logger.LogInfo("Tribe is not available.");
+                return string.Empty;
             }
         }
 
