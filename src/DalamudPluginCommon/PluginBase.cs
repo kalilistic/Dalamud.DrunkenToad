@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 
 using Dalamud.Configuration;
+using Dalamud.Interface;
 using Dalamud.Plugin;
 
 namespace DalamudPluginCommon
@@ -28,6 +32,7 @@ namespace DalamudPluginCommon
             this.ClientState = new ClientState(pluginInterface);
             this.Chat = new Chat(pluginName, pluginInterface);
             this.localization = new Localization(this);
+            this.InitializeFontAwesome();
         }
 
         /// <summary>
@@ -59,6 +64,16 @@ namespace DalamudPluginCommon
         /// Gets plugin name.
         /// </summary>
         public string PluginName { get; }
+
+        /// <summary>
+        /// Gets fontAwesomeIcon list.
+        /// </summary>
+        public FontAwesomeIcon[] Icons { get; private set; } = null!;
+
+        /// <summary>
+        /// Gets fontAwesomeIcon names.
+        /// </summary>
+        public string[] IconNames { get; private set; } = null!;
 
         /// <summary>
         /// Save plugin configuration.
@@ -154,6 +169,40 @@ namespace DalamudPluginCommon
             {
                 return false;
             }
+        }
+
+        private void InitializeFontAwesome()
+        {
+            // initial arrays from default list
+            var iconNames = Enum.GetNames(typeof(FontAwesomeIcon)).ToList();
+            var icons = Enum.GetValues(typeof(FontAwesomeIcon)).Cast<FontAwesomeIcon>().ToList();
+
+            // get excluded icon
+            var excludedIcons = new List<string>();
+            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("DalamudPluginCommon.ExcludedIcons.txt");
+            using var reader = new StreamReader(stream!);
+            {
+                while (!reader.EndOfStream)
+                {
+                    excludedIcons.Add(reader.ReadLine());
+                }
+            }
+
+            // remove excluded icons
+            for (var i = 0; i < iconNames.Count; i++)
+            {
+                if (excludedIcons.Contains(iconNames[i]))
+                {
+                    iconNames.RemoveAt(i);
+                    icons.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            // save as sorted arrays
+            this.IconNames = iconNames.ToArray();
+            this.Icons = icons.ToArray();
+            Array.Sort(this.IconNames, this.Icons);
         }
     }
 }

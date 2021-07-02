@@ -62,4 +62,8 @@
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
     </ItemGroup>
+    <ItemGroup>
+      <None Remove="ExcludedIcons.txt" />
+      <EmbeddedResource Include="ExcludedIcons.txt" />
+    </ItemGroup>
 </Project>
