@@ -26,10 +26,22 @@ jobs:
         run: |
           Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/latest.zip -OutFile latest.zip
           Expand-Archive -Force latest.zip "$env:AppData\XIVLauncher\addon\Hooks\dev\"
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.7
+        with:
+          versionSpec: '5.x'
+
+      - name: Use GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.7
+        with:
+          useConfigFile: true
+          configFilePath: .github/GitVersion.yml
           
       - name: Build
         run: |
-          dotnet build src --no-restore --configuration Release --nologo
+          dotnet build ./src --no-restore --configuration Release --nologo /property:Version=${{steps.gitversion.outputs.MajorMinorPatch}}
 
       - name: Publish to nuget.org
         run: dotnet nuget push .\src\Dalamud.DrunkenToad\bin\Release\*.nupkg --skip-duplicate --no-symbols true --source https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}}
