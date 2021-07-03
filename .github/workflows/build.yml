@@ -32,7 +32,7 @@ jobs:
           dotnet build src --no-restore --configuration Release --nologo
 
       - name: Publish to nuget.org
-        run: dotnet nuget push .\src\DalamudPluginCommon\bin\Release\*.nupkg --skip-duplicate --no-symbols true --source https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}}
+        run: dotnet nuget push .\src\Dalamud.DrunkenToad\bin\Release\*.nupkg --skip-duplicate --no-symbols true --source https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}}
 
       - name: Publish to gpr
-        run: dotnet nuget push .\src\DalamudPluginCommon\bin\Release\*.nupkg --skip-duplicate --no-symbols true --source https://nuget.pkg.github.com/${{github.repository_owner}}/index.json -k ${{secrets.GITHUB_TOKEN}}
+        run: dotnet nuget push .\src\Dalamud.DrunkenToad\bin\Release\*.nupkg --skip-duplicate --no-symbols true --source https://nuget.pkg.github.com/${{github.repository_owner}}/index.json -k ${{secrets.GITHUB_TOKEN}}

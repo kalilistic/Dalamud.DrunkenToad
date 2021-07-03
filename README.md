@@ -1,20 +1,20 @@
-# DalamudPluginCommon
-A set of common utilities to use in dalamud plugins.
-Refer to the PluginBase class and Util dir for available methods.
+# Dalamud.DrunkenToad
+A set of utilities to use in developing dalamud plugins. Equal in prestige to its in-game namesake.
 
-### How to Use
+![name-of-you-image](./assets/banner.png)
+
+## How to Use
 * Install nuget package.
 * Merge using [Fody ILMerge](https://github.com/tom-englert/ILMerge.Fody).
 * Implement PluginBase on your plugin class.
-* Look at plugin base class (code or intellisense) and utils for what is available.
+* Refer to the PluginBase class and Util dir for available methods.
 
-
-### Sample Code
+## Sample Code
 ```
 using System.Reflection;
 
 using Dalamud.Plugin;
-using DalamudPluginCommon;
+using Dalamud.DrunkenToad;
 namespace SamplePlugin
 {
     public class DalamudPlugin : PluginBase, IDalamudPlugin
@@ -30,6 +30,7 @@ namespace SamplePlugin
         public void Initialize(DalamudPluginInterface pluginInterface)
         {
             throw new System.NotImplementedException();
+        
         }
     }
 }
