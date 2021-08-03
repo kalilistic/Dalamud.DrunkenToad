@@ -15,11 +15,10 @@ namespace Dalamud.DrunkenToad
         public static bool IsValidPlayerCharacter(this Actor value)
         {
             return value is PlayerCharacter character &&
-                   value.ActorId != 0 &&
+                   value.ActorId > 0 &&
                    character.HomeWorld.Id != ushort.MaxValue &&
                    character.CurrentWorld.Id != ushort.MaxValue &&
-                   character.ClassJob != null && character.ClassJob.Id != 0 &&
-                   character.Name.IsValidCharacterName();
+                   character.ClassJob != null && character.ClassJob.Id != 0;
         }
     }
 }

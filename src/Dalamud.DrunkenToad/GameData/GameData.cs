@@ -63,7 +63,7 @@ namespace Dalamud.DrunkenToad
         public List<KeyValuePair<uint, ItemList>>? ItemLists { get; set; }
 
         /// <summary>
-        /// Get world names.
+        /// Get world names filtered by DC.
         /// </summary>
         /// <param name="dcId">data center id.</param>
         /// <returns>list of world names.</returns>
@@ -83,7 +83,32 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogInfo("WorldNames are not available.");
+                Logger.LogDebug("WorldNames are not available.");
+                return new List<string>();
+            }
+        }
+
+        /// <summary>
+        /// Get world names.
+        /// </summary>
+        /// <returns>list of world names.</returns>
+        public List<string> WorldNames()
+        {
+            try
+            {
+                if (this.worldNames != null)
+                {
+                    return this.worldNames;
+                }
+
+                this.worldNames = this.pluginInterface.Data.GetExcelSheet<World>()
+                                      .Where(world => world.IsPublic)
+                                      .Select(world => world.Name.ToString()).OrderBy(worldName => worldName).ToList();
+                return this.worldNames;
+            }
+            catch
+            {
+                Logger.LogDebug("WorldNames are not available.");
                 return new List<string>();
             }
         }
@@ -101,7 +126,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogInfo("WorldName is not available.");
+                Logger.LogDebug("WorldName is not available.");
                 return string.Empty;
             }
         }
@@ -111,17 +136,18 @@ namespace Dalamud.DrunkenToad
         /// </summary>
         /// <param name="worldName">world name.</param>
         /// <returns>world id.</returns>
-        public uint? WorldId(string worldName)
+        public uint WorldId(string worldName)
         {
             try
             {
-                return this.pluginInterface.Data.GetExcelSheet<World>()
+               var worldId = this.pluginInterface.Data.GetExcelSheet<World>()
                            .FirstOrDefault(world => world.Name.ToString().Equals(worldName))?.RowId;
+               return worldId ?? 0;
             }
             catch
             {
-                Logger.LogInfo("WorldId is not available.");
-                return null;
+                Logger.LogDebug("WorldId is not available.");
+                return 0;
             }
         }
 
@@ -138,7 +164,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogInfo("JobCode is not available.");
+                Logger.LogDebug("JobCode is not available.");
                 return string.Empty;
             }
         }
@@ -157,7 +183,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogInfo("PlaceName is not available.");
+                Logger.LogDebug("PlaceName is not available.");
                 return string.Empty;
             }
         }
@@ -174,12 +200,11 @@ namespace Dalamud.DrunkenToad
                 return contentId == 0
                            ? string.Empty
                            : this.pluginInterface.Sanitizer.Sanitize(
-                               this.pluginInterface.Data.GetExcelSheet<ContentFinderCondition>().GetRow(contentId).Name
-                                   .ToString());
+                               this.pluginInterface.Data.GetExcelSheet<ContentFinderCondition>().GetRow(contentId).Name);
             }
             catch
             {
-                Logger.LogInfo("ContentName is not available.");
+                Logger.LogDebug("ContentName is not available.");
                 return string.Empty;
             }
         }
@@ -198,7 +223,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogInfo("ContentName is not available.");
+                Logger.LogDebug("ContentName is not available.");
                 return 0;
             }
         }
@@ -216,7 +241,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogInfo("Can't find item for item id.");
+                Logger.LogDebug("Can't find item for item id.");
                 return null;
             }
         }
@@ -234,7 +259,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogInfo("Content HighEndDuty is not available.");
+                Logger.LogDebug("Content HighEndDuty is not available.");
                 return false;
             }
         }
@@ -250,6 +275,21 @@ namespace Dalamud.DrunkenToad
             {
                 0 => FontAwesomeIcon.Mars.ToIconString(),
                 1 => FontAwesomeIcon.Venus.ToIconString(),
+                _ => string.Empty,
+            };
+        }
+
+        /// <summary>
+        /// Gender gender name by id.
+        /// </summary>
+        /// <param name="gender">gender id.</param>
+        /// <returns>gender name.</returns>
+        public string GenderName(byte gender)
+        {
+            return gender switch
+            {
+                0 => "Male",
+                1 => "Female",
                 _ => string.Empty,
             };
         }
@@ -285,7 +325,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogInfo("Race is not available.");
+                Logger.LogDebug("Race is not available.");
                 return string.Empty;
             }
         }
@@ -321,7 +361,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogInfo("Tribe is not available.");
+                Logger.LogDebug("Tribe is not available.");
                 return string.Empty;
             }
         }
@@ -344,7 +384,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogInfo("Failed to initialize content list.");
+                Logger.LogDebug("Failed to initialize content list.");
             }
         }
 
@@ -393,7 +433,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogInfo("Failed to initialize content list.");
+                Logger.LogDebug("Failed to initialize content list.");
             }
         }
     }

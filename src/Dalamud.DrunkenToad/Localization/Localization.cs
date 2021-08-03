@@ -11,19 +11,19 @@ namespace Dalamud.DrunkenToad
     /// </summary>
     public class Localization
     {
-        private readonly IPluginBase plugin;
+        private readonly PluginService pluginService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Localization"/> class.
         /// </summary>
-        /// <param name="plugin">Current plugin base.</param>
-        public Localization(IPluginBase plugin)
+        /// <param name="pluginService">Current plugin base.</param>
+        public Localization(PluginService pluginService)
         {
-            this.plugin = plugin;
-            this.SetLanguage(this.plugin.PluginInterface.UiLanguage);
-            this.plugin.PluginInterface.OnLanguageChanged += this.OnLanguageChanged;
-            this.plugin.PluginInterface.CommandManager.AddHandler(
-                "/" + this.plugin.PluginName.ToLower() + "exloc",
+            this.pluginService = pluginService;
+            this.SetLanguage(this.pluginService.PluginInterface.UiLanguage);
+            this.pluginService.PluginInterface.OnLanguageChanged += this.OnLanguageChanged;
+            this.pluginService.PluginInterface.CommandManager.AddHandler(
+                "/" + this.pluginService.PluginName.ToLower() + "exloc",
                 new CommandInfo(this.ExportLocalizable)
                 {
                     ShowInHelp = false,
@@ -41,23 +41,23 @@ namespace Dalamud.DrunkenToad
                 try
                 {
                     string locData;
-                    var resourceFile = $"{this.plugin.PluginName}.{this.plugin.PluginName}.Resource.translation.{languageCode}.json";
-                    var resourceStream = this.plugin.Assembly.GetManifestResourceStream(resourceFile);
+                    var resourceFile = $"{this.pluginService.PluginName}.{this.pluginService.PluginName}.Resource.translation.{languageCode}.json";
+                    var resourceStream = this.pluginService.Assembly.GetManifestResourceStream(resourceFile);
                     using (var reader = new StreamReader(resourceStream ?? throw new InvalidOperationException()))
                     {
                         locData = reader.ReadToEnd();
                     }
 
-                    Loc.Setup(locData, this.plugin.Assembly);
+                    Loc.Setup(locData, this.pluginService.Assembly);
                 }
                 catch (Exception)
                 {
-                    Loc.SetupWithFallbacks(this.plugin.Assembly);
+                    Loc.SetupWithFallbacks(this.pluginService.Assembly);
                 }
             }
             else
             {
-                Loc.SetupWithFallbacks(this.plugin.Assembly);
+                Loc.SetupWithFallbacks(this.pluginService.Assembly);
             }
         }
 
@@ -66,13 +66,13 @@ namespace Dalamud.DrunkenToad
         /// </summary>
         public void Dispose()
         {
-            this.plugin.PluginInterface.OnLanguageChanged -= this.OnLanguageChanged;
-            this.plugin.PluginInterface.CommandManager.RemoveHandler("/" + this.plugin.PluginName.ToLower() + "exloc");
+            this.pluginService.PluginInterface.OnLanguageChanged -= this.OnLanguageChanged;
+            this.pluginService.PluginInterface.CommandManager.RemoveHandler("/" + this.pluginService.PluginName.ToLower() + "exloc");
         }
 
         private void ExportLocalizable(string command, string args)
         {
-            Loc.ExportLocalizableForAssembly(this.plugin.Assembly);
+            Loc.ExportLocalizableForAssembly(this.pluginService.Assembly);
         }
 
         private void OnLanguageChanged(string langCode)

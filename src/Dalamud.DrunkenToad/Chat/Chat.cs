@@ -37,6 +37,19 @@ namespace Dalamud.DrunkenToad
         }
 
         /// <summary>
+        /// Print multi line message with plugin name in default channel.
+        /// </summary>
+        /// <param name="messages">print notice chat message.</param>
+        public void PrintNotice(IEnumerable<string> messages)
+        {
+            const XivChatType chatType = XivChatType.Notice;
+            foreach (var message in messages)
+            {
+                this.Print(message, chatType);
+            }
+        }
+
+        /// <summary>
         /// Print message with plugin name in default channel.
         /// </summary>
         /// <param name="payloadList">list of chat payloads.</param>
@@ -69,6 +82,31 @@ namespace Dalamud.DrunkenToad
                 new TextPayload($"[{this.pluginName}] "),
                 new UIForegroundPayload(this.pluginInterface.Data, 548),
                 new TextPayload(message),
+                new UIForegroundPayload(this.pluginInterface.Data, 0),
+            });
+            this.pluginInterface.Framework.Gui.Chat.PrintChat(new XivChatEntry
+            {
+                MessageBytes = seString.Encode(),
+                Type = chatType,
+            });
+        }
+
+        /// <summary>
+        /// Print chat with player and message.
+        /// </summary>
+        /// <param name="playerName">player name.</param>
+        /// <param name="worldId">player home world id.</param>
+        /// <param name="message">message.</param>
+        /// <param name="chatType">target channel.</param>
+        public void Print(string playerName, uint worldId, string message, XivChatType chatType)
+        {
+            var seString = new SeString(new List<Payload>
+            {
+                new UIForegroundPayload(this.pluginInterface.Data, 0),
+                new TextPayload($"[{this.pluginName}] "),
+                new UIForegroundPayload(this.pluginInterface.Data, 548),
+                new PlayerPayload(this.pluginInterface.Data, playerName, worldId),
+                new TextPayload(" " + message),
                 new UIForegroundPayload(this.pluginInterface.Data, 0),
             });
             this.pluginInterface.Framework.Gui.Chat.PrintChat(new XivChatEntry

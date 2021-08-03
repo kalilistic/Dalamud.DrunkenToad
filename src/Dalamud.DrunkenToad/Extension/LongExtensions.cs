@@ -26,8 +26,16 @@ namespace Dalamud.DrunkenToad
         /// <returns>timespan.</returns>
         public static string ToTimeSpan(this long value)
         {
-            var timeSpan = ConvertToShortTimeSpan(DateUtil.CurrentTime() - value);
-            return string.IsNullOrEmpty(timeSpan) ? "Now" : timeSpan + " ago";
+            var currentTime = DateUtil.CurrentTime();
+            string timeSpan;
+            if (currentTime > value)
+            {
+                timeSpan = ConvertToShortTimeSpan(DateUtil.CurrentTime() - value);
+                return string.IsNullOrEmpty(timeSpan) ? "Now" : timeSpan + " ago";
+            }
+
+            timeSpan = ConvertToShortTimeSpan(value - DateUtil.CurrentTime());
+            return string.IsNullOrEmpty(timeSpan) ? "Now" : timeSpan + " from now";
         }
 
         /// <summary>

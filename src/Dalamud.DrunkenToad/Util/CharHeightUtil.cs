@@ -1,12 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
-// ReSharper disable ConvertIfStatementToSwitchExpression
-// ReSharper disable ConvertIfStatementToSwitchStatement
-// ReSharper disable ConvertIfStatementToReturnStatement
-// ReSharper disable UnusedMember.Local
 namespace Dalamud.DrunkenToad
 {
     /// <summary>

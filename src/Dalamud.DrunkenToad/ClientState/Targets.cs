@@ -45,7 +45,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogInfo("Failed to target actor with id " + actorId);
+                Logger.LogDebug("Failed to target actor with id " + actorId);
             }
         }
 
@@ -71,7 +71,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogInfo("Failed to focus target actor with id " + this.previousFocusTarget);
+                Logger.LogDebug("Failed to focus target actor with id " + this.previousFocusTarget);
             }
         }
 
@@ -88,7 +88,7 @@ namespace Dalamud.DrunkenToad
                     return;
                 }
 
-                var actor = this.actors.Actor(this.previousFocusTarget);
+                var actor = this.actors.Actor(actorId);
                 if (actor == null)
                 {
                     return;
@@ -103,7 +103,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogInfo("Failed to focus target actor with id " + actorId);
+                Logger.LogDebug("Failed to target actor with id " + actorId);
             }
         }
     }

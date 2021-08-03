@@ -134,7 +134,7 @@ namespace Dalamud.DrunkenToad
         /// Gets territory type.
         /// </summary>
         /// <returns>territory type.</returns>
-        public uint TerritoryType()
+        public ushort TerritoryType()
         {
             try
             {
@@ -142,7 +142,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogInfo("TerritoryType is not available.");
+                Logger.LogDebug("TerritoryType is not available.");
                 return 0;
             }
         }

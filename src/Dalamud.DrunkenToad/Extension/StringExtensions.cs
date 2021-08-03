@@ -116,6 +116,12 @@ namespace Dalamud.DrunkenToad
                 return false;
             }
 
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            if (values[1].Length is < 2 or > 15)
+            {
+                return false;
+            }
+
             if (values[0].Length + values[1].Length > 20)
             {
                 return false;
