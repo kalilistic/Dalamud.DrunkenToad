@@ -3,11 +3,10 @@ A set of utilities to use in developing dalamud plugins. Equal in prestige to it
 
 ![name-of-you-image](./assets/banner.png)
 
-## How to Use
-* Install nuget package.
-* Merge using [Fody ILMerge](https://github.com/tom-englert/ILMerge.Fody).
-* Implement PluginBase on your plugin class.
-* Refer to the PluginBase class and Util dir for available methods.
+## How to Install
+```
+Install-Package Dalamud.DrunkenToad
+```
 
 ## Sample Code
 ```
@@ -17,14 +16,14 @@ using Dalamud.Plugin;
 using Dalamud.DrunkenToad;
 namespace SamplePlugin
 {
-    public class DalamudPlugin : PluginBase, IDalamudPlugin
+    public class DalamudPlugin : IDalamudPlugin
     {
         public string Name { get; }
 
         public DalamudPlugin(string pluginName, DalamudPluginInterface pluginInterface, Assembly assembly)
-            : base(
-            pluginName, pluginInterface, Assembly.GetExecutingAssembly())
         {
+            var pluginService = new PluginService(pluginName, pluginInterface);
+            this.pluginService.Chat.PrintNotice("Thanks for installing!");
         }
 
         public void Initialize(DalamudPluginInterface pluginInterface)
