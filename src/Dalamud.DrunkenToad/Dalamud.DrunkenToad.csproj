@@ -2,7 +2,7 @@
 
 		<PropertyGroup>
 			<Title>Dalamud.DrunkenToad</Title>
-			<Version>1.5.0</Version>
+			<Version>1.0.2</Version>
 			<Authors>kalilistic</Authors>
 			<Description>A set of common utilities to use in dalamud plugins.</Description>
 			<RepositoryUrl>https://github.com/kalilistic/Dalamud.DrunkenToad</RepositoryUrl>
@@ -12,7 +12,6 @@
 			<LangVersion>9</LangVersion>
 			<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 			<Nullable>enable</Nullable>
-			<Deterministic>true</Deterministic>
 			<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 			<GenerateDocumentationFile>true</GenerateDocumentationFile>
 			<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -94,10 +93,6 @@
 			  <PrivateAssets>all</PrivateAssets>
 			  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			</PackageReference>
-      <PackageReference Include="MinVer" Version="2.5.0">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
       <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
