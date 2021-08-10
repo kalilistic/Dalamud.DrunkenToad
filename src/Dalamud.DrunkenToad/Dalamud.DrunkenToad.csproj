@@ -2,7 +2,6 @@
 
 		<PropertyGroup>
 			<Title>Dalamud.DrunkenToad</Title>
-			<Version>1.0.3</Version>
 			<Authors>kalilistic</Authors>
 			<Description>A set of common utilities to use in dalamud plugins.</Description>
 			<RepositoryUrl>https://github.com/kalilistic/Dalamud.DrunkenToad</RepositoryUrl>
