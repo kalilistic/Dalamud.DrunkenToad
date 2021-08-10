@@ -178,6 +178,15 @@ namespace Dalamud.DrunkenToad
         }
 
         /// <summary>
+        /// Rebuild database.
+        /// </summary>
+        public void RebuildDatabase()
+        {
+            using var db = new LiteDatabase(this.connectionString, this.bsonMapper);
+            db.Rebuild();
+        }
+
+        /// <summary>
         /// Get user version.
         /// </summary>
         /// <returns>user version.</returns>
