@@ -16,5 +16,15 @@ namespace Dalamud.DrunkenToad
         {
             return CharaCustomizeData.MapCustomizeData(value.Customize);
         }
+
+        /// <summary>
+        /// Get indicator if character is dead.
+        /// </summary>
+        /// <param name="value">player character.</param>
+        /// <returns>indicator if character is dead or not.</returns>
+        public static bool IsDead(this PlayerCharacter value)
+        {
+            return value.CurrentHp == 0;
+        }
     }
 }
