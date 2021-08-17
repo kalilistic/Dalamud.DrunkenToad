@@ -33,7 +33,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("LocalPlayer HomeWorldId is not available.");
+                Logger.LogVerbose("LocalPlayer HomeWorldId is not available.");
                 return 0;
             }
         }
@@ -51,7 +51,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("DataCenterId is not available.");
+                Logger.LogVerbose("DataCenterId is not available.");
                 return 0;
             }
         }
@@ -68,7 +68,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("LocalPlayer Name is not available.");
+                Logger.LogVerbose("LocalPlayer Name is not available.");
                 return string.Empty;
             }
         }

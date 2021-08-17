@@ -83,7 +83,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("WorldNames are not available.");
+                Logger.LogVerbose("WorldNames are not available.");
                 return new List<string>();
             }
         }
@@ -108,7 +108,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("WorldNames are not available.");
+                Logger.LogVerbose("WorldNames are not available.");
                 return new List<string>();
             }
         }
@@ -126,7 +126,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("WorldName is not available.");
+                Logger.LogVerbose("WorldName is not available.");
                 return string.Empty;
             }
         }
@@ -146,7 +146,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("WorldId is not available.");
+                Logger.LogVerbose("WorldId is not available.");
                 return 0;
             }
         }
@@ -164,7 +164,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("JobCode is not available.");
+                Logger.LogVerbose("JobCode is not available.");
                 return string.Empty;
             }
         }
@@ -183,7 +183,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("PlaceName is not available.");
+                Logger.LogVerbose("PlaceName is not available.");
                 return string.Empty;
             }
         }
@@ -204,7 +204,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("ContentName is not available.");
+                Logger.LogVerbose("ContentName is not available.");
                 return string.Empty;
             }
         }
@@ -223,7 +223,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("ContentName is not available.");
+                Logger.LogVerbose("ContentName is not available.");
                 return 0;
             }
         }
@@ -241,7 +241,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("Can't find item for item id.");
+                Logger.LogVerbose("Can't find item for item id.");
                 return null;
             }
         }
@@ -259,7 +259,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("Content HighEndDuty is not available.");
+                Logger.LogVerbose("Content HighEndDuty is not available.");
                 return false;
             }
         }
@@ -325,7 +325,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("Race is not available.");
+                Logger.LogVerbose("Race is not available.");
                 return string.Empty;
             }
         }
@@ -361,7 +361,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("Tribe is not available.");
+                Logger.LogVerbose("Tribe is not available.");
                 return string.Empty;
             }
         }
@@ -384,7 +384,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("Failed to initialize content list.");
+                Logger.LogVerbose("Failed to initialize content list.");
             }
         }
 
@@ -433,7 +433,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("Failed to initialize content list.");
+                Logger.LogVerbose("Failed to initialize content list.");
             }
         }
     }

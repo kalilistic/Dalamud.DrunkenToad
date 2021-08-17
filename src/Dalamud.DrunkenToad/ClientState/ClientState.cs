@@ -142,7 +142,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("TerritoryType is not available.");
+                Logger.LogVerbose("TerritoryType is not available.");
                 return 0;
             }
         }

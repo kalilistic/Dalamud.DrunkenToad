@@ -31,7 +31,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("InCombat condition flag is not available.");
+                Logger.LogVerbose("InCombat condition flag is not available.");
                 return false;
             }
         }

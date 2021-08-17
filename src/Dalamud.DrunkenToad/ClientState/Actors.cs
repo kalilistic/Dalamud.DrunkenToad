@@ -35,7 +35,7 @@ namespace Dalamud.DrunkenToad
             }
             catch
             {
-                Logger.LogDebug("Failed to find actor by id " + actorId);
+                Logger.LogVerbose("Failed to find actor by id " + actorId);
                 return null;
             }
         }
