@@ -168,9 +168,9 @@ namespace Dalamud.DrunkenToad
 
                 this.OnTerritoryChanged(e);
             }
-            catch (Exception ex)
+            catch
             {
-                Logger.LogError(ex, "Failed territoryChanged event.");
+                Logger.LogVerbose("TerritoryType is not available.");
             }
         }
     }
