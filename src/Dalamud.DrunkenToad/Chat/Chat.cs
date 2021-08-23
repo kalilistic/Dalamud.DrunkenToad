@@ -60,6 +60,21 @@ namespace Dalamud.DrunkenToad
         }
 
         /// <summary>
+        /// Print message with plugin name with specified channel.
+        /// </summary>
+        /// <param name="payloadList">list of chat payloads.</param>
+        /// <param name="chatType">chat channel to use.</param>
+        public void Print(List<Payload> payloadList, XivChatType chatType)
+        {
+            var payload = new SeString(payloadList);
+            this.pluginInterface.Framework.Gui.Chat.PrintChat(new XivChatEntry
+            {
+                MessageBytes = payload.Encode(),
+                Type = chatType,
+            });
+        }
+
+        /// <summary>
         /// Print message with plugin name in notice channel.
         /// </summary>
         /// <param name="message">print notice chat message.</param>
