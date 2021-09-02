@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Actors.Types;
+﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 
 namespace Dalamud.DrunkenToad
 {

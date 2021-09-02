@@ -7,7 +7,8 @@
 			<RepositoryUrl>https://github.com/kalilistic/Dalamud.DrunkenToad</RepositoryUrl>
 			<PackageLicenseExpression>MIT</PackageLicenseExpression>
 			<PackageIcon>icon.png</PackageIcon>
-			<TargetFramework>net48</TargetFramework>
+			<TargetFramework>net5.0-windows</TargetFramework>
+			<Platforms>x64</Platforms>
 			<LangVersion>9</LangVersion>
 			<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 			<Nullable>enable</Nullable>
@@ -16,6 +17,7 @@
 			<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 			<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
 			<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+			<NoWarn>IDE0003</NoWarn>
 		</PropertyGroup>
 		
 		<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -82,20 +84,31 @@
 				<HintPath>$(AppData)\XIVLauncher\addon\Hooks\dev\Newtonsoft.Json.dll</HintPath>
 				<Private>False</Private>
 			</Reference>
-			<Reference Include="Microsoft.CSharp" />
     </ItemGroup>
 		
     <ItemGroup>
-			<PackageReference Include="ILMerge.Fody" Version="1.16.0" PrivateAssets="All" />
-      <PackageReference Include="LiteDB" Version="5.0.10" PrivateAssets="All" />
-			<PackageReference Include="Fody" Version="6.5.2">
-			  <PrivateAssets>all</PrivateAssets>
-			  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-			</PackageReference>
+			<PackageReference Include="ILRepack" Version="2.0.18" GeneratePathProperty="true" />
+      <PackageReference Include="LiteDB" Version="5.0.11" />
       <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
     </ItemGroup>
+		
+    <Target Name="ILRepack" AfterTargets="Build">
+			<ItemGroup>
+				<InputAssemblies Include="$(TargetPath)" />
+				<InputAssemblies Include="$(TargetDir)*.dll" Exclude="$(TargetPath)" />
+			</ItemGroup>
+			<Exec Command="$(PkgILRepack)\tools\ILRepack.exe /union /lib:$(DalamudLibPath) /out:$(TargetDir)$(TargetFileName) @(InputAssemblies, ' ')" />
+		</Target>
+
+		<Target Name="CleanOutDir" AfterTargets="ILRepack">
+			<ItemGroup>
+				<DeleteAssemblies Include="$(TargetDir)*.dll" Exclude="$(TargetPath)" />
+			</ItemGroup>
+			<Message Text="Deleting @(DeleteAssemblies)" Importance="high" />
+			<Delete Files="@(DeleteAssemblies)" />
+		</Target>
 	
 </Project>

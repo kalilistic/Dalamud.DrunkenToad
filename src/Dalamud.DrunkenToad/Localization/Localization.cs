@@ -1,8 +1,10 @@
 using System;
 using System.IO;
+using System.Reflection;
 
 using CheapLoc;
 using Dalamud.Game.Command;
+using Dalamud.Plugin;
 
 namespace Dalamud.DrunkenToad
 {
@@ -11,19 +13,26 @@ namespace Dalamud.DrunkenToad
     /// </summary>
     public class Localization
     {
-        private readonly PluginService pluginService;
+        private readonly DalamudPluginInterface pluginInterface;
+        private readonly CommandManager commandManager;
+        private readonly string pluginName;
+        private readonly Assembly assembly;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Localization"/> class.
         /// </summary>
-        /// <param name="pluginService">Current plugin base.</param>
-        public Localization(PluginService pluginService)
+        /// <param name="pluginInterface">plugin interface.</param>
+        /// <param name="commandManager">command manager.</param>
+        public Localization(DalamudPluginInterface pluginInterface, CommandManager commandManager)
         {
-            this.pluginService = pluginService;
-            this.SetLanguage(this.pluginService.PluginInterface.UiLanguage);
-            this.pluginService.PluginInterface.OnLanguageChanged += this.OnLanguageChanged;
-            this.pluginService.PluginInterface.CommandManager.AddHandler(
-                "/" + this.pluginService.PluginName.ToLower() + "exloc",
+            this.pluginInterface = pluginInterface;
+            this.commandManager = commandManager;
+            this.assembly = Assembly.GetCallingAssembly();
+            this.pluginName = this.assembly.GetName().Name?.ToLower() ?? string.Empty;
+            this.SetLanguage(this.pluginInterface.UiLanguage);
+            this.pluginInterface.LanguageChanged += this.LanguageChanged;
+            this.commandManager.AddHandler(
+                "/" + this.pluginName + "exloc",
                 new CommandInfo(this.ExportLocalizable)
                 {
                     ShowInHelp = false,
@@ -41,23 +50,23 @@ namespace Dalamud.DrunkenToad
                 try
                 {
                     string locData;
-                    var resourceFile = $"{this.pluginService.PluginName}.{this.pluginService.PluginName}.Resource.translation.{languageCode}.json";
-                    var resourceStream = this.pluginService.Assembly.GetManifestResourceStream(resourceFile);
+                    var resourceFile = $"{this.pluginName}.{this.pluginName}.Resource.translation.{languageCode}.json";
+                    var resourceStream = this.assembly.GetManifestResourceStream(resourceFile);
                     using (var reader = new StreamReader(resourceStream ?? throw new InvalidOperationException()))
                     {
                         locData = reader.ReadToEnd();
                     }
 
-                    Loc.Setup(locData, this.pluginService.Assembly);
+                    Loc.Setup(locData, this.assembly);
                 }
                 catch (Exception)
                 {
-                    Loc.SetupWithFallbacks(this.pluginService.Assembly);
+                    Loc.SetupWithFallbacks(this.assembly);
                 }
             }
             else
             {
-                Loc.SetupWithFallbacks(this.pluginService.Assembly);
+                Loc.SetupWithFallbacks(this.assembly);
             }
         }
 
@@ -66,16 +75,16 @@ namespace Dalamud.DrunkenToad
         /// </summary>
         public void Dispose()
         {
-            this.pluginService.PluginInterface.OnLanguageChanged -= this.OnLanguageChanged;
-            this.pluginService.PluginInterface.CommandManager.RemoveHandler("/" + this.pluginService.PluginName.ToLower() + "exloc");
+            this.pluginInterface.LanguageChanged -= this.LanguageChanged;
+            this.commandManager.RemoveHandler("/" + this.pluginName + "exloc");
         }
 
         private void ExportLocalizable(string command, string args)
         {
-            Loc.ExportLocalizableForAssembly(this.pluginService.Assembly);
+            Loc.ExportLocalizableForAssembly(this.assembly);
         }
 
-        private void OnLanguageChanged(string langCode)
+        private void LanguageChanged(string langCode)
         {
             this.SetLanguage(langCode);
         }

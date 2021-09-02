@@ -20,11 +20,11 @@ namespace Dalamud.DrunkenToad
         /// <summary>
         /// Initializes a new instance of the <see cref="Repository"/> class.
         /// </summary>
-        /// <param name="pluginService">plugin base.</param>
-        protected Repository(PluginService pluginService)
+        /// <param name="pluginFolder">plugin folder.</param>
+        protected Repository(string pluginFolder)
         {
             this.bsonMapper = BsonMapper();
-            var dirPath = $"{pluginService.PluginFolder()}\\data";
+            var dirPath = $"{pluginFolder}\\data";
             Directory.CreateDirectory(dirPath);
             this.connectionString = $"Filename={dirPath}\\data.db;connection=shared";
         }

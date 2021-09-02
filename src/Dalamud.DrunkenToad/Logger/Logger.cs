@@ -1,6 +1,6 @@
 using System;
 
-using Dalamud.Plugin;
+using Dalamud.Logging;
 
 namespace Dalamud.DrunkenToad
 {

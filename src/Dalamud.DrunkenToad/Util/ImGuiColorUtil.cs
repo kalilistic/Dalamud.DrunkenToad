@@ -18,7 +18,7 @@ namespace Dalamud.DrunkenToad
         {
             return num switch
             {
-                0 => ImGuiColors.White,
+                0 => ImGuiColors.DalamudWhite,
                 < 25 => ImGuiColors2.Common,
                 >= 25 and <= 49 => ImGuiColors2.Uncommon,
                 >= 50 and <= 74 => ImGuiColors2.Rare,

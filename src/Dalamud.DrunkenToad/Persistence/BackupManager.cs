@@ -15,10 +15,10 @@ namespace Dalamud.DrunkenToad
         /// <summary>
         /// Initializes a new instance of the <see cref="BackupManager"/> class.
         /// </summary>
-        /// <param name="pluginService">plugin service.</param>
-        public BackupManager(PluginService pluginService)
+        /// <param name="pluginFolder">plugin folder.</param>
+        public BackupManager(string pluginFolder)
         {
-            this.dataPath = pluginService.PluginFolder() + "/data/";
+            this.dataPath = pluginFolder + "/data/";
         }
 
         /// <summary>

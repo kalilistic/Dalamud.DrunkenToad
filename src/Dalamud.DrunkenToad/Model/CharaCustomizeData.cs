@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-using Dalamud.Game.ClientState.Actors;
+using Dalamud.Game.ClientState.Objects.Enums;
 
 namespace Dalamud.DrunkenToad
 {
@@ -177,7 +177,7 @@ namespace Dalamud.DrunkenToad
             CharaCustomizeData charaCustomizeData;
             try
             {
-                charaCustomizeData = (CharaCustomizeData)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(CharaCustomizeData));
+                charaCustomizeData = (CharaCustomizeData)(Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(CharaCustomizeData)) ?? 0);
             }
             finally
             {
