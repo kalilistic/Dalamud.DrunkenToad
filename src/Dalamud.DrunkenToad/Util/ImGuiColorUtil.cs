@@ -19,13 +19,13 @@ namespace Dalamud.DrunkenToad
             return num switch
             {
                 0 => ImGuiColors.DalamudWhite,
-                < 25 => ImGuiColors2.Common,
-                >= 25 and <= 49 => ImGuiColors2.Uncommon,
-                >= 50 and <= 74 => ImGuiColors2.Rare,
-                >= 75 and <= 94 => ImGuiColors2.Epic,
-                >= 95 and <= 98 => ImGuiColors2.Legendary,
-                99 => ImGuiColors2.Astounding,
-                _ => ImGuiColors2.Artifact,
+                < 25 => ImGuiColors.ParsedGrey,
+                >= 25 and <= 49 => ImGuiColors.ParsedGreen,
+                >= 50 and <= 74 => ImGuiColors.ParsedBlue,
+                >= 75 and <= 94 => ImGuiColors.ParsedPurple,
+                >= 95 and <= 98 => ImGuiColors.ParsedOrange,
+                99 => ImGuiColors.ParsedPink,
+                _ => ImGuiColors.ParsedGold,
             };
         }
     }
