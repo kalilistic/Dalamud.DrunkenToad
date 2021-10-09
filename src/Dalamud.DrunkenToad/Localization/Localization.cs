@@ -28,7 +28,7 @@ namespace Dalamud.DrunkenToad
             this.pluginInterface = pluginInterface;
             this.commandManager = commandManager;
             this.assembly = Assembly.GetCallingAssembly();
-            this.pluginName = this.assembly.GetName().Name?.ToLower() ?? string.Empty;
+            this.pluginName = this.assembly.GetName().Name ?? string.Empty;
             this.SetLanguage(this.pluginInterface.UiLanguage);
             this.pluginInterface.LanguageChanged += this.LanguageChanged;
             this.commandManager.AddHandler(
