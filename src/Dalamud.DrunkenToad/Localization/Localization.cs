@@ -32,7 +32,7 @@ namespace Dalamud.DrunkenToad
             this.SetLanguage(this.pluginInterface.UiLanguage);
             this.pluginInterface.LanguageChanged += this.LanguageChanged;
             this.commandManager.AddHandler(
-                "/" + this.pluginName + "exloc",
+                "/" + this.pluginName.ToLower() + "exloc",
                 new CommandInfo(this.ExportLocalizable)
                 {
                     ShowInHelp = false,
@@ -76,7 +76,7 @@ namespace Dalamud.DrunkenToad
         public void Dispose()
         {
             this.pluginInterface.LanguageChanged -= this.LanguageChanged;
-            this.commandManager.RemoveHandler("/" + this.pluginName + "exloc");
+            this.commandManager.RemoveHandler("/" + this.pluginName.ToLower() + "exloc");
         }
 
         private void ExportLocalizable(string command, string args)
