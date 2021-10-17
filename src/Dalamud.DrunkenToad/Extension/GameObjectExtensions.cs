@@ -18,8 +18,10 @@ namespace Dalamud.DrunkenToad
             return value is PlayerCharacter character &&
                    value.ObjectId > 0 &&
                    character.HomeWorld.Id != ushort.MaxValue &&
+                   character.HomeWorld.Id != 0 &&
                    character.CurrentWorld.Id != ushort.MaxValue &&
-                   character.ClassJob.Id != 0;
+                   character.ClassJob.Id != 0 &&
+                   !string.IsNullOrEmpty(character.Name.ToString());
         }
     }
 }
