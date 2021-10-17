@@ -73,8 +73,15 @@ namespace Dalamud.DrunkenToad
         /// <returns>height in inches.</returns>
         public static double CalcInches(byte height, byte raceId, byte tribeId, byte genderId)
         {
-            var charHeight = GetCharHeight(raceId, tribeId, genderId);
-            return charHeight.MinHeight + Math.Round(height * charHeight.Ratio, 1);
+            try
+            {
+                var charHeight = GetCharHeight(raceId, tribeId, genderId);
+                return charHeight.MinHeight + Math.Round(height * charHeight.Ratio, 1);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
 
         private static CharHeightUtil GetCharHeight(byte raceId, byte tribeId, byte genderId)
