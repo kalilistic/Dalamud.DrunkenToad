@@ -229,6 +229,18 @@ namespace Dalamud.DrunkenToad
                     return doc;
                 },
                 (doc) => new Vector4((float)doc[0].AsDouble, (float)doc[1].AsDouble, (float)doc[2].AsDouble, (float)doc[3].AsDouble));
+            bsonMapper.RegisterType(
+                vector3 =>
+                {
+                    var doc = new BsonArray
+                    {
+                        new (vector3.X),
+                        new (vector3.Y),
+                        new (vector3.Z),
+                    };
+                    return doc;
+                },
+                (doc) => new Vector3((float)doc[0].AsDouble, (float)doc[1].AsDouble, (float)doc[2].AsDouble));
             return bsonMapper;
         }
 
