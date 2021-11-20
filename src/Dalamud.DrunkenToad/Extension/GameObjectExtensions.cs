@@ -21,7 +21,7 @@ namespace Dalamud.DrunkenToad
                    character.HomeWorld.Id != 0 &&
                    character.CurrentWorld.Id != ushort.MaxValue &&
                    character.ClassJob.Id != 0 &&
-                   !string.IsNullOrEmpty(character.Name.ToString());
+                   character.Name.ToString().IsValidCharacterName();
         }
     }
 }
