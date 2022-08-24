@@ -20,7 +20,7 @@ namespace Dalamud.DrunkenToad
         /// <param name="message">chat message.</param>
         public static void PluginPrint(this ChatGui value, string message)
         {
-            value.Print(BuildSeString(Assembly.GetExecutingAssembly().GetName().Name, message));
+            value.Print(BuildSeString(Assembly.GetCallingAssembly().GetName().Name, message));
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Dalamud.DrunkenToad
         /// <param name="payloads">list of payloads.</param>
         public static void PluginPrint(this ChatGui value, IEnumerable<Payload> payloads)
         {
-            value.Print(BuildSeString(Assembly.GetExecutingAssembly().GetName().Name, payloads));
+            value.Print(BuildSeString(Assembly.GetCallingAssembly().GetName().Name, payloads));
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Dalamud.DrunkenToad
         {
             value.PrintChat(new XivChatEntry
             {
-                Message = BuildSeString(Assembly.GetExecutingAssembly().GetName().Name, message),
+                Message = BuildSeString(Assembly.GetCallingAssembly().GetName().Name, message),
                 Type = chatType,
             });
         }
@@ -58,7 +58,7 @@ namespace Dalamud.DrunkenToad
         {
             value.PrintChat(new XivChatEntry
             {
-                Message = BuildSeString(Assembly.GetExecutingAssembly().GetName().Name, payloads),
+                Message = BuildSeString(Assembly.GetCallingAssembly().GetName().Name, payloads),
                 Type = chatType,
             });
         }
