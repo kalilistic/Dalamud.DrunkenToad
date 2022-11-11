@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ImGuiNET;
+using Dalamud.DrunkenToad.Core;
 
-namespace Dalamud.DrunkenToad;
+namespace Dalamud.DrunkenToad.ImGui;
 
 /// <summary>
 /// Class running a WindowSystem using <see cref="Window"/> implementations to simplify ImGui windowing.
@@ -102,7 +102,7 @@ public class WindowSystem
         var hasNamespace = !string.IsNullOrEmpty(this.Namespace);
 
         if (hasNamespace)
-            ImGui.PushID(this.Namespace);
+            ImGuiNET.ImGui.PushID(this.Namespace);
 
         // Shallow clone the list of windows so that we can edit it without modifying it while the loop is iterating
         foreach (var window in this.windows.ToArray())
@@ -136,6 +136,6 @@ public class WindowSystem
         }
 
         if (hasNamespace)
-            ImGui.PopID();
+            ImGuiNET.ImGui.PopID();
     }
 }

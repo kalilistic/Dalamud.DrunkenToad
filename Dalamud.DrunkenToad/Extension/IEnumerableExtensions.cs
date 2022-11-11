@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Dalamud.DrunkenToad;
+namespace Dalamud.DrunkenToad.Extension;
 
 /// <summary>
 /// IEnumerable extensions.

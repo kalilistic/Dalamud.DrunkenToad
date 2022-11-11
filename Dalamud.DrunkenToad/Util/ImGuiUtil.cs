@@ -4,7 +4,7 @@ using Dalamud.Game.ClientState.Keys;
 using ImGuiNET;
 using ImGuiScene;
 
-namespace Dalamud.DrunkenToad;
+namespace Dalamud.DrunkenToad.Util;
 
 /// <summary>
 /// Utility functions for working with imgui.
@@ -49,7 +49,7 @@ public static class ImGuiUtil
     /// <summary>
     /// Force the next ImGui window to stay inside the main game window.
     /// </summary>
-    public static void ForceNextWindowMainViewport() => ImGui.SetNextWindowViewport(MainViewport.ID);
+    public static void ForceNextWindowMainViewport() => ImGuiNET.ImGui.SetNextWindowViewport(MainViewport.ID);
 
     /// <summary>
     /// Create a dummy scaled by the global Dalamud scale.
@@ -68,15 +68,15 @@ public static class ImGuiUtil
     /// Create a dummy scaled by the global Dalamud scale.
     /// </summary>
     /// <param name="size">The size of the dummy.</param>
-    public static void ScaledDummy(Vector2 size) => ImGui.Dummy(size * GlobalScale);
+    public static void ScaledDummy(Vector2 size) => ImGuiNET.ImGui.Dummy(size * GlobalScale);
 
     /// <summary>
-    /// Use a relative ImGui.SameLine() from your current cursor position, scaled by the Dalamud global scale.
+    /// Use a relative ImGuiNET.ImGui.SameLine() from your current cursor position, scaled by the Dalamud global scale.
     /// </summary>
     /// <param name="offset">The offset from your current cursor position.</param>
     /// <param name="spacing">The spacing to use.</param>
     public static void ScaledRelativeSameLine(float offset, float spacing = -1.0f)
-        => ImGui.SameLine(ImGui.GetCursorPosX() + (offset * GlobalScale), spacing);
+        => ImGuiNET.ImGui.SameLine(ImGuiNET.ImGui.GetCursorPosX() + (offset * GlobalScale), spacing);
 
     /// <summary>
     /// Set the position of the next window relative to the main viewport.
@@ -85,7 +85,7 @@ public static class ImGuiUtil
     /// <param name="condition">When to set the position.</param>
     /// <param name="pivot">The pivot to set the position around.</param>
     public static void SetNextWindowPosRelativeMainViewport(Vector2 position, ImGuiCond condition = ImGuiCond.None, Vector2 pivot = default)
-        => ImGui.SetNextWindowPos(position + MainViewport.Pos, condition, pivot);
+        => ImGuiNET.ImGui.SetNextWindowPos(position + MainViewport.Pos, condition, pivot);
 
     /// <summary>
     /// Set the position of a window relative to the main viewport.
@@ -94,7 +94,7 @@ public static class ImGuiUtil
     /// <param name="position">The position of the window.</param>
     /// <param name="condition">When to set the position.</param>
     public static void SetWindowPosRelativeMainViewport(string name, Vector2 position, ImGuiCond condition = ImGuiCond.None)
-        => ImGui.SetWindowPos(name, position + MainViewport.Pos, condition);
+        => ImGuiNET.ImGui.SetWindowPos(name, position + MainViewport.Pos, condition);
 
     /// <summary>
     /// Creates default color palette for use with color pickers.
@@ -106,7 +106,7 @@ public static class ImGuiUtil
         var colorPalette = new List<Vector4>();
         for (var i = 0; i < swatchCount; i++)
         {
-            ImGui.ColorConvertHSVtoRGB(i / 31.0f, 0.7f, 0.8f, out var r, out var g, out var b);
+            ImGuiNET.ImGui.ColorConvertHSVtoRGB(i / 31.0f, 0.7f, 0.8f, out var r, out var g, out var b);
             colorPalette.Add(new Vector4(r, g, b, 1.0f));
         }
 
@@ -118,7 +118,7 @@ public static class ImGuiUtil
     /// </summary>
     /// <param name="text">Text in the button.</param>
     /// <returns><see cref="Vector2"/> with the size of the button.</returns>
-    public static Vector2 GetButtonSize(string text) => ImGui.CalcTextSize(text) + (ImGui.GetStyle().FramePadding * 2);
+    public static Vector2 GetButtonSize(string text) => ImGuiNET.ImGui.CalcTextSize(text) + (ImGuiNET.ImGui.GetStyle().FramePadding * 2);
 
     /// <summary>
     /// Print out text that can be copied when clicked.
@@ -128,21 +128,21 @@ public static class ImGuiUtil
     public static void ClickToCopyText(string text, string? textCopy = null)
     {
         textCopy ??= text;
-        ImGui.Text($"{text}");
-        if (ImGui.IsItemHovered())
+        ImGuiNET.ImGui.Text($"{text}");
+        if (ImGuiNET.ImGui.IsItemHovered())
         {
-            ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
-            if (textCopy != text) ImGui.SetTooltip(textCopy);
+            ImGuiNET.ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
+            if (textCopy != text) ImGuiNET.ImGui.SetTooltip(textCopy);
         }
 
-        if (ImGui.IsItemClicked()) ImGui.SetClipboardText($"{textCopy}");
+        if (ImGuiNET.ImGui.IsItemClicked()) ImGuiNET.ImGui.SetClipboardText($"{textCopy}");
     }
 
     /// <summary>
     /// Write unformatted text wrapped.
     /// </summary>
     /// <param name="text">The text to write.</param>
-    public static void SafeTextWrapped(string text) => ImGui.TextWrapped(text.Replace("%", "%%"));
+    public static void SafeTextWrapped(string text) => ImGuiNET.ImGui.TextWrapped(text.Replace("%", "%%"));
 
     /// <summary>
     /// Write unformatted text wrapped.
@@ -151,9 +151,9 @@ public static class ImGuiUtil
     /// <param name="text">The text to write.</param>
     public static void SafeTextColoredWrapped(Vector4 color, string text)
     {
-        ImGui.PushStyleColor(ImGuiCol.Text, color);
-        ImGui.TextWrapped(text.Replace("%", "%%"));
-        ImGui.PopStyleColor();
+        ImGuiNET.ImGui.PushStyleColor(ImGuiCol.Text, color);
+        ImGuiNET.ImGui.TextWrapped(text.Replace("%", "%%"));
+        ImGuiNET.ImGui.PopStyleColor();
     }
 
     /// <summary>
@@ -183,7 +183,7 @@ public static class ImGuiUtil
     public static void CenteredText(string text)
     {
         CenterCursorForText(text);
-        ImGui.TextUnformatted(text);
+        ImGuiNET.ImGui.TextUnformatted(text);
     }
 
     /// <summary>
@@ -192,7 +192,7 @@ public static class ImGuiUtil
     /// <param name="text">The text to center for.</param>
     public static void CenterCursorForText(string text)
     {
-        var textWidth = ImGui.CalcTextSize(text).X;
+        var textWidth = ImGuiNET.ImGui.CalcTextSize(text).X;
         CenterCursorFor((int)textWidth);
     }
 
@@ -202,8 +202,8 @@ public static class ImGuiUtil
     /// <param name="itemWidth">The width to center for.</param>
     public static void CenterCursorFor(int itemWidth)
     {
-        var window = (int)ImGui.GetWindowWidth();
-        ImGui.SetCursorPosX((window / 2) - (itemWidth / 2));
+        var window = (int)ImGuiNET.ImGui.GetWindowWidth();
+        ImGuiNET.ImGui.SetCursorPosX((window / 2) - (itemWidth / 2));
     }
 
     /// <summary>
@@ -211,6 +211,6 @@ public static class ImGuiUtil
     /// </summary>
     internal static void NewFrame()
     {
-        GlobalScale = ImGui.GetIO().FontGlobalScale;
+        GlobalScale = ImGuiNET.ImGui.GetIO().FontGlobalScale;
     }
 }

@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace Dalamud.DrunkenToad;
+namespace Dalamud.DrunkenToad.ImGui;
 
 /// <summary>
 /// FlexConfig backed ImGui components.

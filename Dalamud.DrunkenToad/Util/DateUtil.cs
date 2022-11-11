@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dalamud.DrunkenToad;
+namespace Dalamud.DrunkenToad.Util;
 
 /// <summary>
 /// Date util.

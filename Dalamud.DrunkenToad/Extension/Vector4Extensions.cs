@@ -2,7 +2,7 @@ using System.Numerics;
 
 using FFXIVClientStructs.FFXIV.Client.Graphics;
 
-namespace Dalamud.DrunkenToad;
+namespace Dalamud.DrunkenToad.Extension;
 
 /// <summary>
 /// Vector4 extensions.

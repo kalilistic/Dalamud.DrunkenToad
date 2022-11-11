@@ -6,7 +6,7 @@ using System.Reflection;
 
 using Dalamud.Interface;
 
-namespace Dalamud.DrunkenToad;
+namespace Dalamud.DrunkenToad.Util;
 
 /// <summary>
 /// Font Awesome Icon utility.

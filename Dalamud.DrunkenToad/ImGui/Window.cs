@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Numerics;
+using Dalamud.DrunkenToad.Util;
 using ImGuiNET;
 
-namespace Dalamud.DrunkenToad;
+namespace Dalamud.DrunkenToad.ImGui;
 
 /// <summary>
 /// Base class you can use to implement an ImGui window for use with the built-in <see cref="WindowSystem"/>.
@@ -221,7 +222,7 @@ public abstract class Window
         var hasNamespace = !string.IsNullOrEmpty(this.Namespace);
 
         if (hasNamespace)
-            ImGui.PushID(this.Namespace);
+            ImGuiNET.ImGui.PushID(this.Namespace);
 
         this.PreDraw();
         this.ApplyConditionals();
@@ -238,12 +239,12 @@ public abstract class Window
         var wasFocused = this.IsFocused;
         if (wasFocused)
         {
-            var style = ImGui.GetStyle();
+            var style = ImGuiNET.ImGui.GetStyle();
             var focusedHeaderColor = style.Colors[(int)ImGuiCol.TitleBgActive];
-            ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, focusedHeaderColor);
+            ImGuiNET.ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, focusedHeaderColor);
         }
 
-        if (this.ShowCloseButton ? ImGui.Begin(this.WindowName, ref this.internalIsOpen, this.Flags) : ImGui.Begin(this.WindowName, this.Flags))
+        if (this.ShowCloseButton ? ImGuiNET.ImGui.Begin(this.WindowName, ref this.internalIsOpen, this.Flags) : ImGuiNET.ImGui.Begin(this.WindowName, this.Flags))
         {
             // Draw the actual window contents
             this.Draw();
@@ -251,10 +252,10 @@ public abstract class Window
 
         if (wasFocused)
         {
-            ImGui.PopStyleColor();
+            ImGuiNET.ImGui.PopStyleColor();
         }
 
-        this.IsFocused = ImGui.IsWindowFocused(ImGuiFocusedFlags.RootAndChildWindows);
+        this.IsFocused = ImGuiNET.ImGui.IsWindowFocused(ImGuiFocusedFlags.RootAndChildWindows);
 
         var escapeDown = this.IsEscapePressed();
         var isAllowed = this.IsFocusManagementEnabled();
@@ -268,12 +269,12 @@ public abstract class Window
             wasEscPressedLastFrame = false;
         }
 
-        ImGui.End();
+        ImGuiNET.ImGui.End();
 
         this.PostDraw();
 
         if (hasNamespace)
-            ImGui.PopID();
+            ImGuiNET.ImGui.PopID();
     }
 
     private void ApplyConditionals()
@@ -285,27 +286,27 @@ public abstract class Window
             if (this.ForceMainWindow)
                 pos += ImGuiUtil.MainViewport.Pos;
 
-            ImGui.SetNextWindowPos(pos, this.PositionCondition);
+            ImGuiNET.ImGui.SetNextWindowPos(pos, this.PositionCondition);
         }
 
         if (this.Size.HasValue)
         {
-            ImGui.SetNextWindowSize(this.Size.Value * ImGuiUtil.GlobalScale, this.SizeCondition);
+            ImGuiNET.ImGui.SetNextWindowSize(this.Size.Value * ImGuiUtil.GlobalScale, this.SizeCondition);
         }
 
         if (this.Collapsed.HasValue)
         {
-            ImGui.SetNextWindowCollapsed(this.Collapsed.Value, this.CollapsedCondition);
+            ImGuiNET.ImGui.SetNextWindowCollapsed(this.Collapsed.Value, this.CollapsedCondition);
         }
 
         if (this.SizeConstraints.HasValue)
         {
-            ImGui.SetNextWindowSizeConstraints(this.SizeConstraints.Value.MinimumSize * ImGuiUtil.GlobalScale, this.SizeConstraints.Value.MaximumSize * ImGuiUtil.GlobalScale);
+            ImGuiNET.ImGui.SetNextWindowSizeConstraints(this.SizeConstraints.Value.MinimumSize * ImGuiUtil.GlobalScale, this.SizeConstraints.Value.MaximumSize * ImGuiUtil.GlobalScale);
         }
 
         if (this.BgAlpha.HasValue)
         {
-            ImGui.SetNextWindowBgAlpha(this.BgAlpha.Value);
+            ImGuiNET.ImGui.SetNextWindowBgAlpha(this.BgAlpha.Value);
         }
     }
 

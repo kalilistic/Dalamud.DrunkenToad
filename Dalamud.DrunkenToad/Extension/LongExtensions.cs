@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dalamud.DrunkenToad.Util;
 
-namespace Dalamud.DrunkenToad;
+namespace Dalamud.DrunkenToad.Extension;
 
 /// <summary>
 /// Long extensions.

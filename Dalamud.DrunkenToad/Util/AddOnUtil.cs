@@ -1,6 +1,8 @@
-﻿using FFXIVClientStructs.FFXIV.Component.GUI;
+﻿using Dalamud.DrunkenToad.Core;
+using Dalamud.DrunkenToad.Extension;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 
-namespace Dalamud.DrunkenToad;
+namespace Dalamud.DrunkenToad.Util;
 
 /// <summary>
 /// More easily work with GUI AddOns.

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Dalamud.DrunkenToad;
+namespace Dalamud.DrunkenToad.Util;
 
 /// <summary>
 /// Json Serializer.

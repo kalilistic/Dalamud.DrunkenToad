@@ -1,6 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 
-namespace Dalamud.DrunkenToad;
+namespace Dalamud.DrunkenToad.Extension;
 
 /// <summary>
 /// Dalamud condition extensions.

@@ -4,7 +4,7 @@ using System.Linq;
 using Dalamud.Data;
 using Lumina.Excel.GeneratedSheets;
 
-namespace Dalamud.DrunkenToad;
+namespace Dalamud.DrunkenToad.Extension;
 
 /// <summary>
 /// Dalamud Data Manager extensions.

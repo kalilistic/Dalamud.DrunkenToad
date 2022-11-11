@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace Dalamud.DrunkenToad;
+namespace Dalamud.DrunkenToad.Extension;
 
 /// <summary>
 /// Vector4 extensions.

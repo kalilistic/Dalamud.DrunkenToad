@@ -4,7 +4,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 
-namespace Dalamud.DrunkenToad;
+namespace Dalamud.DrunkenToad.Extension;
 
 /// <summary>
 /// String extensions.

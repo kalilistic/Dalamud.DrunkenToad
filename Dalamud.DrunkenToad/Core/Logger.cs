@@ -1,8 +1,7 @@
 using System;
-
 using Dalamud.Logging;
 
-namespace Dalamud.DrunkenToad;
+namespace Dalamud.DrunkenToad.Core;
 
 /// <summary>
 /// Plugin logger.

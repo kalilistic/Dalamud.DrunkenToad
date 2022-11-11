@@ -1,4 +1,4 @@
-﻿namespace Dalamud.DrunkenToad;
+﻿namespace Dalamud.DrunkenToad.Extension;
 
 /// <summary>
 /// Int extensions.

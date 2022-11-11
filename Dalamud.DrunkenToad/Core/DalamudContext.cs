@@ -22,7 +22,7 @@ using Dalamud.Interface;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 
-namespace Dalamud.DrunkenToad;
+namespace Dalamud.DrunkenToad.Core;
 
 /// <summary>
 /// Dalamud server wrapper.
