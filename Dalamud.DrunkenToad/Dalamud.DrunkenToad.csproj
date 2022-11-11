@@ -15,7 +15,7 @@
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
 		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
-		<NoWarn>IDE0003</NoWarn>
+		<NoWarn>IDE0003,CS8618,CS1591,SA1201,SA1600</NoWarn>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
