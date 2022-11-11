@@ -157,3 +157,4 @@ resharper_convert_if_statement_to_switch_expression_highlighting = none
 resharper_convert_if_statement_to_switch_statement_highlighting = none
 resharper_class_never_instantiated_global_highlighting = none
 resharper_class_never_instantiated_global_highlighting = none
+resharper_member_can_be_protected_global_highlighting = none
