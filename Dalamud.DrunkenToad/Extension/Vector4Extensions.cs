@@ -16,6 +16,6 @@ public static class Vector4Extensions
     /// <returns>bytecolor struct.</returns>
     public static ByteColor ToByteColor(this Vector4 value)
     {
-        return new () { A = (byte)(value.W * 255), R = (byte)(value.X * 255), G = (byte)(value.Y * 255), B = (byte)(value.Z * 255) };
+        return new ByteColor { A = (byte)(value.W * 255), R = (byte)(value.X * 255), G = (byte)(value.Y * 255), B = (byte)(value.Z * 255) };
     }
 }

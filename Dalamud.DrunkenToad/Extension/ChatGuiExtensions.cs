@@ -105,7 +105,7 @@ public static class ChatGuiExtensions
 
     private static SeString BuildSeString(string? pluginName, string message)
     {
-        return new (new List<Payload>
+        return new SeString(new List<Payload>
         {
             new UIForegroundPayload(0),
             new TextPayload($"[{pluginName}] "),

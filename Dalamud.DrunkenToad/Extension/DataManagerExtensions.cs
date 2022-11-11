@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 using Dalamud.Data;
@@ -18,17 +19,7 @@ public static class DataManagerExtensions
     /// <returns>content id or zero if not in content.</returns>
     public static uint ContentId(this DataManager value, ushort territoryType)
     {
-        uint contentId;
-        try
-        {
-            contentId = GetContentId(value, territoryType);
-        }
-        catch
-        {
-            contentId = 0;
-        }
-
-        return contentId;
+        return GetContentId(value, territoryType);
     }
 
     /// <summary>
@@ -39,16 +30,9 @@ public static class DataManagerExtensions
     /// <returns>content name.</returns>
     public static string ContentName(this DataManager value, ushort territoryType)
     {
-        try
-        {
-            var contentId = GetContentId(value, territoryType);
-            if (contentId == 0) return string.Empty;
-            return value.GetExcelSheet<ContentFinderCondition>()?.GetRow(contentId)?.Name!;
-        }
-        catch
-        {
-            return string.Empty;
-        }
+        var contentId = GetContentId(value, territoryType);
+        if (contentId == 0) return string.Empty;
+        return value.GetExcelSheet<ContentFinderCondition>()?.GetRow(contentId)?.Name ?? string.Empty;
     }
 
     /// <summary>
@@ -59,17 +43,7 @@ public static class DataManagerExtensions
     /// <returns>indicator whether local player is in content.</returns>
     public static bool InContent(this DataManager value, ushort territoryType)
     {
-        uint contentId;
-        try
-        {
-            contentId = GetContentId(value, territoryType);
-        }
-        catch
-        {
-            contentId = 0;
-        }
-
-        return contentId != 0;
+        return GetContentId(value, territoryType) != 0;
     }
 
     /// <summary>
@@ -80,19 +54,12 @@ public static class DataManagerExtensions
     /// <returns>indicator whether local player is in high-end duty content.</returns>
     public static bool InHighEndDuty(this DataManager value, ushort territoryType)
     {
-        var isHighEndDuty = false;
-        try
-        {
-            var contentId = GetContentId(value, territoryType);
-            if (contentId == 0) return false;
-            isHighEndDuty = value.GetExcelSheet<ContentFinderCondition>() !.GetRow(contentId) !.HighEndDuty;
-        }
-        catch
-        {
-            // ignored
-        }
-
-        return isHighEndDuty;
+        var contentId = GetContentId(value, territoryType);
+        if (contentId == 0) return false;
+        var content = value.GetExcelSheet<ContentFinderCondition>();
+        var contentRow = content?.GetRow(contentId);
+        if (contentRow == null) return false;
+        return contentRow.HighEndDuty;
     }
 
     /// <summary>
@@ -102,16 +69,11 @@ public static class DataManagerExtensions
     /// <returns>list of world names.</returns>
     public static string[] WorldNames(this DataManager value)
     {
-        try
-        {
-            return value.GetExcelSheet<World>() !
-                        .Where(world => world.IsPublic)
-                        .Select(world => world.Name.ToString()).OrderBy(worldName => worldName).ToArray();
-        }
-        catch
-        {
-            return System.Array.Empty<string>();
-        }
+        var worldSheet = value.GetExcelSheet<World>();
+        if (worldSheet == null) return Array.Empty<string>();
+        return worldSheet.Where(world => world.IsPublic)
+                         .Select(world => world.Name.ToString())
+                         .OrderBy(worldName => worldName).ToArray();
     }
 
     /// <summary>
@@ -123,31 +85,24 @@ public static class DataManagerExtensions
     /// <returns>race name.</returns>
     public static string Race(this DataManager value, int id, int genderId)
     {
-        try
-        {
-            if (id == 0)
-            {
-                return string.Empty;
-            }
-
-            var race = value.GetExcelSheet<Race>() !
-                            .FirstOrDefault(raceEntry => raceEntry.RowId == id);
-            if (race == null)
-            {
-                return string.Empty;
-            }
-
-            return genderId switch
-            {
-                0 => race.Masculine,
-                1 => race.Feminine,
-                _ => string.Empty,
-            };
-        }
-        catch
+        if (id == 0)
         {
             return string.Empty;
         }
+
+        var raceSheet = value.GetExcelSheet<Race>();
+        var race = raceSheet?.FirstOrDefault(raceEntry => raceEntry.RowId == id);
+        if (race == null)
+        {
+            return string.Empty;
+        }
+
+        return genderId switch
+        {
+            0 => race.Masculine,
+            1 => race.Feminine,
+            _ => string.Empty,
+        };
     }
 
     /// <summary>
@@ -159,31 +114,24 @@ public static class DataManagerExtensions
     /// <returns>race name.</returns>
     public static string Tribe(this DataManager value, int id, int genderId)
     {
-        try
-        {
-            if (id == 0)
-            {
-                return string.Empty;
-            }
-
-            var tribe = value.GetExcelSheet<Tribe>() !
-                             .FirstOrDefault(tribeEntry => tribeEntry.RowId == id);
-            if (tribe == null)
-            {
-                return string.Empty;
-            }
-
-            return genderId switch
-            {
-                0 => tribe.Masculine,
-                1 => tribe.Feminine,
-                _ => string.Empty,
-            };
-        }
-        catch
+        if (id == 0)
         {
             return string.Empty;
         }
+
+        var tribeSheet = value.GetExcelSheet<Tribe>();
+        var tribe = tribeSheet?.FirstOrDefault(tribeEntry => tribeEntry.RowId == id);
+        if (tribe == null)
+        {
+            return string.Empty;
+        }
+
+        return genderId switch
+        {
+            0 => tribe.Masculine,
+            1 => tribe.Feminine,
+            _ => string.Empty,
+        };
     }
 
     /// <summary>
@@ -194,14 +142,7 @@ public static class DataManagerExtensions
     /// <returns>job code.</returns>
     public static string ClassJobCode(this DataManager value, uint classJobId)
     {
-        try
-        {
-            return value.GetExcelSheet<ClassJob>()?.GetRow(classJobId)?.Abbreviation!;
-        }
-        catch
-        {
-            return string.Empty;
-        }
+        return value.GetExcelSheet<ClassJob>()?.GetRow(classJobId)?.Abbreviation ?? string.Empty;
     }
 
     /// <summary>
@@ -212,14 +153,8 @@ public static class DataManagerExtensions
     /// <returns>place name.</returns>
     public static string PlaceName(this DataManager value, uint territoryTypeId)
     {
-        try
-        {
-            return value.GetExcelSheet<TerritoryType>()?.GetRow(territoryTypeId)?.PlaceName.Value?.Name.ToString() !;
-        }
-        catch
-        {
-            return string.Empty;
-        }
+        return value.GetExcelSheet<TerritoryType>()?.GetRow(territoryTypeId)?.PlaceName.Value?.Name.ToString() ??
+               string.Empty;
     }
 
     /// <summary>
@@ -230,16 +165,9 @@ public static class DataManagerExtensions
     /// <returns>world id.</returns>
     public static uint WorldId(this DataManager value, string worldName)
     {
-        try
-        {
-            var worldId = value.GetExcelSheet<World>() !
-                               .FirstOrDefault(world => world.Name.ToString().Equals(worldName))?.RowId;
-            return worldId ?? 0;
-        }
-        catch
-        {
-            return 0;
-        }
+        var worldSheet = value.GetExcelSheet<World>();
+        if (worldSheet == null) return 0;
+        return worldSheet.FirstOrDefault(world => world.Name.ToString().Equals(worldName))?.RowId ?? 0;
     }
 
     /// <summary>
@@ -250,14 +178,7 @@ public static class DataManagerExtensions
     /// <returns>world name.</returns>
     public static string WorldName(this DataManager value, uint worldId)
     {
-        try
-        {
-            return value.GetExcelSheet<World>()?.GetRow(worldId)?.Name.ToString() ?? string.Empty;
-        }
-        catch
-        {
-            return string.Empty;
-        }
+        return value.GetExcelSheet<World>()?.GetRow(worldId)?.Name.ToString() ?? string.Empty;
     }
 
     private static uint GetContentId(DataManager value, ushort territoryType)
