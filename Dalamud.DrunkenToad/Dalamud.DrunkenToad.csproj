@@ -36,17 +36,17 @@
 		<WarningLevel>4</WarningLevel>
 	</PropertyGroup>
 	<ItemGroup>
-		<None Include="..\icon.png" Pack="true" PackagePath=""/>
+		<None Include="..\icon.png" Pack="true" PackagePath="" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Remove="stylecop.json"/>
+		<None Remove="stylecop.json" />
 		<AdditionalFiles Include="..\stylecop.json">
 			<Link>stylecop.json</Link>
 		</AdditionalFiles>
 	</ItemGroup>
 	<ItemGroup>
-		<None Remove="ExcludedIcons.txt"/>
-		<EmbeddedResource Include="ExcludedIcons.txt"/>
+		<None Remove="ExcludedIcons.txt" />
+		<EmbeddedResource Include="ExcludedIcons.txt" />
 	</ItemGroup>
 	<ItemGroup>
 		<Reference Include="Dalamud">
@@ -83,6 +83,7 @@
 		</Reference>
 	</ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="FlexConfig" Version="0.0.10" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
