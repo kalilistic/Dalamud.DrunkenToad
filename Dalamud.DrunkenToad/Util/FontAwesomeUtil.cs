@@ -9,11 +9,11 @@ using Dalamud.Interface;
 namespace Dalamud.DrunkenToad
 {
     /// <summary>
-    /// Font Awesome Icon helper.
+    /// Font Awesome Icon utility.
     /// </summary>
-    public static class IconHelper
+    public static class FontAwesomeUtil
     {
-        static IconHelper()
+        static FontAwesomeUtil()
         {
             // initial arrays from default list
             var iconNames = Enum.GetNames(typeof(FontAwesomeIcon)).ToList();

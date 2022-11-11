@@ -1,9 +1,6 @@
-using System;
 using System.Numerics;
-using System.Text;
 
 using Dalamud.Interface.Colors;
-using ImGuiNET;
 
 namespace Dalamud.DrunkenToad
 {
@@ -30,27 +27,6 @@ namespace Dalamud.DrunkenToad
                 99 => ImGuiColors.ParsedPink,
                 _ => ImGuiColors.ParsedGold,
             };
-        }
-
-        /// <summary>
-        /// Begin tab item with label and flags.
-        /// </summary>
-        /// <param name="label">label.</param>
-        /// <param name="flags">flags.</param>
-        /// <returns>tab item.</returns>
-        public static unsafe bool BeginTabItem(string label, ImGuiTabItemFlags flags)
-        {
-            var unterminatedLabelBytes = Encoding.UTF8.GetBytes(label);
-            var labelBytes = stackalloc byte[unterminatedLabelBytes.Length + 1];
-            fixed (byte* unterminatedPtr = unterminatedLabelBytes)
-            {
-                Buffer.MemoryCopy(unterminatedPtr, labelBytes, unterminatedLabelBytes.Length + 1, unterminatedLabelBytes.Length);
-            }
-
-            labelBytes[unterminatedLabelBytes.Length] = 0;
-
-            var num2 = (int)ImGuiNative.igBeginTabItem(labelBytes, null, flags);
-            return (uint)num2 > 0U;
         }
     }
 }
