@@ -1,19 +1,18 @@
 ﻿using System;
 
-namespace Dalamud.DrunkenToad
+namespace Dalamud.DrunkenToad;
+
+/// <summary>
+/// Date util.
+/// </summary>
+public static class DateUtil
 {
     /// <summary>
-    /// Date util.
+    /// Return current time in unix timestamp (milliseconds).
     /// </summary>
-    public static class DateUtil
+    /// <returns>unix timestamp (milliseconds).</returns>
+    public static long CurrentTime()
     {
-        /// <summary>
-        /// Return current time in unix timestamp (milliseconds).
-        /// </summary>
-        /// <returns>unix timestamp (milliseconds).</returns>
-        public static long CurrentTime()
-        {
-            return new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
-        }
+        return new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
     }
 }

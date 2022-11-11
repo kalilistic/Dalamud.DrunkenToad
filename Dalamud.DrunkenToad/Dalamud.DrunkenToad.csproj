@@ -8,7 +8,7 @@
 		<PackageIcon>icon.png</PackageIcon>
 		<TargetFramework>net6.0-windows</TargetFramework>
 		<Platforms>x64</Platforms>
-		<LangVersion>9</LangVersion>
+		<LangVersion>10</LangVersion>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>

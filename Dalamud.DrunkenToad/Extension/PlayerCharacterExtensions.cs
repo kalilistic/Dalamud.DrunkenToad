@@ -1,20 +1,19 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 
-namespace Dalamud.DrunkenToad
+namespace Dalamud.DrunkenToad;
+
+/// <summary>
+/// String extensions.
+/// </summary>
+public static class PlayerCharacterExtensions
 {
     /// <summary>
-    /// String extensions.
+    /// Get indicator if character is dead.
     /// </summary>
-    public static class PlayerCharacterExtensions
+    /// <param name="value">player character.</param>
+    /// <returns>indicator if character is dead or not.</returns>
+    public static bool IsDead(this PlayerCharacter value)
     {
-        /// <summary>
-        /// Get indicator if character is dead.
-        /// </summary>
-        /// <param name="value">player character.</param>
-        /// <returns>indicator if character is dead or not.</returns>
-        public static bool IsDead(this PlayerCharacter value)
-        {
-            return value.CurrentHp == 0;
-        }
+        return value.CurrentHp == 0;
     }
 }

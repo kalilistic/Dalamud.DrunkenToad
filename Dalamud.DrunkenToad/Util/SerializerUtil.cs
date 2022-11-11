@@ -1,45 +1,44 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Dalamud.DrunkenToad
+namespace Dalamud.DrunkenToad;
+
+/// <summary>
+/// Json Serializer.
+/// </summary>
+public static class SerializerUtil
 {
     /// <summary>
-    /// Json Serializer.
+    /// Create camel case serializer.
     /// </summary>
-    public static class SerializerUtil
+    /// <returns>Json Serializer with camel case.</returns>
+    public static JsonSerializerSettings CamelCaseJsonSerializer()
     {
-        /// <summary>
-        /// Create camel case serializer.
-        /// </summary>
-        /// <returns>Json Serializer with camel case.</returns>
-        public static JsonSerializerSettings CamelCaseJsonSerializer()
+        return new JsonSerializerSettings
         {
-            return new JsonSerializerSettings
+            ContractResolver = new DefaultContractResolver
             {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new CamelCaseNamingStrategy(),
-                },
-                NullValueHandling = NullValueHandling.Ignore,
-                DefaultValueHandling = DefaultValueHandling.Ignore,
-            };
-        }
+                NamingStrategy = new CamelCaseNamingStrategy(),
+            },
+            NullValueHandling = NullValueHandling.Ignore,
+            DefaultValueHandling = DefaultValueHandling.Ignore,
+        };
+    }
 
-        /// <summary>
-        /// Create camel case serializer and include null/defaults.
-        /// </summary>
-        /// <returns>Json Serializer with camel case with null/defaults.</returns>
-        public static JsonSerializerSettings CamelCaseIncludeJsonSerializer()
+    /// <summary>
+    /// Create camel case serializer and include null/defaults.
+    /// </summary>
+    /// <returns>Json Serializer with camel case with null/defaults.</returns>
+    public static JsonSerializerSettings CamelCaseIncludeJsonSerializer()
+    {
+        return new JsonSerializerSettings
         {
-            return new JsonSerializerSettings
+            ContractResolver = new DefaultContractResolver
             {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new CamelCaseNamingStrategy(),
-                },
-                NullValueHandling = NullValueHandling.Include,
-                DefaultValueHandling = DefaultValueHandling.Include,
-            };
-        }
+                NamingStrategy = new CamelCaseNamingStrategy(),
+            },
+            NullValueHandling = NullValueHandling.Include,
+            DefaultValueHandling = DefaultValueHandling.Include,
+        };
     }
 }

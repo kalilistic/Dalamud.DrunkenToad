@@ -1,20 +1,19 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 
-namespace Dalamud.DrunkenToad
+namespace Dalamud.DrunkenToad;
+
+/// <summary>
+/// Dalamud condition extensions.
+/// </summary>
+public static class ConditionExtensions
 {
     /// <summary>
-    /// Dalamud condition extensions.
+    /// Indicator if player is in combat.
     /// </summary>
-    public static class ConditionExtensions
+    /// <param name="value">condition.</param>
+    /// <returns>Indicator whether player is in combat.</returns>
+    public static bool InCombat(this Condition value)
     {
-        /// <summary>
-        /// Indicator if player is in combat.
-        /// </summary>
-        /// <param name="value">condition.</param>
-        /// <returns>Indicator whether player is in combat.</returns>
-        public static bool InCombat(this Condition value)
-        {
-            return value[ConditionFlag.InCombat];
-        }
+        return value[ConditionFlag.InCombat];
     }
 }
