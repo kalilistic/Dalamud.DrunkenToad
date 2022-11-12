@@ -16,8 +16,8 @@ public abstract class Window
     private bool internalLastIsOpen;
     private bool internalIsOpen;
 
-    public Func<bool> IsEscapePressed { get; init; } = null!;
-    public Func<bool> IsFocusManagementEnabled { get; init; } = null!;
+    public Func<bool> IsEscapePressed { get; init; }
+    public Func<bool> IsFocusManagementEnabled { get; init; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Window"/> class.
@@ -257,16 +257,19 @@ public abstract class Window
 
         this.IsFocused = ImGuiNET.ImGui.IsWindowFocused(ImGuiFocusedFlags.RootAndChildWindows);
 
-        var escapeDown = this.IsEscapePressed();
-        var isAllowed = this.IsFocusManagementEnabled();
-        if (escapeDown && this.IsFocused && isAllowed && !wasEscPressedLastFrame && this.RespectCloseHotkey)
+        if (IsEscapePressed != null && IsFocusManagementEnabled != null)
         {
-            this.IsOpen = false;
-            wasEscPressedLastFrame = true;
-        }
-        else if (!escapeDown && wasEscPressedLastFrame)
-        {
-            wasEscPressedLastFrame = false;
+            var escapeDown = this.IsEscapePressed();
+            var isAllowed = this.IsFocusManagementEnabled();
+            if (escapeDown && this.IsFocused && isAllowed && !wasEscPressedLastFrame && this.RespectCloseHotkey)
+            {
+                this.IsOpen = false;
+                wasEscPressedLastFrame = true;
+            }
+            else if (!escapeDown && wasEscPressedLastFrame)
+            {
+                wasEscPressedLastFrame = false;
+            }
         }
 
         ImGuiNET.ImGui.End();

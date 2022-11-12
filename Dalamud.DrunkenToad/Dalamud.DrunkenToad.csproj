@@ -37,6 +37,9 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<None Include="..\icon.png" Pack="true" PackagePath="" />
+		<None Update="Resource\NotoSansCJKjp-Medium.otf">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="stylecop.json" />
