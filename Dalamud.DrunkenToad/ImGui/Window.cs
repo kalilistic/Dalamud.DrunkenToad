@@ -257,7 +257,7 @@ public abstract class Window
 
         this.IsFocused = ImGuiNET.ImGui.IsWindowFocused(ImGuiFocusedFlags.RootAndChildWindows);
 
-        if (IsEscapePressed != null && IsFocusManagementEnabled != null)
+        if (this.IsEscapePressed != null && this.IsFocusManagementEnabled != null)
         {
             var escapeDown = this.IsEscapePressed();
             var isAllowed = this.IsFocusManagementEnabled();
