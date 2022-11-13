@@ -19,7 +19,7 @@ public static class ImGuiUtil
     /// <summary>
     /// Gets the global Dalamud scale.
     /// </summary>
-    public static float GlobalScale { get; private set; }
+    public static float GlobalScale { get; private set; } = ImGuiNET.ImGui.GetIO().FontGlobalScale;
 
     /// <summary>
     /// Gets a <see cref="Vector2"/> that is pre-scaled with the <see cref="GlobalScale"/> multiplier.
