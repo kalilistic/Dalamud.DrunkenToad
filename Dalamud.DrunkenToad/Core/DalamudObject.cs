@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using Dalamud.Logging;
 
 namespace Dalamud.DrunkenToad.Core;
 
@@ -15,12 +16,12 @@ public abstract class DalamudObject
     protected static void verify(string name, object property)
     {
         var result = property.ToString();
-        Logger.LogVerbose($"Verified Prop|{name}|{result}");
+        PluginLog.LogVerbose($"Verified Prop|{name}|{result}");
     }
 
     protected static void verify(string name, Action func)
     {
         func.Invoke();
-        Logger.LogVerbose($"Verified Func|{name}");
+        PluginLog.LogVerbose($"Verified Func|{name}");
     }
 }
