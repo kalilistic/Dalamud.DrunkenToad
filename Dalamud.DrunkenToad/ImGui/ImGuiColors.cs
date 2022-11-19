@@ -4,7 +4,7 @@ using System.Numerics;
 
 /// <summary>
 /// Class containing frequently used colors for easier reference.
-/// https://github.com/goatcorp/Dalamud/blob/master/Dalamud/Interface/Colors/ImGuiColors.cs
+/// https://github.com/goatcorp/Dalamud/blob/master/Dalamud/Interface/Colors/ImGuiColors.cs.
 /// </summary>
 public static class ImGuiColors
 {
