@@ -100,9 +100,6 @@
 	  <ProjectReference Include="..\..\Dalamud.Loc\Dalamud.Loc\Dalamud.Loc.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="WebAPI" />
-	</ItemGroup>
-	<ItemGroup>
 	  <EmbeddedResource Include="Resource\ExcludedIcons.txt" />
 	</ItemGroup>
 </Project>
