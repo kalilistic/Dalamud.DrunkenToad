@@ -7,7 +7,7 @@ namespace Dalamud.DrunkenToad.Util;
 /// <summary>
 /// More easily work with GUI AddOns.
 /// </summary>
-public unsafe class AddOnHelper
+public unsafe class AddOnUtil
 {
     /// <summary>
     /// Check if addon is ready.
