@@ -21,7 +21,7 @@ public static class FontAwesomeUtil
 
         // get excluded icon
         var excludedIcons = new List<string>();
-        using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Dalamud.DrunkenToad.ExcludedIcons.txt");
+        using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Dalamud.DrunkenToad.Resource.ExcludedIcons.txt");
         using var reader = new StreamReader(stream!);
         {
             while (!reader.EndOfStream)

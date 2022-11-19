@@ -100,6 +100,6 @@
 	  <ProjectReference Include="..\..\Dalamud.Loc\Dalamud.Loc\Dalamud.Loc.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <EmbeddedResource Include="ExcludedIcons.txt" />
+	  <EmbeddedResource Include="Resource\ExcludedIcons.txt" />
 	</ItemGroup>
 </Project>
