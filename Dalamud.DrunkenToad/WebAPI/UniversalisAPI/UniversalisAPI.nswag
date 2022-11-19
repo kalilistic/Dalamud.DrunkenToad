@@ -4,7 +4,7 @@
   "documentGenerator": {
     "fromDocument": {
       "json": "",
-      "url": "https://api.swaggerhub.com/apis/kalilistic/ffxiv-api/1.0.0",
+      "url": "https://universalis.app/swagger/v2/swagger.json",
       "output": null,
       "newLineBehavior": "Auto"
     }
@@ -56,7 +56,7 @@
       "wrapResponseMethods": [],
       "generateResponseClasses": true,
       "responseClass": "SwaggerResponse",
-      "namespace": "Dalamud.DrunkenToad.KalAPI.WebAPI",
+      "namespace": "Dalamud.DrunkenToad.WebAPI.UniversalisAPI",
       "requiredPropertiesMustBeDefined": true,
       "dateType": "System.DateTimeOffset",
       "jsonConverters": null,
@@ -93,7 +93,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "WebAPI/KalAPI/KalAPI.cs",
+      "output": "UniversalisAPI.cs",
       "newLineBehavior": "Auto"
     }
   }
