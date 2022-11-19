@@ -1,4 +1,6 @@
-﻿using Dalamud.Plugin;
+﻿using System;
+using System.Reflection;
+using Dalamud.Plugin;
 
 namespace Dalamud.DrunkenToad.Extension;
 
@@ -39,5 +41,23 @@ public static class PluginInterfaceExtensions
     public static string Sanitize(this DalamudPluginInterface value, Lumina.Text.SeString str)
     {
         return Sanitize(value, str.ToString());
+    }
+
+    /// <summary>
+    /// Get plugin name from interface (private field).
+    /// </summary>
+    /// <param name="value">dalamud plugin interface.</param>
+    /// <returns>Plugin name.</returns>
+    public static string PluginName(this DalamudPluginInterface value)
+    {
+        try
+        {
+            var fieldInfo = typeof(DalamudPluginInterface).GetField("pluginName", BindingFlags.NonPublic);
+            return fieldInfo?.GetValue(value) as string ?? string.Empty;
+        }
+        catch (Exception)
+        {
+            return string.Empty;
+        }
     }
 }

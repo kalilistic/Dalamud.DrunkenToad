@@ -2,6 +2,7 @@
 using System.Numerics;
 using Dalamud.DrunkenToad.Util;
 using ImGuiNET;
+using Config = FlexConfig.Configuration;
 
 namespace Dalamud.DrunkenToad.ImGui;
 
@@ -16,8 +17,25 @@ public abstract class Window
     private bool internalLastIsOpen;
     private bool internalIsOpen;
 
-    public Func<bool>? IsEscapePressed { get; init; }
-    public Func<bool>? IsFocusManagementEnabled { get; init; }
+    /// <summary>
+    /// Gets or sets plugin configuration.
+    /// </summary>
+    public Config Configuration { get; set; }
+
+    /// <summary>
+    /// Gets or sets callback to determine if escape key has been pressed.
+    /// </summary>
+    public Func<bool>? IsEscapePressed { get; set; }
+
+    /// <summary>
+    /// Gets or sets callback to determine if focus management is enabled.
+    /// </summary>
+    public Func<bool>? IsFocusManagementEnabled { get; set; }
+
+    /// <summary>
+    /// Gets or sets callback to localize a string in the current language.
+    /// </summary>
+    public Func<string, string>? Localize { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Window"/> class.

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Config = FlexConfig.Configuration;
 
 namespace Dalamud.DrunkenToad.ImGui;
 
@@ -20,10 +21,28 @@ public class WindowSystem
     /// Initializes a new instance of the <see cref="WindowSystem"/> class.
     /// </summary>
     /// <param name="imNamespace">The name/ID-space of this <see cref="WindowSystem"/>.</param>
-    public WindowSystem(string? imNamespace = null)
+    /// <param name="config">FlexConfig instance.</param>
+    public WindowSystem(string imNamespace, Config config)
     {
         this.Namespace = imNamespace;
+        this.Configuration = config;
+        FlexGui.Initialize(this.Configuration);
     }
+
+    /// <summary>
+    /// Gets or sets callback to determine if escape key has been pressed.
+    /// </summary>
+    public static Func<bool>? IsEscapePressed { get; set; }
+
+    /// <summary>
+    /// Gets or sets callback to determine if focus management is enabled.
+    /// </summary>
+    public static Func<bool>? IsFocusManagementEnabled { get; set; }
+
+    /// <summary>
+    /// Gets or sets callback to localize a string in the current language.
+    /// </summary>
+    public static Func<string, string>? Localize { get; set; }
 
     /// <summary>
     /// Gets a value indicating whether any <see cref="WindowSystem"/> contains any <see cref="Window"/>
@@ -40,6 +59,11 @@ public class WindowSystem
     /// Gets the timespan since the last time any window was focused.
     /// </summary>
     public static TimeSpan TimeSinceLastAnyFocus => DateTimeOffset.Now - lastAnyFocus;
+
+    /// <summary>
+    /// Gets or sets plugin configuration.
+    /// </summary>
+    public Config Configuration { get; set; }
 
     /// <summary>
     /// Gets a read-only list of all <see cref="Window"/>s in this <see cref="WindowSystem"/>.
@@ -65,6 +89,11 @@ public class WindowSystem
     {
         if (this.windows.Any(x => x.WindowName == window.WindowName))
             throw new ArgumentException("A window with this name/ID already exists.");
+
+        window.IsFocusManagementEnabled = IsFocusManagementEnabled;
+        window.IsEscapePressed = IsEscapePressed;
+        window.Localize = Localize;
+        window.Configuration = this.Configuration;
 
         this.windows.Add(window);
     }

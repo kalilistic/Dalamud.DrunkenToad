@@ -1,5 +1,7 @@
 ﻿using System;
 using Dalamud.Data;
+using Dalamud.DrunkenToad.Extension;
+using Dalamud.DrunkenToad.ImGui;
 using Dalamud.Game;
 using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Aetherytes;
@@ -22,6 +24,8 @@ using Dalamud.Game.Network;
 using Dalamud.Interface;
 using Dalamud.IoC;
 using Dalamud.Plugin;
+using PluginConfiguration = FlexConfig.Configuration;
+using PluginLocalization = Dalamud.Loc.Localization;
 
 namespace Dalamud.DrunkenToad.Core;
 
@@ -42,7 +46,14 @@ public class DalamudContext
             pluginInterface.Create<DalamudContext>();
             Commands = new CommandManagerWrapper(CommandManager);
             Localization = new Loc.Localization(pluginInterface);
-            Configuration = new DalamudConfiguration();
+            DalamudConfiguration = new DalamudConfiguration();
+            PluginConfiguration = new PluginConfiguration(PluginInterface.ConfigFile.FullName);
+            PluginConfiguration.Load();
+            WindowSystem = new WindowSystem(pluginInterface.PluginName(), PluginConfiguration);
+            WindowSystem.IsEscapePressed = () => KeyState.IsEscapePressed();
+            WindowSystem.IsFocusManagementEnabled = () => DalamudConfiguration.IsFocusManagementEnabled;
+            WindowSystem.Localize = key => Localization.GetString(key);
+            PluginInterface.UiBuilder.Draw += WindowSystem.Draw;
             return true;
         }
         catch (Exception)
@@ -56,23 +67,35 @@ public class DalamudContext
     /// </summary>
     public static void Dispose()
     {
-        Commands.Dispose();
+        PluginInterface.UiBuilder.Draw -= WindowSystem.Draw;
+        WindowSystem.RemoveAllWindows();
+        PluginConfiguration.Save();
         Localization.Dispose();
+        Commands.Dispose();
     }
 
     /// <summary>
-    /// Gets interface for using Dalamud DalamudConfiguration.
+    /// Gets class for using Dalamud DalamudConfiguration.
     /// </summary>
-    public static DalamudConfiguration Configuration { get; private set; } = null!;
+    public static DalamudConfiguration DalamudConfiguration { get; private set; } = null!;
+
+    /// <summary>
+    /// Gets class for using FlexConfig's Configuration.
+    /// </summary>
+    public static PluginConfiguration PluginConfiguration { get; private set; } = null!;
 
     /// <summary>
     /// Gets localization class.
     /// </summary>
-    public static Loc.Localization Localization { get; private set; } = null!;
+    public static PluginLocalization Localization { get; private set; } = null!;
+
+    /// <summary>
+    /// Gets modified dalamud window system to use abstracted windows.
+    /// </summary>
+    public static WindowSystem WindowSystem { get; private set; } = null!;
 
     /// <summary>
     /// Gets dalamud command manager wrapper to provide state.
-    /// https://github.com/goatcorp/Dalamud/blob/master/Dalamud/Game/Command/CommandManager.cs.
     /// </summary>
     public static CommandManagerWrapper Commands { get; private set; } = null!;
 
