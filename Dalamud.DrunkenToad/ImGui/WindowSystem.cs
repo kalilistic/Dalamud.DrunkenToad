@@ -5,28 +5,28 @@ using System.Linq;
 namespace Dalamud.DrunkenToad.ImGui;
 
 /// <summary>
-/// Class running a WindowSystem using <see cref="ToadWindow"/> implementations to simplify ImGui windowing.
+/// Class running a WindowSystem using <see cref="Window"/> implementations to simplify ImGui windowing.
 /// Copied from dalamud to decouple from dalamud services and other minor changes.
 /// </summary>
-public class ToadWindowSystem
+public class WindowSystem
 {
     private static DateTimeOffset lastAnyFocus;
 
-    private readonly List<ToadWindow> windows = new ();
+    private readonly List<Window> windows = new ();
 
     private string lastFocusedWindowName = string.Empty;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ToadWindowSystem"/> class.
+    /// Initializes a new instance of the <see cref="WindowSystem"/> class.
     /// </summary>
-    /// <param name="imNamespace">The name/ID-space of this <see cref="ToadWindowSystem"/>.</param>
-    public ToadWindowSystem(string? imNamespace = null)
+    /// <param name="imNamespace">The name/ID-space of this <see cref="WindowSystem"/>.</param>
+    public WindowSystem(string? imNamespace = null)
     {
         this.Namespace = imNamespace;
     }
 
     /// <summary>
-    /// Gets a value indicating whether any <see cref="ToadWindowSystem"/> contains any <see cref="ToadWindow"/>
+    /// Gets a value indicating whether any <see cref="WindowSystem"/> contains any <see cref="Window"/>
     /// that has focus and is not marked to be excluded from consideration.
     /// </summary>
     public static bool HasAnyWindowSystemFocus { get; internal set; }
@@ -42,56 +42,56 @@ public class ToadWindowSystem
     public static TimeSpan TimeSinceLastAnyFocus => DateTimeOffset.Now - lastAnyFocus;
 
     /// <summary>
-    /// Gets a read-only list of all <see cref="ToadWindow"/>s in this <see cref="ToadWindowSystem"/>.
+    /// Gets a read-only list of all <see cref="Window"/>s in this <see cref="WindowSystem"/>.
     /// </summary>
-    public IReadOnlyList<ToadWindow> Windows => this.windows;
+    public IReadOnlyList<Window> Windows => this.windows;
 
     /// <summary>
-    /// Gets a value indicating whether any window in this <see cref="ToadWindowSystem"/> has focus and is
+    /// Gets a value indicating whether any window in this <see cref="WindowSystem"/> has focus and is
     /// not marked to be excluded from consideration.
     /// </summary>
     public bool HasAnyFocus { get; private set; }
 
     /// <summary>
-    /// Gets or sets the name/ID-space of this <see cref="ToadWindowSystem"/>.
+    /// Gets or sets the name/ID-space of this <see cref="WindowSystem"/>.
     /// </summary>
     public string? Namespace { get; set; }
 
     /// <summary>
-    /// Add a window to this <see cref="ToadWindowSystem"/>.
+    /// Add a window to this <see cref="WindowSystem"/>.
     /// </summary>
-    /// <param name="toadWindow">The window to add.</param>
-    public void AddWindow(ToadWindow toadWindow)
+    /// <param name="window">The window to add.</param>
+    public void AddWindow(Window window)
     {
-        if (this.windows.Any(x => x.WindowName == toadWindow.WindowName))
+        if (this.windows.Any(x => x.WindowName == window.WindowName))
             throw new ArgumentException("A window with this name/ID already exists.");
 
-        this.windows.Add(toadWindow);
+        this.windows.Add(window);
     }
 
     /// <summary>
-    /// Remove a window from this <see cref="ToadWindowSystem"/>.
+    /// Remove a window from this <see cref="WindowSystem"/>.
     /// </summary>
-    /// <param name="toadWindow">The window to remove.</param>
-    public void RemoveWindow(ToadWindow toadWindow)
+    /// <param name="window">The window to remove.</param>
+    public void RemoveWindow(Window window)
     {
-        if (!this.windows.Contains(toadWindow))
+        if (!this.windows.Contains(window))
             throw new ArgumentException("This window is not registered on this WindowSystem.");
 
-        this.windows.Remove(toadWindow);
+        this.windows.Remove(window);
     }
 
     /// <summary>
-    /// Remove all windows from this <see cref="ToadWindowSystem"/>.
+    /// Remove all windows from this <see cref="WindowSystem"/>.
     /// </summary>
     public void RemoveAllWindows() => this.windows.Clear();
 
     /// <summary>
     /// Get a window by name.
     /// </summary>
-    /// <param name="windowName">The name of the <see cref="ToadWindow"/>.</param>
-    /// <returns>The <see cref="ToadWindow"/> object with matching name or null.</returns>
-    public ToadWindow? GetWindow(string windowName) => this.windows.FirstOrDefault(w => w.WindowName == windowName);
+    /// <param name="windowName">The name of the <see cref="Window"/>.</param>
+    /// <returns>The <see cref="Window"/> object with matching name or null.</returns>
+    public Window? GetWindow(string windowName) => this.windows.FirstOrDefault(w => w.WindowName == windowName);
 
     /// <summary>
     /// Draw all registered windows using ImGui.

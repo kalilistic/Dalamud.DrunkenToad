@@ -6,21 +6,21 @@ using ImGuiNET;
 namespace Dalamud.DrunkenToad.ImGui;
 
 /// <summary>
-/// Base class you can use to implement an ImGui window for use with the built-in <see cref="ToadWindowSystem"/>.
+/// Base class you can use to implement an ImGui window for use with the built-in <see cref="WindowSystem"/>.
 /// Copied from dalamud to decouple from dalamud services and other minor changes.
 /// </summary>
-public abstract class ToadWindow
+public abstract class Window
 {
     private static bool wasEscPressedLastFrame;
 
     private bool internalLastIsOpen;
     private bool internalIsOpen;
 
-    public Func<bool> IsEscapePressed { get; init; }
-    public Func<bool> IsFocusManagementEnabled { get; init; }
+    public Func<bool>? IsEscapePressed { get; init; }
+    public Func<bool>? IsFocusManagementEnabled { get; init; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ToadWindow"/> class.
+    /// Initializes a new instance of the <see cref="Window"/> class.
     /// </summary>
     /// <param name="name">The name/ID of this window.
     /// If you have multiple windows with the same name, you will need to
@@ -28,7 +28,7 @@ public abstract class ToadWindow
     /// </param>
     /// <param name="flags">The <see cref="ImGuiWindowFlags"/> of this window.</param>
     /// <param name="forceMainWindow">Whether or not this window should be limited to the main game window.</param>
-    protected ToadWindow(string name, ImGuiWindowFlags flags = ImGuiWindowFlags.None, bool forceMainWindow = false)
+    protected Window(string name, ImGuiWindowFlags flags = ImGuiWindowFlags.None, bool forceMainWindow = false)
     {
         this.WindowName = name;
         this.Flags = flags;
