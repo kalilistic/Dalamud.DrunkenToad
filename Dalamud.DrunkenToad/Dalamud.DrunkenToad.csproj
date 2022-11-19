@@ -49,7 +49,6 @@
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="ExcludedIcons.txt" />
-		<EmbeddedResource Include="ExcludedIcons.txt" />
 	</ItemGroup>
 	<ItemGroup>
 		<Reference Include="Dalamud">
@@ -96,5 +95,14 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Dalamud.Loc\Dalamud.Loc\Dalamud.Loc.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="WebAPI" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="Resource\ExcludedIcons.txt" />
 	</ItemGroup>
 </Project>

@@ -30,16 +30,13 @@ namespace Dalamud.DrunkenToad.Core;
 /// </summary>
 public class DalamudContext
 {
-    public static bool Initialize(DalamudPluginInterface pluginInterface, bool addExtra = false)
+    public static bool Initialize(DalamudPluginInterface pluginInterface)
     {
         try
         {
             pluginInterface.Create<DalamudContext>();
-            if (addExtra)
-            {
-                Configuration = new DalamudConfiguration();
-            }
-
+            Localization = new Loc.Localization(pluginInterface);
+            Configuration = new DalamudConfiguration();
             return true;
         }
         catch (Exception)
@@ -76,4 +73,5 @@ public class DalamudContext
     [PluginService] public static DalamudPluginInterface PluginInterface { get; private set; } = null!;
 
     public static DalamudConfiguration Configuration { get; private set; } = null!;
+    public static Loc.Localization Localization { get; private set; } = null!;
 }
