@@ -20,16 +20,18 @@ public static class FlexGui
     /// </summary>
     /// <param name="label">checkbox label.</param>
     /// <param name="key">flex config key.</param>
-    public static void Checkbox(string label, string key)
+    /// <returns>indicator if checkbox is selected.</returns>
+    public static bool Checkbox(string label, string key)
     {
         var value = config.Get(key, default(bool));
 
         if (!ImGuiNET.ImGui.Checkbox(label, ref value.Reference))
         {
-            return;
+            return false;
         }
 
         config.Set(key, value);
+        return true;
     }
 
     /// <summary>
