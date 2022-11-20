@@ -18,7 +18,7 @@ namespace Dalamud.DrunkenToad.WebAPI.KalAPI
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial interface IUniversalisClient
+    public partial interface IKalAPIClient
     {
         /// <summary>
         /// get player lodestone id
@@ -76,13 +76,13 @@ namespace Dalamud.DrunkenToad.WebAPI.KalAPI
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class UniversalisClient : IUniversalisClient
+    public partial class KalAPIClient : IKalAPIClient
     {
         private string _baseUrl = "https://api.kalilistic.io";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public UniversalisClient(System.Net.Http.HttpClient httpClient)
+        public KalAPIClient(System.Net.Http.HttpClient httpClient)
         {
             _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);

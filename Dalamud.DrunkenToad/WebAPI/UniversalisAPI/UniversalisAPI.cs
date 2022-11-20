@@ -18,7 +18,7 @@ namespace Dalamud.DrunkenToad.WebAPI.UniversalisAPI
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial interface IUniversalisClient
+    public partial interface IUniversalisAPIClient
     {
         /// <summary>
         /// Returns all data centers supported by the API.
@@ -578,13 +578,13 @@ namespace Dalamud.DrunkenToad.WebAPI.UniversalisAPI
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.16.1.0 (NJsonSchema v10.7.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class UniversalisClient : IUniversalisClient
+    public partial class UniversalisAPIClient : IUniversalisAPIClient
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public UniversalisClient(string baseUrl, System.Net.Http.HttpClient httpClient)
+        public UniversalisAPIClient(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl;
             _httpClient = httpClient;
@@ -3755,7 +3755,7 @@ namespace Dalamud.DrunkenToad.WebAPI.UniversalisAPI
         /// The percent retainer tax in Ul'dah.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("Ul'dah", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Uldah { get; set; }
+        public int Ul'dah { get; set; }
 
         /// <summary>
         /// The percent retainer tax in Ishgard.
