@@ -53,7 +53,6 @@ public class DalamudContext
             WindowSystem.IsEscapePressed = () => KeyState.IsEscapePressed();
             WindowSystem.IsFocusManagementEnabled = () => DalamudConfiguration.IsFocusManagementEnabled;
             WindowSystem.Localize = key => Localization.GetString(key);
-            PluginInterface.UiBuilder.Draw += WindowSystem.Draw;
             return true;
         }
         catch (Exception)
@@ -68,7 +67,7 @@ public class DalamudContext
     public static void Dispose()
     {
         PluginInterface.UiBuilder.Draw -= WindowSystem.Draw;
-        WindowSystem.RemoveAllWindows();
+        WindowSystem.Dispose();
         PluginConfiguration.Save();
         Localization.Dispose();
         Commands.Dispose();

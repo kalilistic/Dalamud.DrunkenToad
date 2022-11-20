@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dalamud.Game.Command;
 
@@ -28,7 +29,7 @@ public class CommandManagerWrapper
     /// <param name="command">The command to register.</param>
     /// <param name="handler">The action to invoke on command use.</param>
     /// <returns>If adding was successful.</returns>
-    public bool RegisterCommand(string command, CommandInfo.HandlerDelegate handler)
+    public bool Register(string command, CommandInfo.HandlerDelegate handler)
     {
         var addedSuccessfully = this.commandManager.AddHandler(command, new CommandInfo(handler)
         {
@@ -43,9 +44,22 @@ public class CommandManagerWrapper
     /// </summary>
     /// <param name="command">The command to register.</param>
     /// <param name="helpMessage">The help text to show in installer.</param>
+    /// <param name="action">The action to invoke on command use.</param>
+    /// <returns>If adding was successful.</returns>
+    public bool Register(string command, string helpMessage, Action action)
+    {
+        var handler = new CommandInfo.HandlerDelegate((_, _) => action.Invoke());
+        return this.Register(command, helpMessage, handler);
+    }
+
+    /// <summary>
+    /// Add a command handler, which you can use to add your own custom commands to the in-game chat.
+    /// </summary>
+    /// <param name="command">The command to register.</param>
+    /// <param name="helpMessage">The help text to show in installer.</param>
     /// <param name="handler">The action to invoke on command use.</param>
     /// <returns>If adding was successful.</returns>
-    public bool RegisterCommand(string command, string helpMessage, CommandInfo.HandlerDelegate handler)
+    public bool Register(string command, string helpMessage, CommandInfo.HandlerDelegate handler)
     {
         var addedSuccessfully = this.commandManager.AddHandler(command, new CommandInfo(handler)
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dalamud.DrunkenToad.Core;
 using Config = FlexConfig.Configuration;
 
 namespace Dalamud.DrunkenToad.ImGui;
@@ -12,6 +13,8 @@ namespace Dalamud.DrunkenToad.ImGui;
 public class WindowSystem
 {
     private static DateTimeOffset lastAnyFocus;
+
+    private bool isEnabled { get; set; }
 
     private readonly List<Window> windows = new ();
 
@@ -27,6 +30,33 @@ public class WindowSystem
         this.Namespace = imNamespace;
         this.Configuration = config;
         FlexGui.Initialize(this.Configuration);
+        DalamudContext.PluginInterface.UiBuilder.Draw += this.Draw;
+    }
+
+    /// <summary>
+    /// Enable windows.
+    /// </summary>
+    public void Enable()
+    {
+        this.isEnabled = true;
+    }
+
+    /// <summary>
+    /// Disable windows.
+    /// </summary>
+    public void Disable()
+    {
+        this.isEnabled = false;
+    }
+
+    /// <summary>
+    /// Clean up windows and events.
+    /// </summary>
+    public void Dispose()
+    {
+        this.Disable();
+        DalamudContext.PluginInterface.UiBuilder.Draw -= this.Draw;
+        this.RemoveAllWindows();
     }
 
     /// <summary>
@@ -84,18 +114,21 @@ public class WindowSystem
     /// <summary>
     /// Add a window to this <see cref="WindowSystem"/>.
     /// </summary>
-    /// <param name="window">The window to add.</param>
-    public void AddWindow(Window window)
+    /// <param name="newWindows">The window(s) to add.</param>
+    public void AddWindows(params Window[] newWindows)
     {
-        if (this.windows.Any(x => x.WindowName == window.WindowName))
-            throw new ArgumentException("A window with this name/ID already exists.");
+        foreach (var window in newWindows)
+        {
+            if (this.windows.Any(x => x.WindowName == window.WindowName))
+                throw new ArgumentException("A window with this name/ID already exists.");
 
-        window.IsFocusManagementEnabled = IsFocusManagementEnabled;
-        window.IsEscapePressed = IsEscapePressed;
-        window.Localize = Localize;
-        window.Configuration = this.Configuration;
+            window.IsFocusManagementEnabled = IsFocusManagementEnabled;
+            window.IsEscapePressed = IsEscapePressed;
+            window.Localize = Localize;
+            window.Configuration = this.Configuration;
 
-        this.windows.Add(window);
+            this.windows.Add(window);
+        }
     }
 
     /// <summary>
@@ -111,11 +144,6 @@ public class WindowSystem
     }
 
     /// <summary>
-    /// Remove all windows from this <see cref="WindowSystem"/>.
-    /// </summary>
-    public void RemoveAllWindows() => this.windows.Clear();
-
-    /// <summary>
     /// Get a window by name.
     /// </summary>
     /// <param name="windowName">The name of the <see cref="Window"/>.</param>
@@ -127,6 +155,8 @@ public class WindowSystem
     /// </summary>
     public void Draw()
     {
+        if (!this.isEnabled) return;
+
         var hasNamespace = !string.IsNullOrEmpty(this.Namespace);
 
         if (hasNamespace)
@@ -161,4 +191,9 @@ public class WindowSystem
         if (hasNamespace)
             ImGuiNET.ImGui.PopID();
     }
+
+    /// <summary>
+    /// Remove all windows from this <see cref="WindowSystem"/>.
+    /// </summary>
+    private void RemoveAllWindows() => this.windows.Clear();
 }
