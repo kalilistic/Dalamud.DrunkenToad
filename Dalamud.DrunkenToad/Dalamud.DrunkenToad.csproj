@@ -82,14 +82,12 @@
 		</Reference>
 	</ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="Dalamud.Loc" Version="1.0.0" />
 		<PackageReference Include="FlexConfig" Version="0.0.10" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-	</ItemGroup>
-	<ItemGroup>
-	  <ProjectReference Include="..\..\Dalamud.Loc\Dalamud.Loc\Dalamud.Loc.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 	  <EmbeddedResource Include="Resource\ExcludedIcons.txt" />
