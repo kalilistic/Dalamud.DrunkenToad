@@ -37,9 +37,6 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<None Include="..\icon.png" Pack="true" PackagePath="" />
-		<None Update="Resource\NotoSansCJKjp-Medium.otf">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="stylecop.json" />
@@ -76,11 +73,6 @@
 		<Reference Include="ImGui.NET">
 			<HintPath Condition="Exists('$(AppData)\XIVLauncher\addon\Hooks\dev')">$(AppData)\XIVLauncher\addon\Hooks\dev\ImGui.NET.dll</HintPath>
 			<HintPath Condition="Exists('/home/runner/Dalamud')">/home/runner/Dalamud/ImGui.NET.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="ImGuiScene">
-			<HintPath Condition="Exists('$(AppData)\XIVLauncher\addon\Hooks\dev')">$(AppData)\XIVLauncher\addon\Hooks\dev\ImGuiScene.dll</HintPath>
-			<HintPath Condition="Exists('/home/runner/Dalamud')">/home/runner/Dalamud/ImGuiScene.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="Newtonsoft.Json">

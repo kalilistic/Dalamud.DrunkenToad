@@ -1,6 +1,5 @@
 ﻿using System;
 using Dalamud.Data;
-using Dalamud.DrunkenToad.Extension;
 using Dalamud.DrunkenToad.ImGui;
 using Dalamud.Game;
 using Dalamud.Game.ClientState;
@@ -49,10 +48,7 @@ public class DalamudContext
             DalamudConfiguration = new DalamudConfiguration();
             PluginConfiguration = new PluginConfiguration(PluginInterface.ConfigFile.FullName);
             PluginConfiguration.Load();
-            WindowSystem = new WindowSystem(pluginInterface.PluginName(), PluginConfiguration);
-            WindowSystem.IsEscapePressed = () => KeyState.IsEscapePressed();
-            WindowSystem.IsFocusManagementEnabled = () => DalamudConfiguration.IsFocusManagementEnabled;
-            WindowSystem.Localize = key => Localization.GetString(key);
+            WindowManager = new WindowManager();
             return true;
         }
         catch (Exception)
@@ -66,8 +62,7 @@ public class DalamudContext
     /// </summary>
     public static void Dispose()
     {
-        PluginInterface.UiBuilder.Draw -= WindowSystem.Draw;
-        WindowSystem.Dispose();
+        WindowManager.Dispose();
         PluginConfiguration.Save();
         Localization.Dispose();
         Commands.Dispose();
@@ -91,7 +86,7 @@ public class DalamudContext
     /// <summary>
     /// Gets modified dalamud window system to use abstracted windows.
     /// </summary>
-    public static WindowSystem WindowSystem { get; private set; } = null!;
+    public static WindowManager WindowManager { get; private set; } = null!;
 
     /// <summary>
     /// Gets dalamud command manager wrapper to provide state.
