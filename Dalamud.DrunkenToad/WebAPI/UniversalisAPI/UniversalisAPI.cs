@@ -3755,7 +3755,7 @@ namespace Dalamud.DrunkenToad.WebAPI.UniversalisAPI
         /// The percent retainer tax in Ul'dah.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("Ul'dah", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Ul'dah { get; set; }
+        public int Uldah { get; set; }
 
         /// <summary>
         /// The percent retainer tax in Ishgard.
