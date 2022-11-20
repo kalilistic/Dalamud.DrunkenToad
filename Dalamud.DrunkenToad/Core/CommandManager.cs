@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dalamud.Game.Command;
+using DalamudCommandManager = Dalamud.Game.Command.CommandManager;
 
 namespace Dalamud.DrunkenToad.Core;
 
@@ -9,16 +10,16 @@ namespace Dalamud.DrunkenToad.Core;
 /// Dalamud command manager wrapper to provide state.
 /// https://github.com/goatcorp/Dalamud/blob/master/Dalamud/Game/Command/CommandManager.cs.
 /// </summary>
-public class CommandManagerWrapper
+public class CommandManager
 {
     private readonly List<string> commandRegistry = new ();
-    private readonly CommandManager commandManager;
+    private readonly Game.Command.CommandManager commandManager;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CommandManagerWrapper"/> class.
+    /// Initializes a new instance of the <see cref="CommandManager"/> class.
     /// </summary>
     /// <param name="commandManager">dalamud command manager.</param>
-    public CommandManagerWrapper(CommandManager commandManager)
+    public CommandManager(DalamudCommandManager commandManager)
     {
         this.commandManager = commandManager;
     }

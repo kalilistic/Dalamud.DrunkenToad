@@ -12,7 +12,6 @@ using Dalamud.Game.ClientState.JobGauge;
 using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.ClientState.Party;
-using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Dtr;
 using Dalamud.Game.Gui.FlyText;
@@ -23,6 +22,7 @@ using Dalamud.Game.Network;
 using Dalamud.Interface;
 using Dalamud.IoC;
 using Dalamud.Plugin;
+using DalamudCommandManager = Dalamud.Game.Command.CommandManager;
 using PluginConfiguration = FlexConfig.Configuration;
 using PluginLocalization = Dalamud.Loc.Localization;
 
@@ -43,7 +43,7 @@ public class DalamudContext
         try
         {
             pluginInterface.Create<DalamudContext>();
-            Commands = new CommandManagerWrapper(CommandManager);
+            Commands = new CommandManager(DalamudCommandManager);
             Localization = new Loc.Localization(pluginInterface);
             DalamudConfiguration = new DalamudConfiguration();
             PluginConfiguration = new PluginConfiguration(PluginInterface.ConfigFile.FullName);
@@ -91,7 +91,7 @@ public class DalamudContext
     /// <summary>
     /// Gets dalamud command manager wrapper to provide state.
     /// </summary>
-    public static CommandManagerWrapper Commands { get; private set; } = null!;
+    public static CommandManager Commands { get; private set; } = null!;
 
     /// <summary>
     /// Gets class providing game data for dalamud and plugins.
@@ -216,5 +216,5 @@ public class DalamudContext
     /// Gets class acting as an interface to various objects needed to interact with Dalamud and the game.
     /// </summary>
     [PluginService] public static DalamudPluginInterface PluginInterface { get; private set; } = null!;
-    [PluginService] private static CommandManager CommandManager { get; set; } = null!;
+    [PluginService] private static DalamudCommandManager DalamudCommandManager { get; set; } = null!;
 }
