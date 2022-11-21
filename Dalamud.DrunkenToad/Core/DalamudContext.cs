@@ -45,7 +45,6 @@ public class DalamudContext
             pluginInterface.Create<DalamudContext>();
             Commands = new CommandManager(DalamudCommandManager);
             Localization = new Loc.Localization(pluginInterface);
-            DalamudConfiguration = new DalamudConfiguration();
             PluginConfiguration = new PluginConfiguration(PluginInterface.ConfigFile.FullName);
             PluginConfiguration.Load();
             WindowManager = new WindowManager();
@@ -67,11 +66,6 @@ public class DalamudContext
         Localization.Dispose();
         Commands.Dispose();
     }
-
-    /// <summary>
-    /// Gets class for using Dalamud DalamudConfiguration.
-    /// </summary>
-    public static DalamudConfiguration DalamudConfiguration { get; private set; } = null!;
 
     /// <summary>
     /// Gets class for using FlexConfig's Configuration.
