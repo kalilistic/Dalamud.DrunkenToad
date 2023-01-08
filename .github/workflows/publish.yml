@@ -22,8 +22,8 @@ jobs:
         mkdir -p ~/Dalamud
         unzip latest.zip -d ~/Dalamud
     - name: Build
-      run: dotnet build .\src\Dalamud.DrunkenToad\Dalamud.DrunkenToad.csproj --configuration Release /p:Version=${VERSION}
+      run: dotnet build ./src/Dalamud.DrunkenToad/Dalamud.DrunkenToad.csproj --configuration Release /p:Version=${VERSION}
     - name: Pack
-      run: dotnet pack .\src\Dalamud.DrunkenToad\Dalamud.DrunkenToad.csproj --configuration Release /p:Version=${VERSION} --no-build --output .
+      run: dotnet pack ./src/Dalamud.DrunkenToad/Dalamud.DrunkenToad.csproj --configuration Release /p:Version=${VERSION} --no-build --output .
     - name: Push
-      run: dotnet nuget push .\src\Dalamud.DrunkenToad\bin\Release\Dalamud.DrunkenToad.${VERSION}.nupkg --skip-duplicate --no-symbols --source https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}}
+      run: dotnet nuget push ./src/Dalamud.DrunkenToad/bin/Release/Dalamud.DrunkenToad.${VERSION}.nupkg --skip-duplicate --no-symbols --source https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}}
