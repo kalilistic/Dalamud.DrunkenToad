@@ -7,9 +7,9 @@
 			<RepositoryUrl>https://github.com/kalilistic/Dalamud.DrunkenToad</RepositoryUrl>
 			<PackageLicenseExpression>MIT</PackageLicenseExpression>
 			<PackageIcon>icon.png</PackageIcon>
-			<TargetFramework>net6.0-windows</TargetFramework>
+			<TargetFramework>net7.0-windows</TargetFramework>
 			<Platforms>x64</Platforms>
-			<LangVersion>9</LangVersion>
+			<LangVersion>latest</LangVersion>
 			<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 			<Nullable>enable</Nullable>
 			<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
