@@ -49,7 +49,8 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Reference Include="CheapLoc">
-			<HintPath>$(AppData)\XIVLauncher\addon\Hooks\dev\CheapLoc.dll</HintPath>
+			<HintPath Condition="Exists('$(AppData)\XIVLauncher\addon\Hooks\dev')">$(AppData)\XIVLauncher\addon\Hooks\dev\CheapLoc.dll</HintPath>
+			<HintPath Condition="Exists('/home/runner/Dalamud')">/home/runner/Dalamud/CheapLoc.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="Dalamud">
