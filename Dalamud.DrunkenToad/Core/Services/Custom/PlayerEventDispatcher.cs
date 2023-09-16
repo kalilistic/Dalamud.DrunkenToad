@@ -1,6 +1,7 @@
 ﻿namespace Dalamud.DrunkenToad.Core.Services;
 
 using System.Collections.Generic;
+using Extensions;
 using Game;
 using Game.ClientState.Objects;
 using Game.ClientState.Objects.SubKinds;
@@ -147,9 +148,9 @@ public class PlayerEventDispatcher
             }
 
             PlayerCharacter character;
-            if (this.objectCollection[i] is PlayerCharacter playerCharacter)
+            if (this.objectCollection[i].IsValidPlayerCharacter())
             {
-                character = playerCharacter;
+                character = (this.objectCollection[i] as PlayerCharacter) !;
             }
             else
             {
