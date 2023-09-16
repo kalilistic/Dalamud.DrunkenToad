@@ -379,13 +379,13 @@ public static class ToadGui
                 ImGui.SameLine();
                 LocGui.TextColored(messageKey, ImGuiColors.DalamudYellow);
                 ImGui.SameLine();
-                if (LocGui.SmallButton("Confirm_Cancel"))
+                if (LocGui.SmallButton("Cancel"))
                 {
                     request = new Tuple<ActionRequest, T>(ActionRequest.None, request.Item2);
                 }
 
                 ImGui.SameLine();
-                if (LocGui.SmallButton("Confirm_OK"))
+                if (LocGui.SmallButton("OK"))
                 {
                     request = new Tuple<ActionRequest, T>(ActionRequest.Confirmed, request.Item2);
                 }
