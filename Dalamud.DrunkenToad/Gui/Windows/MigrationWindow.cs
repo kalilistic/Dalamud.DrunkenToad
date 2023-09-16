@@ -43,7 +43,9 @@ public class MigrationWindow : SimpleWindow
         }
 
         ImGui.SetNextWindowSize(ImGuiHelpers.ScaledVector2(600f, 400f), ImGuiCond.Appearing);
-        ImGui.Begin($"{this.pluginInterface.InternalName}##Migration");
+        const ImGuiWindowFlags windowFlags = ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoResize;
+
+        ImGui.Begin($"{this.pluginInterface.InternalName}##Migration", windowFlags);
 
         this.DrawHeaderSection();
         this.DrawStepsSection();
@@ -142,6 +144,7 @@ public class MigrationWindow : SimpleWindow
             ImGui.Unindent(3.5f);
             ImGui.SameLine();
             ImGui.Text(" Migration failed! Report this on Discord or GitHub.");
+            ImGui.SetScrollHereY(1.0f);
         }
 
         if (this.previousStepCount < this.steps.Count)
