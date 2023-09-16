@@ -91,7 +91,7 @@ public class MigrationWindow : SimpleWindow
     private void DrawHeaderSection()
     {
         ImGui.TextColored(ImGuiColors.DalamudViolet, "Database Migration");
-        ImGui.BulletText("Do not interrupt the upgrade..");
+        ImGui.BulletText("Do not interrupt the upgrade.");
         ImGui.BulletText("Report any issues on Discord or GitHub.");
         ImGui.Spacing();
     }
