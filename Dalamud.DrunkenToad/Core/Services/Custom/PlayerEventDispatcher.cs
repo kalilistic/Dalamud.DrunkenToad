@@ -5,6 +5,7 @@ using Extensions;
 using Game;
 using Game.ClientState.Objects;
 using Game.ClientState.Objects.SubKinds;
+using Game.ClientState.Objects.Types;
 using Models;
 
 /// <summary>
@@ -77,6 +78,28 @@ public class PlayerEventDispatcher
             if (this.existingObjectIds[i] == id)
             {
                 if (this.objectCollection[i * 2] is PlayerCharacter playerCharacter)
+                {
+                    return MapToadPlayer(playerCharacter);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Retrieve player by name and world id.
+    /// </summary>
+    /// <param name="name">player name.</param>
+    /// <param name="worldId">player world id.</param>
+    /// <returns>player if exists.</returns>
+    public ToadPlayer? GetPlayerByNameAndWorldId(string name, uint worldId)
+    {
+        foreach (var gameObject in this.objectCollection)
+        {
+            if (gameObject is PlayerCharacter playerCharacter)
+            {
+                if (playerCharacter.Name.ToString().Equals(name, System.StringComparison.Ordinal) && playerCharacter.HomeWorld.Id == worldId)
                 {
                     return MapToadPlayer(playerCharacter);
                 }
