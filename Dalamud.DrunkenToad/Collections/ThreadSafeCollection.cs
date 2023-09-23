@@ -80,33 +80,6 @@ public class ThreadSafeCollection<TKey, TValue> : IDisposable where TKey : notnu
     public bool Remove(TKey key) => this.items.TryRemove(key, out _);
 
     /// <summary>
-    /// Removes a range of key-value pairs from the collection based on the keys.
-    /// </summary>
-    /// <param name="keysToRemove">The keys of the items to remove from the collection.</param>
-    /// <returns>The number of items successfully removed from the collection.</returns>
-    public int RemoveRange(IEnumerable<TKey> keysToRemove)
-    {
-        var removedCount = 0;
-        this.rwLock.EnterWriteLock();
-        try
-        {
-            foreach (var key in keysToRemove)
-            {
-                if (this.items.TryRemove(key, out _))
-                {
-                    removedCount++;
-                }
-            }
-        }
-        finally
-        {
-            this.rwLock.ExitWriteLock();
-        }
-
-        return removedCount;
-    }
-
-    /// <summary>
     /// Gets an item from the collection.
     /// </summary>
     /// <param name="key">The key of the item to retrieve.</param>
