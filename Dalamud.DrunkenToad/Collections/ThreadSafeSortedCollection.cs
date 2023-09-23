@@ -231,6 +231,33 @@ public class ThreadSafeSortedCollection<T> : IDisposable where T : notnull
     }
 
     /// <summary>
+    /// Removes a range of items from the collection.
+    /// </summary>
+    /// <param name="itemsToRemove">The items to be removed.</param>
+    /// <returns>The number of items successfully removed.</returns>
+    public int RemoveRange(IEnumerable<T> itemsToRemove)
+    {
+        this.setLock.EnterWriteLock();
+        var removedCount = 0;
+        try
+        {
+            foreach (var item in itemsToRemove)
+            {
+                if (this.Remove(item))
+                {
+                    removedCount++;
+                }
+            }
+        }
+        finally
+        {
+            this.setLock.ExitWriteLock();
+        }
+
+        return removedCount;
+    }
+
+    /// <summary>
     /// Updates an item in the collection by removing it, performing the specified action, and adding it back.
     /// </summary>
     /// <param name="item">The item to update.</param>
