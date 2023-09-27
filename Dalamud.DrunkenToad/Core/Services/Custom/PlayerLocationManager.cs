@@ -2,8 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-using Game.ClientState;
 using Models;
+using Plugin.Services;
 
 /// <summary>
 /// Manages player locations based on territory changes and game data.
@@ -11,11 +11,11 @@ using Models;
 /// </summary>
 public class PlayerLocationManager
 {
-    private readonly ClientState clientStateHandler;
+    private readonly IClientState clientStateHandler;
     private readonly DataManagerEx dataManager;
     private ushort currentTerritoryType;
 
-    public PlayerLocationManager(ClientState clientStateHandler, DataManagerEx dataManager)
+    public PlayerLocationManager(IClientState clientStateHandler, DataManagerEx dataManager)
     {
         this.clientStateHandler = clientStateHandler ?? throw new ArgumentNullException(nameof(clientStateHandler));
         this.dataManager = dataManager ?? throw new ArgumentNullException(nameof(dataManager));
@@ -74,11 +74,11 @@ public class PlayerLocationManager
         this.currentTerritoryType = newTerritoryType;
     }
 
-    private void OnLogout(object? sender, EventArgs e)
+    private void OnLogout()
     {
         this.LocationEnded?.Invoke(this.dataManager.Locations[this.currentTerritoryType]);
         this.ProcessTerritoryChange(0);
     }
 
-    private void OnTerritoryChanged(object? sender, ushort territoryTypeId) => this.ProcessTerritoryChange(territoryTypeId);
+    private void OnTerritoryChanged(ushort territoryTypeId) => this.ProcessTerritoryChange(territoryTypeId);
 }

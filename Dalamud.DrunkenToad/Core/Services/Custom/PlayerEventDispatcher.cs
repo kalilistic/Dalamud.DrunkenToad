@@ -2,11 +2,9 @@
 
 using System.Collections.Generic;
 using Extensions;
-using Game;
-using Game.ClientState.Objects;
 using Game.ClientState.Objects.SubKinds;
-using Game.ClientState.Objects.Types;
 using Models;
+using Plugin.Services;
 
 /// <summary>
 /// Manages player character events, including addition, removal, and updates.
@@ -14,15 +12,15 @@ using Models;
 public class PlayerEventDispatcher
 {
     private readonly uint[] existingObjectIds = new uint[100];
-    private readonly Framework gameFramework;
-    private readonly ObjectTable objectCollection;
+    private readonly IFramework gameFramework;
+    private readonly IObjectTable objectCollection;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PlayerEventDispatcher" /> class.
     /// </summary>
     /// <param name="gameFramework">Dalamud Framework.</param>
     /// <param name="objectCollection">Dalamud ObjectTable.</param>
-    public PlayerEventDispatcher(Framework gameFramework, ObjectTable objectCollection)
+    public PlayerEventDispatcher(IFramework gameFramework, IObjectTable objectCollection)
     {
         this.gameFramework = gameFramework;
         this.objectCollection = objectCollection;
@@ -55,11 +53,6 @@ public class PlayerEventDispatcher
     /// Remove Player (fires when player is removed from object table).
     /// </summary>
     public event DalamudRemovePlayersDelegate? RemovePlayers;
-
-    /// <summary>
-    /// Fires when a player character is updated.
-    /// </summary>
-    public event DalamudUpdatePlayersDelegate? UpdatePlayers;
 
     /// <summary>
     /// Starts the event dispatcher.
@@ -127,23 +120,10 @@ public class PlayerEventDispatcher
         IsDead = character.IsDead,
     };
 
-    private void CheckForUpdates(int index, ICollection<ToadPlayer> updatedPlayers)
-    {
-        if (this.objectCollection[index * 2] is PlayerCharacter character)
-        {
-            var toadPlayer = MapToadPlayer(character);
-            if (toadPlayer.ClassJob != character.ClassJob.Id || toadPlayer.IsDead != character.IsDead)
-            {
-                updatedPlayers.Add(toadPlayer);
-            }
-        }
-    }
-
-    private void OnFrameworkUpdate(Framework framework)
+    private void OnFrameworkUpdate(IFramework framework1)
     {
         var addedPlayers = new List<ToadPlayer>();
         var removedPlayers = new List<uint>();
-        var updatedPlayers = new List<ToadPlayer>();
 
         for (var i = 2; i < 200; i += 2)
         {
@@ -151,10 +131,9 @@ public class PlayerEventDispatcher
             var currentObjectId = this.objectCollection[i]?.ObjectId ?? 0;
             var existingId = this.existingObjectIds[index];
 
-            // check if any update
+            // check if same
             if (currentObjectId == existingId)
             {
-                this.CheckForUpdates(index, updatedPlayers);
                 continue;
             }
 
@@ -202,11 +181,6 @@ public class PlayerEventDispatcher
         if (addedPlayers.Count > 0)
         {
             this.AddPlayers?.Invoke(addedPlayers);
-        }
-
-        if (updatedPlayers.Count > 0)
-        {
-            this.UpdatePlayers?.Invoke(updatedPlayers);
         }
     }
 }

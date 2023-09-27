@@ -1,8 +1,8 @@
 ﻿namespace Dalamud.DrunkenToad.Gui.Windows;
 
 using ImGuiNET;
-using Interface;
 using Interface.Colors;
+using Interface.Utility;
 using Plugin;
 
 /// <summary>

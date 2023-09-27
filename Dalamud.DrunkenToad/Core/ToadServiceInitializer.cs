@@ -1,31 +1,12 @@
 ﻿namespace Dalamud.DrunkenToad.Core;
 
-using Data;
 using Game;
-using Game.ClientState;
-using Game.ClientState.Aetherytes;
-using Game.ClientState.Buddy;
-using Game.ClientState.Conditions;
-using Game.ClientState.Fates;
-using Game.ClientState.GamePad;
-using Game.ClientState.JobGauge;
-using Game.ClientState.Keys;
 using Game.ClientState.Objects;
-using Game.ClientState.Party;
-using Game.Command;
-using Game.DutyState;
-using Game.Gui;
-using Game.Gui.Dtr;
-using Game.Gui.FlyText;
-using Game.Gui.PartyFinder;
-using Game.Gui.Toast;
-using Game.Libc;
-using Game.Network;
 using Gui;
-using Interface;
 using IoC;
 using Microsoft.Extensions.DependencyInjection;
 using Plugin;
+using Plugin.Services;
 using Services;
 using PluginLocalization = Loc.Localization;
 
@@ -44,146 +25,140 @@ public class ToadServiceInitializer
     /// Gets the collection of available Aetherytes in the Teleport window.
     /// </summary>
     [PluginService]
-    public AetheryteList AetheryteCollection { get; private set; } = null!;
+    public IAetheryteList AetheryteCollection { get; private set; } = null!;
 
     /// <summary>
     /// Gets the collection of buddies in your squadron or trust party.
     /// </summary>
     [PluginService]
-    public BuddyList BuddyCollection { get; private set; } = null!;
+    public IBuddyList BuddyCollection { get; private set; } = null!;
 
     /// <summary>
     /// Gets service that provides access to player state conditions.
     /// </summary>
     [PluginService]
-    public Condition ConditionHandler { get; private set; } = null!;
+    public ICondition ConditionHandler { get; private set; } = null!;
 
     /// <summary>
     /// Gets the collection of currently available Fate events.
     /// </summary>
     [PluginService]
-    public FateTable FateCollection { get; private set; } = null!;
+    public IFateTable FateCollection { get; private set; } = null!;
 
     /// <summary>
     /// Gets service that provides access to the gamepad state.
     /// </summary>
     [PluginService]
-    public GamepadState GamepadStateHandler { get; private set; } = null!;
+    public IGamepadState GamepadStateHandler { get; private set; } = null!;
 
     /// <summary>
     /// Gets service that provides access to Job gauge data.
     /// </summary>
     [PluginService]
-    public JobGauges JobGaugeHandler { get; private set; } = null!;
+    public IJobGauges JobGaugeHandler { get; private set; } = null!;
 
     /// <summary>
     /// Gets service that provides a wrapper around the game's key state buffer, containing the pressed state for all
     /// keyboard keys, indexed by virtual vkCode.
     /// </summary>
     [PluginService]
-    public KeyState KeyStateHandler { get; private set; } = null!;
+    public IKeyState KeyStateHandler { get; private set; } = null!;
 
     /// <summary>
     /// Gets the collection of currently spawned FFXIV game objects.
     /// </summary>
     [PluginService]
-    public ObjectTable ObjectCollection { get; private set; } = null!;
+    public IObjectTable ObjectCollection { get; private set; } = null!;
 
     /// <summary>
     /// Gets the collection of player targets.
     /// </summary>
     [PluginService]
-    public TargetManager TargetManager { get; private set; } = null!;
+    public ITargetManager TargetManager { get; private set; } = null!;
 
     /// <summary>
     /// Gets the collection of actors in your party or alliance.
     /// </summary>
     [PluginService]
-    public PartyList PartyCollection { get; private set; } = null!;
+    public IPartyList PartyCollection { get; private set; } = null!;
 
     /// <summary>
     /// Gets service that provides access to the current state of the game client at the time of access.
     /// </summary>
     [PluginService]
-    public ClientState ClientStateHandler { get; private set; } = null!;
+    public IClientState ClientStateHandler { get; private set; } = null!;
 
     /// <summary>
     /// Gets service that provides an interface for interacting with the server info bar.
     /// </summary>
     [PluginService]
-    public DtrBar ServerInfoBarHandler { get; private set; } = null!;
+    public IDtrBar ServerInfoBarHandler { get; private set; } = null!;
 
     /// <summary>
     /// Gets service that facilitates interaction with and creation of native in-game "fly text" windows.
     /// </summary>
     [PluginService]
-    public FlyTextGui FlyTextGuiHandler { get; private set; } = null!;
+    public IFlyTextGui FlyTextGuiHandler { get; private set; } = null!;
 
     /// <summary>
     /// Gets service that handles interaction with the native PartyFinder window.
     /// </summary>
     [PluginService]
-    public PartyFinderGui PartyFinderGuiHandler { get; private set; } = null!;
+    public IPartyFinderGui PartyFinderGuiHandler { get; private set; } = null!;
 
     /// <summary>
     /// Gets service that facilitates interaction with and creation of native toast windows.
     /// </summary>
     [PluginService]
-    public ToastGui ToastGuiHandler { get; private set; } = null!;
+    public IToastGui ToastGuiHandler { get; private set; } = null!;
 
     /// <summary>
     /// Gets service that handles interaction with the native chat UI.
     /// </summary>
     [PluginService]
-    public ChatGui ChatGuiHandler { get; private set; } = null!;
+    public IChatGui ChatGuiHandler { get; private set; } = null!;
 
     /// <summary>
     /// Gets service that handles various aspects of the in-game UI.
     /// </summary>
     [PluginService]
-    public GameGui GameGuiHandler { get; private set; } = null!;
+    public IGameGui GameGuiHandler { get; private set; } = null!;
 
     /// <summary>
     /// Gets service that provides functionality for creating C strings using native game methods.
     /// </summary>
     [PluginService]
-    public LibcFunction LibcFunctionHandler { get; private set; } = null!;
+    public ILibcFunction LibcFunctionHandler { get; private set; } = null!;
 
     /// <summary>
     /// Gets service that handles interaction with game network events.
     /// </summary>
     [PluginService]
-    public GameNetwork GameNetworkHandler { get; private set; } = null!;
-
-    /// <summary>
-    /// Gets service that provides access to chat events and public helper functions.
-    /// </summary>
-    [PluginService]
-    public ChatHandlers ChatHandler { get; private set; } = null!;
+    public IGameNetwork GameNetworkHandler { get; private set; } = null!;
 
     /// <summary>
     /// Gets service that represents the game client's Framework, providing access to various subsystems.
     /// </summary>
     [PluginService]
-    public Framework GameFramework { get; private set; } = null!;
+    public IFramework GameFramework { get; private set; } = null!;
 
     /// <summary>
     /// Gets service that facilitates searching for memory signatures in a given ProcessModule.
     /// </summary>
     [PluginService]
-    public SigScanner SignatureScanner { get; private set; } = null!;
+    public ISigScanner SignatureScanner { get; private set; } = null!;
 
     /// <summary>
     /// Gets service that manages elements in the title screen menu.
     /// </summary>
     [PluginService]
-    public TitleScreenMenu TitleScreenMenuHandler { get; private set; } = null!;
+    public ITitleScreenMenu TitleScreenMenuHandler { get; private set; } = null!;
 
     /// <summary>
     /// Gets service that represents the state of the currently occupied duty.
     /// </summary>
     [PluginService]
-    public DutyState DutyStateHandler { get; private set; } = null!;
+    public IDutyState DutyStateHandler { get; private set; } = null!;
 
     /// <summary>
     /// Gets service that acts as an interface to various objects required for interaction with Dalamud and the game.
@@ -195,19 +170,19 @@ public class ToadServiceInitializer
     /// Gets or sets service that provides access to registered in-game slash commands.
     /// </summary>
     [PluginService]
-    private CommandManager CommandManager { get; set; } = null!;
+    private ICommandManager CommandManager { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets service that provides access to game data for Dalamud and plugins.
     /// </summary>
     [PluginService]
-    private DataManager DalamudDataManager { get; set; } = null!;
+    private IDataManager DalamudDataManager { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the collection of player targets.
     /// </summary>
     [PluginService]
-    private TargetManager DalamudTargetManager { get; set; } = null!;
+    private ITargetManager DalamudTargetManager { get; set; } = null!;
 
     /// <summary>
     /// Add dalamud services.
@@ -234,7 +209,6 @@ public class ToadServiceInitializer
         services.AddSingleton(this.GameGuiHandler);
         services.AddSingleton(this.LibcFunctionHandler);
         services.AddSingleton(this.GameNetworkHandler);
-        services.AddSingleton(this.ChatHandler);
         services.AddSingleton(this.GameFramework);
         services.AddSingleton(this.SignatureScanner);
         services.AddSingleton(this.TitleScreenMenuHandler);

@@ -5,7 +5,6 @@ using System.Linq;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Game.ClientState.Objects;
-using Logging;
 
 /// <summary>
 /// Target manager wrapper to provide additional functionality.
@@ -13,13 +12,13 @@ using Logging;
 /// </summary>
 public class TargetManagerEx
 {
-    private readonly TargetManager targetManager;
+    private readonly ITargetManager targetManager;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TargetManagerEx" /> class.
     /// </summary>
     /// <param name="targetManager">dalamud target manager.</param>
-    public TargetManagerEx(TargetManager targetManager) => this.targetManager = targetManager;
+    public TargetManagerEx(ITargetManager targetManager) => this.targetManager = targetManager;
 
     /// <summary>
     /// Sets the target to the specified object ID. If the object ID is already targeted, it will clear the target.
@@ -82,7 +81,7 @@ public class TargetManagerEx
         }
         catch (Exception ex)
         {
-            PluginLog.LogError(ex, "Failed to open plate window.");
+            DalamudContext.PluginLog.Error(ex, "Failed to open plate window.");
         }
     }
 }

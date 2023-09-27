@@ -1,11 +1,11 @@
-﻿namespace Dalamud.DrunkenToad.Util;
+﻿namespace Dalamud.DrunkenToad.Helpers;
 
 using System;
 using System.Collections.Generic;
 using System.Numerics;
 using Core;
+using Dalamud.Interface.Utility;
 using ImGuiNET;
-using Interface;
 
 /// <summary>
 /// ImGui utility class.

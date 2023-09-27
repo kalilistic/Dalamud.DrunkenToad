@@ -4,14 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using Data;
 using Enums;
 using Extensions;
+using Helpers;
 using Lumina.Excel;
 using Lumina.Excel.GeneratedSheets;
 using Models;
 using Plugin;
-using Util;
+using Plugin.Services;
 
 /// <summary>
 /// Dalamud data manager wrapper to provide extra methods.
@@ -19,7 +19,7 @@ using Util;
 /// </summary>
 public class DataManagerEx
 {
-    private readonly DataManager dataManager;
+    private readonly IDataManager dataManager;
     private readonly DalamudPluginInterface pluginInterface;
 
     /// <summary>
@@ -27,7 +27,7 @@ public class DataManagerEx
     /// </summary>
     /// <param name="dataManager">dalamud command manager.</param>
     /// <param name="pluginInterface">dalamud plugin interface.</param>
-    public DataManagerEx(DataManager dataManager, DalamudPluginInterface pluginInterface)
+    public DataManagerEx(IDataManager dataManager, DalamudPluginInterface pluginInterface)
     {
         this.dataManager = dataManager;
         this.pluginInterface = pluginInterface;

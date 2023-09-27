@@ -2,8 +2,8 @@ namespace Dalamud.DrunkenToad.Extensions;
 
 using System;
 using System.Linq;
-using Data;
 using Lumina.Excel.GeneratedSheets;
+using Plugin.Services;
 
 /// <summary>
 /// Dalamud DataManager extensions.
@@ -16,7 +16,7 @@ public static class DataManagerExtensions
     /// <param name="value">data manager.</param>
     /// <param name="territoryType">territory type id.</param>
     /// <returns>content id or zero if not in content.</returns>
-    public static uint ContentId(this DataManager value, ushort territoryType) => GetContentId(value, territoryType);
+    public static uint ContentId(this IDataManager value, ushort territoryType) => GetContentId(value, territoryType);
 
     /// <summary>
     /// Get content name.
@@ -24,7 +24,7 @@ public static class DataManagerExtensions
     /// <param name="value">data manager.</param>
     /// <param name="territoryType">territory type id.</param>
     /// <returns>content name.</returns>
-    public static string ContentName(this DataManager value, ushort territoryType)
+    public static string ContentName(this IDataManager value, ushort territoryType)
     {
         var contentId = GetContentId(value, territoryType);
         if (contentId == 0)
@@ -41,7 +41,7 @@ public static class DataManagerExtensions
     /// <param name="value">data manager.</param>
     /// <param name="territoryType">territory type id.</param>
     /// <returns>indicator whether local player is in content.</returns>
-    public static bool InContent(this DataManager value, ushort territoryType) => GetContentId(value, territoryType) != 0;
+    public static bool InContent(this IDataManager value, ushort territoryType) => GetContentId(value, territoryType) != 0;
 
     /// <summary>
     /// Gets indicator whether current territory is high-end duty content.
@@ -49,7 +49,7 @@ public static class DataManagerExtensions
     /// <param name="value">data manager.</param>
     /// <param name="territoryType">territory type id.</param>
     /// <returns>indicator whether local player is in high-end duty content.</returns>
-    public static bool InHighEndDuty(this DataManager value, ushort territoryType)
+    public static bool InHighEndDuty(this IDataManager value, ushort territoryType)
     {
         var contentId = GetContentId(value, territoryType);
         if (contentId == 0)
@@ -72,7 +72,7 @@ public static class DataManagerExtensions
     /// </summary>
     /// <param name="value">data manager.</param>
     /// <returns>list of world names.</returns>
-    public static string[] WorldNames(this DataManager value)
+    public static string[] WorldNames(this IDataManager value)
     {
         var worldSheet = value.GetExcelSheet<World>();
         if (worldSheet == null)
@@ -92,7 +92,7 @@ public static class DataManagerExtensions
     /// <param name="id">race id.</param>
     /// <param name="genderId">gender id.</param>
     /// <returns>race name.</returns>
-    public static string Race(this DataManager value, int id, int genderId)
+    public static string Race(this IDataManager value, int id, int genderId)
     {
         if (id == 0)
         {
@@ -112,7 +112,7 @@ public static class DataManagerExtensions
     /// <param name="id">tribe id.</param>
     /// <param name="genderId">gender id.</param>
     /// <returns>race name.</returns>
-    public static string Tribe(this DataManager value, int id, int genderId)
+    public static string Tribe(this IDataManager value, int id, int genderId)
     {
         if (id == 0)
         {
@@ -131,7 +131,7 @@ public static class DataManagerExtensions
     /// <param name="value">data manager.</param>
     /// <param name="classJobId">job code id.</param>
     /// <returns>job code.</returns>
-    public static string ClassJobCode(this DataManager value, uint classJobId) =>
+    public static string ClassJobCode(this IDataManager value, uint classJobId) =>
         value.GetExcelSheet<ClassJob>()?.GetRow(classJobId)?.Abbreviation ?? string.Empty;
 
     /// <summary>
@@ -140,7 +140,7 @@ public static class DataManagerExtensions
     /// <param name="value">data manager.</param>
     /// <param name="territoryTypeId">territory type id.</param>
     /// <returns>place name.</returns>
-    public static string PlaceName(this DataManager value, uint territoryTypeId) =>
+    public static string PlaceName(this IDataManager value, uint territoryTypeId) =>
         value.GetExcelSheet<TerritoryType>()?.GetRow(territoryTypeId)?.PlaceName.Value?.Name.ToString() ??
         string.Empty;
 
@@ -150,7 +150,7 @@ public static class DataManagerExtensions
     /// <param name="value">data manager.</param>
     /// <param name="worldName">world name.</param>
     /// <returns>world id.</returns>
-    public static uint WorldId(this DataManager value, string worldName)
+    public static uint WorldId(this IDataManager value, string worldName)
     {
         var worldSheet = value.GetExcelSheet<World>();
         if (worldSheet == null)
@@ -167,9 +167,9 @@ public static class DataManagerExtensions
     /// <param name="value">data manager.</param>
     /// <param name="worldId">world id.</param>
     /// <returns>world name.</returns>
-    public static string WorldName(this DataManager value, uint worldId) => value.GetExcelSheet<World>()?.GetRow(worldId)?.Name.ToString() ?? string.Empty;
+    public static string WorldName(this IDataManager value, uint worldId) => value.GetExcelSheet<World>()?.GetRow(worldId)?.Name.ToString() ?? string.Empty;
 
-    private static uint GetContentId(DataManager value, ushort territoryType) => value.GetExcelSheet<ContentFinderCondition>() !
+    private static uint GetContentId(IDataManager value, ushort territoryType) => value.GetExcelSheet<ContentFinderCondition>() !
                                                                                      .FirstOrDefault(condition =>
                                                                                          condition.TerritoryType.Row == territoryType)?.RowId ??
                                                                                  0;

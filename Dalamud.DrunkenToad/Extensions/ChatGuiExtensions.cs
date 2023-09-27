@@ -3,13 +3,13 @@ namespace Dalamud.DrunkenToad.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using Core;
-using Game.Gui;
 using Game.Text;
 using Game.Text.SeStringHandling;
 using Game.Text.SeStringHandling.Payloads;
+using Plugin.Services;
 
 /// <summary>
-/// Dalamud ChatGUI extensions.
+/// Dalamud IChatGui extensions.
 /// </summary>
 public static class ChatGuiExtensions
 {
@@ -18,14 +18,14 @@ public static class ChatGuiExtensions
     /// </summary>
     /// <param name="value">chat gui service.</param>
     /// <param name="message">chat message.</param>
-    public static void PluginPrint(this ChatGui value, string message) => value.Print(BuildSeString(DalamudContext.PluginInterface.InternalName, message));
+    public static void PluginPrint(this IChatGui value, string message) => value.Print(BuildSeString(DalamudContext.PluginInterface.InternalName, message));
 
     /// <summary>
     /// Print payload with plugin name to dalamud default channel.
     /// </summary>
     /// <param name="value">chat gui service.</param>
     /// <param name="payloads">list of payloads.</param>
-    public static void PluginPrint(this ChatGui value, IEnumerable<Payload> payloads) =>
+    public static void PluginPrint(this IChatGui value, IEnumerable<Payload> payloads) =>
         value.Print(BuildSeString(DalamudContext.PluginInterface.InternalName, payloads));
 
     /// <summary>
@@ -34,7 +34,7 @@ public static class ChatGuiExtensions
     /// <param name="value">chat gui service.</param>
     /// <param name="message">chat message.</param>
     /// <param name="chatType">chat type to use.</param>
-    public static void PluginPrint(this ChatGui value, string message, XivChatType chatType) => value.PrintChat(new XivChatEntry
+    public static void PluginPrint(this IChatGui value, string message, XivChatType chatType) => value.Print(new XivChatEntry
     {
         Message = BuildSeString(DalamudContext.PluginInterface.InternalName, message), Type = chatType,
     });
@@ -45,7 +45,7 @@ public static class ChatGuiExtensions
     /// <param name="value">chat gui service.</param>
     /// <param name="payloads">list of payloads.</param>
     /// <param name="chatType">chat type to use.</param>
-    public static void PluginPrint(this ChatGui value, IEnumerable<Payload> payloads, XivChatType chatType) => value.PrintChat(new XivChatEntry
+    public static void PluginPrint(this IChatGui value, IEnumerable<Payload> payloads, XivChatType chatType) => value.Print(new XivChatEntry
     {
         Message = BuildSeString(DalamudContext.PluginInterface.InternalName, payloads), Type = chatType,
     });
@@ -55,7 +55,7 @@ public static class ChatGuiExtensions
     /// </summary>
     /// <param name="value">chat gui service.</param>
     /// <param name="payloads">list of payloads.</param>
-    public static void PluginPrintNotice(this ChatGui value, IEnumerable<Payload> payloads) => value.PrintChat(new XivChatEntry
+    public static void PluginPrintNotice(this IChatGui value, IEnumerable<Payload> payloads) => value.Print(new XivChatEntry
     {
         Message = BuildSeString(DalamudContext.PluginInterface.InternalName, payloads), Type = XivChatType.Notice,
     });
@@ -65,7 +65,7 @@ public static class ChatGuiExtensions
     /// </summary>
     /// <param name="value">chat gui service.</param>
     /// <param name="message">chat message.</param>
-    public static void PluginPrintNotice(this ChatGui value, string message) => value.PrintChat(new XivChatEntry
+    public static void PluginPrintNotice(this IChatGui value, string message) => value.Print(new XivChatEntry
     {
         Message = BuildSeString(DalamudContext.PluginInterface.InternalName, message), Type = XivChatType.Notice,
     });
@@ -78,13 +78,13 @@ public static class ChatGuiExtensions
     /// <param name="worldId">player home world id.</param>
     /// <param name="message">message.</param>
     /// <param name="chatType">target channel.</param>
-    public static void PluginPrint(this ChatGui value, string playerName, uint worldId, string message, XivChatType chatType)
+    public static void PluginPrint(this IChatGui value, string playerName, uint worldId, string message, XivChatType chatType)
     {
         var basePayloads = BuildBasePayloads(DalamudContext.PluginInterface.InternalName);
         var customPayloads = new List<Payload> { new PlayerPayload(playerName, worldId), new TextPayload(" " + message) };
 
         var seString = new SeString(basePayloads.Concat(customPayloads).ToList());
-        value.PrintChat(new XivChatEntry { Message = seString, Type = chatType });
+        value.Print(new XivChatEntry { Message = seString, Type = chatType });
     }
 
     private static SeString BuildSeString(string? pluginName, string message)

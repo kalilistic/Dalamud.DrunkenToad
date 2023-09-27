@@ -3,7 +3,7 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Logging;
+using Core;
 
 /// <summary>
 /// Wraps method calls with stopwatches to track performance.
@@ -20,7 +20,7 @@ public static class PerformanceHelper
         var stopwatch = Stopwatch.StartNew();
         action();
         stopwatch.Stop();
-        PluginLog.Log(string.IsNullOrEmpty(description)
+        DalamudContext.PluginLog.Info(string.IsNullOrEmpty(description)
             ? $"Time taken: {stopwatch.ElapsedMilliseconds} ms"
             : $"[{description}] Time taken: {stopwatch.ElapsedMilliseconds} ms");
     }
@@ -36,7 +36,7 @@ public static class PerformanceHelper
         var stopwatch = Stopwatch.StartNew();
         await asyncAction();
         stopwatch.Stop();
-        PluginLog.Log(string.IsNullOrEmpty(description)
+        DalamudContext.PluginLog.Info(string.IsNullOrEmpty(description)
             ? $"Time taken: {stopwatch.ElapsedMilliseconds} ms"
             : $"[{description}] Time taken: {stopwatch.ElapsedMilliseconds} ms");
     }
@@ -53,7 +53,7 @@ public static class PerformanceHelper
         var stopwatch = Stopwatch.StartNew();
         var result = func();
         stopwatch.Stop();
-        PluginLog.Log(string.IsNullOrEmpty(description)
+        DalamudContext.PluginLog.Info(string.IsNullOrEmpty(description)
             ? $"Time taken: {stopwatch.ElapsedMilliseconds} ms"
             : $"[{description}] Time taken: {stopwatch.ElapsedMilliseconds} ms");
 
@@ -72,7 +72,7 @@ public static class PerformanceHelper
         var stopwatch = Stopwatch.StartNew();
         var result = await asyncFunc();
         stopwatch.Stop();
-        PluginLog.Log(string.IsNullOrEmpty(description)
+        DalamudContext.PluginLog.Info(string.IsNullOrEmpty(description)
             ? $"Time taken: {stopwatch.ElapsedMilliseconds} ms"
             : $"[{description}] Time taken: {stopwatch.ElapsedMilliseconds} ms");
         return result;

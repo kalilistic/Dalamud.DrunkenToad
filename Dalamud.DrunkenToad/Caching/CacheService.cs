@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Logging;
+using Core;
 
 /// <summary>
 /// An abstract base class for cache services that manage thread-safe caching operations.
@@ -71,7 +71,7 @@ public abstract class CacheService : IDisposable
     {
         if (this.isResettingCache)
         {
-            PluginLog.LogVerbose("A cache reset is already in progress. Ignoring this request.");
+            DalamudContext.PluginLog.Verbose("A cache reset is already in progress. Ignoring this request.");
             return;
         }
 
@@ -94,7 +94,7 @@ public abstract class CacheService : IDisposable
     {
         if (this.isResettingCache)
         {
-            PluginLog.LogVerbose("A cache reset is already in progress. Ignoring this request.");
+            DalamudContext.PluginLog.Verbose("A cache reset is already in progress. Ignoring this request.");
             return;
         }
 

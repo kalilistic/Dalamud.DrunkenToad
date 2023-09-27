@@ -18,7 +18,7 @@ jobs:
       run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
     - name: Download Dalamud
       run: |
-        curl https://goatcorp.github.io/dalamud-distrib/latest.zip --output latest.zip
+        curl https://goatcorp.github.io/dalamud-distrib/v9/latest.zip --output latest.zip
         mkdir -p ~/Dalamud
         unzip latest.zip -d ~/Dalamud
     - name: Build

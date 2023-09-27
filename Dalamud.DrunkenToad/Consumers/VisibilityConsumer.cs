@@ -2,7 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using Logging;
+using Core;
 using Plugin;
 using Plugin.Ipc;
 
@@ -67,7 +67,7 @@ public class VisibilityConsumer
         }
         catch (Exception ex)
         {
-            PluginLog.LogVerbose($"Failed to subscribe to Visibility.:\n{ex}");
+            DalamudContext.PluginLog.Verbose($"Failed to subscribe to Visibility.:\n{ex}");
         }
     }
 
@@ -85,7 +85,7 @@ public class VisibilityConsumer
     /// <param name="reason">Reason for adding.</param>
     public void AddToVoidList(string name, uint worldId, string reason)
     {
-        PluginLog.LogVerbose("Adding " + name);
+        DalamudContext.PluginLog.Verbose("Adding " + name);
         this.consumerAddToVoidList.InvokeAction(name, worldId, reason);
     }
 
@@ -96,7 +96,7 @@ public class VisibilityConsumer
     /// <param name="worldId">World ID.</param>
     public void RemoveFromVoidList(string name, uint worldId)
     {
-        PluginLog.LogVerbose("Removing " + name);
+        DalamudContext.PluginLog.Verbose("Removing " + name);
         this.consumerRemoveFromVoidList.InvokeAction(name, worldId);
     }
 
@@ -114,7 +114,7 @@ public class VisibilityConsumer
     /// <param name="reason">Reason for adding.</param>
     public void AddToWhiteList(string name, uint worldId, string reason)
     {
-        PluginLog.LogVerbose("Adding " + name);
+        DalamudContext.PluginLog.Verbose("Adding " + name);
         this.consumerAddToWhiteList.InvokeAction(name, worldId, reason);
     }
 
@@ -125,7 +125,7 @@ public class VisibilityConsumer
     /// <param name="worldId">World ID.</param>
     public void RemoveFromWhiteList(string name, uint worldId)
     {
-        PluginLog.LogVerbose("Removing " + name);
+        DalamudContext.PluginLog.Verbose("Removing " + name);
         this.consumerRemoveFromWhiteList.InvokeAction(name, worldId);
     }
 
