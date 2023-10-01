@@ -20,6 +20,7 @@ public abstract class WindowEx : Window
     protected readonly ImGuiWindowFlags defaultFlags;
 
     private const float IndentSpacing = 21f;
+    private const float ChildBorderSize = 1;
     private readonly Vector2 cellPadding = new (4, 2);
     private readonly Vector2 framePadding = new (4, 3);
     private readonly Vector2 itemInnerSpacing = new (4, 4);
@@ -80,13 +81,14 @@ public abstract class WindowEx : Window
         ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, this.itemSpacing);
         ImGui.PushStyleVar(ImGuiStyleVar.ItemInnerSpacing, this.itemInnerSpacing);
         ImGui.PushStyleVar(ImGuiStyleVar.IndentSpacing, IndentSpacing);
+        ImGui.PushStyleVar(ImGuiStyleVar.ChildBorderSize, ChildBorderSize);
     }
 
     /// <summary>
     /// Code to be executed after the window is drawn.
     /// Enforces default padding and spacing styles.
     /// </summary>
-    public override void PostDraw() => ImGui.PopStyleVar(6);
+    public override void PostDraw() => ImGui.PopStyleVar(7);
 
     /// <summary>
     /// Updates dynamic window flags.
