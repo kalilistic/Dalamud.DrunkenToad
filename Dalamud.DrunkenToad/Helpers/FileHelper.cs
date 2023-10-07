@@ -11,6 +11,17 @@ using System.IO.Compression;
 public static class FileHelper
 {
     /// <summary>
+    /// Ensures the existence of specified directories.
+    /// </summary>
+    /// <param name="dirPath">The directory path.</param>
+    /// <param name="subDir">The sub directory.</param>
+    public static void EnsureDirectoriesExist(string dirPath, string subDir)
+    {
+        CreateDirectoryIfNotExists(dirPath);
+        CreateDirectoryIfNotExists(Path.Combine(dirPath, subDir));
+    }
+
+    /// <summary>
     /// Moves the specified file from the source directory to the destination directory and compresses into a zip file.
     /// </summary>
     /// <param name="sourceDirectory">The source directory.</param>
@@ -171,6 +182,14 @@ public static class FileHelper
         {
             // If an exception occurs, we don't have access to the file
             return false;
+        }
+    }
+
+    private static void CreateDirectoryIfNotExists(string directoryPath)
+    {
+        if (!Directory.Exists(directoryPath))
+        {
+            Directory.CreateDirectory(directoryPath);
         }
     }
 }

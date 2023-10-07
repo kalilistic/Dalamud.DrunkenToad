@@ -1,5 +1,6 @@
 ﻿namespace Dalamud.DrunkenToad.Gui.Windows;
 
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,10 +16,10 @@ using Plugin;
 /// </summary>
 public class MigrationWindow : SimpleWindow
 {
-    public readonly ConcurrentQueue<string> ErrorQueue = new ();
-    public readonly ConcurrentQueue<string> StepQueue = new ();
+    private readonly ConcurrentQueue<string> errorQueue = new ();
+    private readonly ConcurrentQueue<Tuple<string, bool>> stepQueue = new ();
     private readonly List<string> errorMessages = new ();
-    private readonly List<string> steps = new ();
+    private readonly List<Tuple<string, bool>> steps = new ();
     private readonly Stopwatch stopwatch;
     private bool isMigrationFinished;
     private int previousStepCount;
@@ -29,6 +30,12 @@ public class MigrationWindow : SimpleWindow
         this.stopwatch = new Stopwatch();
         this.stopwatch.Start();
     }
+
+    public void LogWarning(string message) => this.stepQueue.Enqueue(new Tuple<string, bool>(message, false));
+
+    public void LogInfo(string message) => this.stepQueue.Enqueue(new Tuple<string, bool>(message, true));
+
+    public void LogError(string message) => this.errorQueue.Enqueue(message);
 
     public void StopMigration()
     {
@@ -101,9 +108,9 @@ public class MigrationWindow : SimpleWindow
 
     private void DrawStepsSection()
     {
-        while (!this.StepQueue.IsEmpty)
+        while (!this.stepQueue.IsEmpty)
         {
-            if (this.StepQueue.TryDequeue(out var msg) && !string.IsNullOrEmpty(msg))
+            if (this.stepQueue.TryDequeue(out var msg) && !string.IsNullOrEmpty(msg.Item1))
             {
                 this.steps.Add(msg);
             }
@@ -117,18 +124,27 @@ public class MigrationWindow : SimpleWindow
         {
             ImGui.Indent(1f);
             ImGui.PushFont(UiBuilder.IconFont);
-            ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
-            ImGui.Text(FontAwesomeIcon.Check.ToIconString());
+            if (step.Item2)
+            {
+                ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
+                ImGui.Text(FontAwesomeIcon.Check.ToIconString());
+            }
+            else
+            {
+                ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
+                ImGui.Text(FontAwesomeIcon.ExclamationTriangle.ToIconString());
+            }
+
             ImGui.PopStyleColor(1);
             ImGui.PopFont();
             ImGui.Unindent(1f);
             ImGui.SameLine();
-            ImGui.Text(step);
+            ImGui.Text(step.Item1);
         }
 
-        while (!this.ErrorQueue.IsEmpty)
+        while (!this.errorQueue.IsEmpty)
         {
-            if (this.ErrorQueue.TryDequeue(out var msg) && !string.IsNullOrEmpty(msg))
+            if (this.errorQueue.TryDequeue(out var msg) && !string.IsNullOrEmpty(msg))
             {
                 this.errorMessages.Add(msg);
             }
