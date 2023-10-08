@@ -50,7 +50,7 @@ public static class PluginInterfaceExtensions
     public static string PluginBackupDirectory(this DalamudPluginInterface value)
     {
         var appDataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        var backupsDir = Path.Combine(appDataDir, "XIVLauncher", "pluginBackups", value.InternalName);
+        var backupsDir = Path.Combine(appDataDir, "XIVLauncher", $"{value.InternalName.FirstCharToLower()}Backups");
         Directory.CreateDirectory(backupsDir);
         return backupsDir;
     }

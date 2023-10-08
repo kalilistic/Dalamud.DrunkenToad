@@ -128,4 +128,19 @@ public static class StringExtensions
 
         return sb.ToString();
     }
+
+    /// <summary>
+    /// Converts the first character of the string to lowercase.
+    /// </summary>
+    /// <param name="input">The input string.</param>
+    /// <returns>The string with its first character converted to lowercase.</returns>
+    public static string FirstCharToLower(this string input)
+    {
+        if (string.IsNullOrEmpty(input))
+        {
+            return input;
+        }
+
+        return char.ToLowerInvariant(input[0]) + input.Substring(1);
+    }
 }
