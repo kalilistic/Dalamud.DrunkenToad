@@ -67,16 +67,16 @@ public static class PluginInterfaceExtensions
         var internalName = value.InternalName;
         if (!internalName.EndsWith(version, StringComparison.CurrentCulture))
         {
-            return PluginNotLoaded(value, $"{internalName}{version}");
+            return IsPluginLoaded(value, $"{internalName}{version}");
         }
 
         var stableName = internalName.Replace(version, string.Empty);
-        return PluginNotLoaded(value, stableName);
+        return IsPluginLoaded(value, stableName);
     }
 
-    private static bool PluginNotLoaded(DalamudPluginInterface pluginInterface, string pluginName)
+    private static bool IsPluginLoaded(DalamudPluginInterface pluginInterface, string pluginName)
     {
         var plugin = pluginInterface.InstalledPlugins.FirstOrDefault(p => p.Name == pluginName);
-        return plugin == null || !plugin.IsLoaded;
+        return plugin != null && plugin.IsLoaded;
     }
 }
