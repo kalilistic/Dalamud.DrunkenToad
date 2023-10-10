@@ -2,6 +2,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using Game.Text.SeStringHandling;
 using Plugin;
 
@@ -53,5 +54,29 @@ public static class PluginInterfaceExtensions
         var backupsDir = Path.Combine(appDataDir, "XIVLauncher", $"{value.InternalName.FirstCharToLower()}Backups");
         Directory.CreateDirectory(backupsDir);
         return backupsDir;
+    }
+
+    /// <summary>
+    /// Check if different version of plugin is loaded.
+    /// </summary>
+    /// <param name="value">dalamud plugin interface.</param>
+    /// <param name="version">version to check.</param>
+    /// <returns>Indicator if another version of the plugin is loaded.</returns>
+    public static bool IsDifferentVersionLoaded(this DalamudPluginInterface value, string version = "Canary")
+    {
+        var internalName = value.InternalName;
+        if (!internalName.EndsWith(version, StringComparison.CurrentCulture))
+        {
+            return PluginNotLoaded(value, $"{internalName}{version}");
+        }
+
+        var stableName = internalName.Replace(version, string.Empty);
+        return PluginNotLoaded(value, stableName);
+    }
+
+    private static bool PluginNotLoaded(DalamudPluginInterface pluginInterface, string pluginName)
+    {
+        var plugin = pluginInterface.InstalledPlugins.FirstOrDefault(p => p.Name == pluginName);
+        return plugin == null || !plugin.IsLoaded;
     }
 }

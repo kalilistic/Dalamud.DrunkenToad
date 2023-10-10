@@ -78,7 +78,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Dalamud.Loc" Version="1.1.1" />
+        <PackageReference Include="Dalamud.Loc" Version="1.1.2" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
             <PrivateAssets>all</PrivateAssets>
