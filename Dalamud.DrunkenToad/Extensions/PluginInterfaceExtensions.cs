@@ -44,14 +44,33 @@ public static class PluginInterfaceExtensions
     public static string Sanitize(this DalamudPluginInterface value, Lumina.Text.SeString str) => Sanitize(value, str.ToString());
 
     /// <summary>
+    /// Get the plugin backup directory for windows (don't use for Wine).
+    /// </summary>
+    /// <param name="value">dalamud plugin interface.</param>
+    /// <returns>Plugin backup directory.</returns>
+    public static string WindowsPluginBackupDirectory(this DalamudPluginInterface value)
+    {
+        var appDataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        var backupsDir = Path.Combine(appDataDir, "XIVLauncher", $"{value.InternalName.FirstCharToLower()}Backups");
+        Directory.CreateDirectory(backupsDir);
+        return backupsDir;
+    }
+
+    /// <summary>
     /// Get the plugin backup directory.
     /// </summary>
     /// <param name="value">dalamud plugin interface.</param>
     /// <returns>Plugin backup directory.</returns>
     public static string PluginBackupDirectory(this DalamudPluginInterface value)
     {
-        var appDataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        var backupsDir = Path.Combine(appDataDir, "XIVLauncher", $"{value.InternalName.FirstCharToLower()}Backups");
+        var configDir = value.ConfigDirectory.Parent;
+        var appDir = configDir?.Parent;
+        if (appDir == null)
+        {
+            return WindowsPluginBackupDirectory(value); // use as a fallback
+        }
+
+        var backupsDir = Path.Combine(appDir.FullName, $"{value.InternalName.FirstCharToLower()}Backups");
         Directory.CreateDirectory(backupsDir);
         return backupsDir;
     }
