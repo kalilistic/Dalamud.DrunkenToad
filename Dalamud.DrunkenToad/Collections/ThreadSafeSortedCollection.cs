@@ -36,12 +36,13 @@ public class ThreadSafeSortedCollection<T> : IDisposable where T : notnull
     /// <summary>
     /// Initializes a new instance of the <see cref="ThreadSafeSortedCollection{T}"/> class without any initial data.
     /// </summary>
+    /// <param name="lockRecursionPolicy">The lock recursion policy.</param>
     /// <remarks>
     /// Used for early initialization of the collection when the initial data is not yet available.
     /// </remarks>
-    public ThreadSafeSortedCollection()
+    public ThreadSafeSortedCollection(LockRecursionPolicy lockRecursionPolicy = LockRecursionPolicy.NoRecursion)
     {
-        this.setLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+        this.setLock = new ReaderWriterLockSlim(lockRecursionPolicy);
         this.items = new ConcurrentDictionary<T, byte>();
         this.sortedSet = new SortedSet<T>();
         this.comparer = Comparer<T>.Default;
@@ -52,9 +53,10 @@ public class ThreadSafeSortedCollection<T> : IDisposable where T : notnull
     /// </summary>
     /// <param name="initialItems">initial items.</param>
     /// <param name="comparer">The comparer used to sort items in the collection.</param>
-    public ThreadSafeSortedCollection(IEnumerable<T> initialItems, IComparer<T> comparer)
+    /// <param name="lockRecursionPolicy">The lock recursion policy.</param>
+    public ThreadSafeSortedCollection(IEnumerable<T> initialItems, IComparer<T> comparer, LockRecursionPolicy lockRecursionPolicy = LockRecursionPolicy.NoRecursion)
     {
-        this.setLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+        this.setLock = new ReaderWriterLockSlim(lockRecursionPolicy);
         var initialList = initialItems.ToList();
         this.items = new ConcurrentDictionary<T, byte>(initialList.Select(item => new KeyValuePair<T, byte>(item, 0)), new ComparerBasedEqualityComparer(comparer));
         this.sortedSet = new SortedSet<T>(initialList, comparer);
