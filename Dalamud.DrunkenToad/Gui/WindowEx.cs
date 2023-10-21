@@ -35,7 +35,7 @@ public abstract class WindowEx : Window
     /// <param name="flags">window flags.</param>
     // ReSharper disable once UnusedParameter.Local
     protected WindowEx(string name, IPluginConfig config, ImGuiWindowFlags flags = ImGuiWindowFlags.None)
-        : base(name, flags, true)
+        : base(name, flags)
     {
         this.config = config;
         this.defaultFlags = flags;
