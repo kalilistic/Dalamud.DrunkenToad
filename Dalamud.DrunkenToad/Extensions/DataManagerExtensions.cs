@@ -169,6 +169,18 @@ public static class DataManagerExtensions
     /// <returns>world name.</returns>
     public static string WorldName(this IDataManager value, uint worldId) => value.GetExcelSheet<World>()?.GetRow(worldId)?.Name.ToString() ?? string.Empty;
 
+    /// <summary>
+    /// Get indicator whether world is a test data center.
+    /// </summary>
+    /// <param name="value">data manager.</param>
+    /// <param name="worldId">world id.</param>
+    /// <returns>indicator whether world is a test data center.</returns>
+    public static bool IsTestDC(this IDataManager value, uint worldId)
+    {
+        var world = value.GetExcelSheet<World>()?.GetRow(worldId);
+        return world?.DataCenter?.Value?.RowId == 12;
+    }
+
     private static uint GetContentId(IDataManager value, ushort territoryType) => value.GetExcelSheet<ContentFinderCondition>() !
                                                                                      .FirstOrDefault(condition =>
                                                                                          condition.TerritoryType.Row == territoryType)?.RowId ??
