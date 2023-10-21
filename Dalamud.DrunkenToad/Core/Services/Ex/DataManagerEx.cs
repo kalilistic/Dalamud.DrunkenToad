@@ -159,6 +159,13 @@ public class DataManagerEx
         return 0;
     }
 
+    /// <summary>
+    /// Get indicator whether world is a test data center.
+    /// </summary>
+    /// <param name="worldId">world id.</param>
+    /// <returns>indicator whether world is a test data center.</returns>
+    public bool IsTestDC(uint worldId) => this.dataManager.IsTestDC(worldId);
+
     private static float ColorDistance(Vector4 color1, Vector4 color2)
     {
         var rDiff = color1.X - color2.X;
