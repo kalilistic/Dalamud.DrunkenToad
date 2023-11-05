@@ -198,6 +198,12 @@ public class DalamudContext
     public static IPluginLog PluginLog { get; set; } = null!;
 
     /// <summary>
+    /// Gets or sets service that manages the creation and handling of hooks for function call interception and modification.
+    /// </summary>
+    [PluginService]
+    private static IGameInteropProvider HookManager { get; set; } = null!;
+
+    /// <summary>
     /// Gets or sets service that provides access to game data for Dalamud and plugins.
     /// </summary>
     [PluginService]

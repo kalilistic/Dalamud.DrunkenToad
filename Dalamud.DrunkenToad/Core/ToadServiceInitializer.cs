@@ -167,6 +167,12 @@ public class ToadServiceInitializer
     public DalamudPluginInterface PluginInterface { get; private set; } = null!;
 
     /// <summary>
+    /// Gets or sets service that manages the creation and handling of hooks for function call interception and modification.
+    /// </summary>
+    [PluginService]
+    public IGameInteropProvider HookManager { get; set; } = null!;
+
+    /// <summary>
     /// Gets or sets service that provides access to registered in-game slash commands.
     /// </summary>
     [PluginService]
@@ -214,6 +220,7 @@ public class ToadServiceInitializer
         services.AddSingleton(this.TitleScreenMenuHandler);
         services.AddSingleton(this.DutyStateHandler);
         services.AddSingleton(this.PluginInterface);
+        services.AddSingleton(this.HookManager);
         services.AddSingleton(this.CommandManager);
 
         services.AddSingleton(this.DalamudDataManager);
