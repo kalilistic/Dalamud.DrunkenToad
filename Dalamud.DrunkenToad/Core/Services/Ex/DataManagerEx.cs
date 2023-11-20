@@ -33,6 +33,7 @@ public class DataManagerEx
         this.pluginInterface = pluginInterface;
         this.Excel = dataManager.Excel;
         this.Worlds = this.LoadWorlds();
+        this.DataCenters = this.LoadDataCenters();
         this.Locations = this.LoadLocations();
         this.ClassJobs = this.LoadClassJobs();
         this.Races = this.LoadRaces();
@@ -46,9 +47,14 @@ public class DataManagerEx
     public ExcelModule Excel { get; private set; }
 
     /// <summary>
-    /// Gets all public worlds by world id.
+    /// Gets all public worlds.
     /// </summary>
     public Dictionary<uint, ToadWorld> Worlds { get; }
+
+    /// <summary>
+    /// Gets all data centers.
+    /// </summary>
+    public Dictionary<uint, ToadDataCenter> DataCenters { get; }
 
     /// <summary>
     /// Gets all locations (territory type and content data).
@@ -160,6 +166,13 @@ public class DataManagerEx
     }
 
     /// <summary>
+    /// Validates if the world id is a valid world.
+    /// </summary>
+    /// <param name="worldId">world id.</param>
+    /// <returns>indicator whether world is valid.</returns>
+    public bool IsValidWorld(uint worldId) => this.Worlds.ContainsKey(worldId);
+
+    /// <summary>
     /// Get indicator whether world is a test data center.
     /// </summary>
     /// <param name="worldId">world id.</param>
@@ -183,7 +196,17 @@ public class DataManagerEx
 
         return luminaWorlds.ToDictionary(
             luminaWorld => luminaWorld.RowId,
-            luminaWorld => new ToadWorld { Id = luminaWorld.RowId, Name = this.pluginInterface.Sanitize(luminaWorld.Name) });
+            luminaWorld => new ToadWorld { Id = luminaWorld.RowId, Name = this.pluginInterface.Sanitize(luminaWorld.Name), DataCenterId = luminaWorld.DataCenter.Row });
+    }
+
+    private Dictionary<uint, ToadDataCenter> LoadDataCenters()
+    {
+        var dataCenterSheet = this.dataManager.GetExcelSheet<WorldDCGroupType>() !;
+        var luminaDataCenters = dataCenterSheet.Where(dataCenter => !string.IsNullOrEmpty(dataCenter.Name) && dataCenter.Region != 0 && dataCenter.Region != 7);
+
+        return luminaDataCenters.ToDictionary(
+            luminaDataCenter => luminaDataCenter.RowId,
+            luminaDataCenter => new ToadDataCenter { Id = luminaDataCenter.RowId, Name = this.pluginInterface.Sanitize(luminaDataCenter.Name) });
     }
 
     private Dictionary<ushort, ToadLocation> LoadLocations()

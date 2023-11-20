@@ -11,6 +11,7 @@ using Helpers;
 using ImGuiNET;
 using Interface;
 using Interface.Colors;
+using Interface.Components;
 using Interface.Utility;
 using Loc.ImGui;
 using PluginLocalization = Loc.Localization;
@@ -77,11 +78,36 @@ public static class ToadGui
     {
         var result = ImGui.Checkbox($"###{key}_Checkbox", ref value);
 
-        if (useLabel)
+        if (!useLabel)
         {
-            ImGui.SameLine();
-            LocGui.Text(key);
+            return result;
         }
+
+        ImGui.SameLine();
+        LocGui.Text(key);
+
+        return result;
+    }
+
+    /// <summary>
+    /// Checkbox with better label and loopable key.
+    /// </summary>
+    /// <param name="key">localization key.</param>
+    /// <param name="suffix">suffix for key.</param>
+    /// <param name="value">local value reference.</param>
+    /// <param name="useLabel">use localized label.</param>
+    /// <returns>Indicator if changed.</returns>
+    public static bool Checkbox(string key, string suffix, ref bool value, bool useLabel = true)
+    {
+        var result = ImGui.Checkbox($"###{key}_{suffix}_Checkbox", ref value);
+
+        if (!useLabel)
+        {
+            return result;
+        }
+
+        ImGui.SameLine();
+        LocGui.Text(key);
 
         return result;
     }
@@ -150,6 +176,34 @@ public static class ToadGui
         var label = includeLabel ? Localization.GetString(key) : $"###{key}";
         ImGui.SetNextItemWidth(comboWidth == -1 ? comboWidth : ImGuiUtil.CalcScaledComboWidth(comboWidth));
         if (ImGui.Combo(label, ref value, localizedOptions.ToArray(), localizedOptions.Count))
+        {
+            isChanged = true;
+        }
+
+        return isChanged;
+    }
+
+    /// <summary>
+    /// Styled and localized ComboBox with loopable key.
+    /// </summary>
+    /// <param name="key">primary key.</param>
+    /// <param name="suffix">suffix for key.</param>
+    /// <param name="value">current selected index value.</param>
+    /// <param name="options">keys for options.</param>
+    /// <param name="comboWidth">width (default to fill).</param>
+    /// <returns>indicates if combo box value was changed.</returns>
+    public static bool Combo(string key, string suffix, ref int value, IEnumerable<string> options, int comboWidth = 100)
+    {
+        var isChanged = false;
+        var localizedOptions = new List<string>();
+        foreach (var option in options)
+        {
+            localizedOptions.Add(Localization.GetString(option));
+        }
+
+        ImGuiHelpers.ScaledDummy(1f);
+        ImGui.SetNextItemWidth(ImGuiUtil.CalcScaledComboWidth(comboWidth));
+        if (ImGui.Combo($"{Localization.GetString(key)}###{suffix}_Combo", ref value, localizedOptions.ToArray(), localizedOptions.Count))
         {
             isChanged = true;
         }
@@ -397,6 +451,44 @@ public static class ToadGui
     }
 
     /// <summary>
+    /// Localized Action Prompt for Delete/Restore.
+    /// </summary>
+    /// <typeparam name="T">Item type for action to be performed upon (e.g. delete, restore).</typeparam>
+    /// <param name="item">current item being evaluated.</param>
+    /// <param name="messageKey">confirmation message key to display.</param>
+    /// <param name="request">tuple with action state and instance of item under review.</param>
+    public static void Confirm<T>(T item, string messageKey, ref Tuple<ActionRequest, T>? request)
+    {
+        if (request == null)
+        {
+            return;
+        }
+
+        dynamic newItem = item!;
+        dynamic savedItem = request.Item2!;
+        if (newItem.Id != savedItem.Id)
+        {
+            return;
+        }
+
+        ImGui.SameLine();
+        LocGui.TextColored(messageKey, ImGuiColors.DalamudYellow);
+        ImGui.SameLine();
+        if (LocGui.SmallButton("Cancel"))
+        {
+            request = new Tuple<ActionRequest, T>(ActionRequest.None, request.Item2);
+        }
+
+        ImGui.SameLine();
+        if (LocGui.SmallButton("OK"))
+        {
+            request = new Tuple<ActionRequest, T>(ActionRequest.Confirmed, request.Item2);
+        }
+
+        ImGui.SetCursorPosY(ImGui.GetCursorPosY() - (5.0f * ImGuiHelpers.GlobalScale));
+    }
+
+    /// <summary>
     /// Localized dummy tab to use while waiting for content to load.
     /// </summary>
     /// <param name="key">primary key.</param>
@@ -426,6 +518,12 @@ public static class ToadGui
     /// <param name="initWidthOrWeight">column width.</param>
     public static void TableSetupColumn(string label, ImGuiTableColumnFlags flags, float initWidthOrWeight) =>
         ImGui.TableSetupColumn(label, flags, initWidthOrWeight * ImGuiHelpers.GlobalScale);
+
+    /// <summary>
+    /// Localized HelpMarker.
+    /// </summary>
+    /// <param name="key">primary key.</param>
+    public static void HelpMarker(string key) => ImGuiComponents.HelpMarker(Localization.GetString(key));
 
     /// <summary>
     /// Localized Colored BeginTabItem.

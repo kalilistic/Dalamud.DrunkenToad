@@ -42,6 +42,11 @@ public class DalamudContext
     public static PlayerEventDispatcher PlayerEventDispatcher { get; private set; } = null!;
 
     /// <summary>
+    /// Gets service for providing events when social list data is available.
+    /// </summary>
+    public static SocialListHandler SocialListHandler { get; private set; } = null!;
+
+    /// <summary>
     /// Gets service that provides an extended location data API derived from territory change events.
     /// </summary>
     public static PlayerLocationManager PlayerLocationManager { get; private set; } = null!;
@@ -229,6 +234,7 @@ public class DalamudContext
             TargetManager = new TargetManagerEx(DalamudTargetManager);
             PlayerLocationManager = new PlayerLocationManager(ClientStateHandler, DataManager);
             PlayerEventDispatcher = new PlayerEventDispatcher(GameFramework, ObjectCollection);
+            SocialListHandler = new SocialListHandler();
             LocManager = new PluginLocalization(pluginInterface);
             WindowManager = new WindowManager(pluginInterface);
             ToadGui.Initialize(LocManager, DataManager);
@@ -251,6 +257,7 @@ public class DalamudContext
             WindowManager.Dispose();
             LocManager.Dispose();
             PlayerEventDispatcher.Dispose();
+            SocialListHandler.Dispose();
             PlayerLocationManager.Dispose();
         }
         catch (Exception ex)

@@ -1,22 +1,17 @@
 ﻿namespace Dalamud.DrunkenToad.Core.Models;
 
 /// <summary>
-/// World data.
+/// DataCenter data.
 /// </summary>
-public class ToadWorld
+public class ToadDataCenter
 {
     /// <summary>
-    /// Gets or sets world id.
+    /// Gets or sets data center id.
     /// </summary>
     public uint Id { get; set; }
 
     /// <summary>
-    /// Gets world name.
+    /// Gets data center name.
     /// </summary>
     public string Name { get; init; } = string.Empty;
-
-    /// <summary>
-    /// Gets world's data center.
-    /// </summary>
-    public uint DataCenterId { get; init; }
 }

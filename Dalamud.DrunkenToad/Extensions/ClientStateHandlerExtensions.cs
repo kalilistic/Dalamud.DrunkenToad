@@ -26,7 +26,6 @@ public static class ClientStateHandlerExtensions
             HomeWorld = value.LocalPlayer.HomeWorld.Id,
             ContentId = value.LocalContentId,
             Customize = value.LocalPlayer.Customize,
-            CompanyTag = value.LocalPlayer.CompanyTag.ToString(),
         };
 
         return localPlayer.IsValid() ? localPlayer : null;
