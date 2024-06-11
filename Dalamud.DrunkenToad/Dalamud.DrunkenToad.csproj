@@ -6,7 +6,7 @@
         <RepositoryUrl>https://github.com/kalilistic/Dalamud.DrunkenToad</RepositoryUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageIcon>icon.png</PackageIcon>
-        <TargetFramework>net7.0-windows</TargetFramework>
+        <TargetFramework>net8.0-windows</TargetFramework>
         <Platforms>x64</Platforms>
         <LangVersion>latest</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -15,7 +15,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <NoWarn>SA1401,SA1633</NoWarn>
+        <NoWarn>SA1401,SA1633,CA1859</NoWarn>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <DebugSymbols>true</DebugSymbols>
