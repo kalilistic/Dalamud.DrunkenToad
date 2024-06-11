@@ -179,7 +179,15 @@ public class DataManagerEx
     /// <returns>indicator whether world is a test data center.</returns>
     public bool IsTestDC(uint worldId)
     {
-        var region = this.dataManager.GetExcelSheet<WorldDCGroupType>()?.GetRow(this.Worlds[worldId].DataCenterId)?.Region ?? 0;
+        var worlds = this.dataManager.GetExcelSheet<World>();
+        var dcs = this.dataManager.GetExcelSheet<WorldDCGroupType>();
+        var world = worlds?.GetRow(worldId);
+        if (world == null)
+        {
+            return false;
+        }
+
+        var region = dcs?.GetRow(world.DataCenter.Row)?.Region ?? 0;
         return region == 7;
     }
 
