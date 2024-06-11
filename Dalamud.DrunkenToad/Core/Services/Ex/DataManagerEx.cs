@@ -47,7 +47,7 @@ public class DataManagerEx
     public ExcelModule Excel { get; private set; }
 
     /// <summary>
-    /// Gets all public worlds.
+    /// Gets all valid worlds (dc != 0, name starts with uppercase).
     /// </summary>
     public Dictionary<uint, ToadWorld> Worlds { get; }
 
@@ -192,7 +192,10 @@ public class DataManagerEx
     private Dictionary<uint, ToadWorld> LoadWorlds()
     {
         var worldSheet = this.dataManager.GetExcelSheet<World>() !;
-        var luminaWorlds = worldSheet.Where(world => world.IsPublic);
+        var luminaWorlds = worldSheet.Where(
+            world => !string.IsNullOrEmpty(world.Name) &&
+                     world.DataCenter.Row != 0
+                     && char.IsUpper((char)world.Name.RawData[0]));
 
         return luminaWorlds.ToDictionary(
             luminaWorld => luminaWorld.RowId,
