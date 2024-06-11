@@ -177,7 +177,11 @@ public class DataManagerEx
     /// </summary>
     /// <param name="worldId">world id.</param>
     /// <returns>indicator whether world is a test data center.</returns>
-    public bool IsTestDC(uint worldId) => this.dataManager.IsTestDC(worldId);
+    public bool IsTestDC(uint worldId)
+    {
+        var region = this.dataManager.GetExcelSheet<WorldDCGroupType>()?.GetRow(this.Worlds[worldId].DataCenterId)?.Region ?? 0;
+        return region == 7;
+    }
 
     private static float ColorDistance(Vector4 color1, Vector4 color2)
     {
@@ -195,7 +199,8 @@ public class DataManagerEx
         var luminaWorlds = worldSheet.Where(
             world => !string.IsNullOrEmpty(world.Name) &&
                      world.DataCenter.Row != 0
-                     && char.IsUpper((char)world.Name.RawData[0]));
+                     && char.IsUpper((char)world.Name.RawData[0]) &&
+                     !this.IsTestDC(world.RowId));
 
         return luminaWorlds.ToDictionary(
             luminaWorld => luminaWorld.RowId,

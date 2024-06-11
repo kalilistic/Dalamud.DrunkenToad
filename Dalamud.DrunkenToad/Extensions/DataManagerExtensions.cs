@@ -178,7 +178,7 @@ public static class DataManagerExtensions
     public static bool IsTestDC(this IDataManager value, uint worldId)
     {
         var world = value.GetExcelSheet<World>()?.GetRow(worldId);
-        return world?.DataCenter?.Value?.RowId == 12;
+        return world?.DataCenter?.Value?.RowId == 13;
     }
 
     private static uint GetContentId(IDataManager value, ushort territoryType) => value.GetExcelSheet<ContentFinderCondition>() !
