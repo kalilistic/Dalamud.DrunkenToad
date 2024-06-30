@@ -1,4 +1,6 @@
-﻿namespace Dalamud.DrunkenToad.Core;
+﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+namespace Dalamud.DrunkenToad.Core;
 
 using Game;
 using Game.ClientState.Objects;
@@ -19,7 +21,7 @@ public class ToadServiceInitializer
     /// Initializes a new instance of the <see cref="ToadServiceInitializer" /> class.
     /// </summary>
     /// <param name="pluginInterface">plugin interface.</param>
-    public ToadServiceInitializer(DalamudPluginInterface pluginInterface) => pluginInterface.Inject(this);
+    public ToadServiceInitializer(IDalamudPluginInterface pluginInterface) => pluginInterface.Inject(this);
 
     /// <summary>
     /// Gets the collection of available Aetherytes in the Teleport window.
@@ -125,12 +127,6 @@ public class ToadServiceInitializer
     public IGameGui GameGuiHandler { get; private set; } = null!;
 
     /// <summary>
-    /// Gets service that provides functionality for creating C strings using native game methods.
-    /// </summary>
-    [PluginService]
-    public ILibcFunction LibcFunctionHandler { get; private set; } = null!;
-
-    /// <summary>
     /// Gets service that handles interaction with game network events.
     /// </summary>
     [PluginService]
@@ -164,7 +160,7 @@ public class ToadServiceInitializer
     /// Gets service that acts as an interface to various objects required for interaction with Dalamud and the game.
     /// </summary>
     [PluginService]
-    public DalamudPluginInterface PluginInterface { get; private set; } = null!;
+    public IDalamudPluginInterface PluginInterface { get; private set; } = null!;
 
     /// <summary>
     /// Gets or sets service that manages the creation and handling of hooks for function call interception and modification.
@@ -213,7 +209,6 @@ public class ToadServiceInitializer
         services.AddSingleton(this.ToastGuiHandler);
         services.AddSingleton(this.ChatGuiHandler);
         services.AddSingleton(this.GameGuiHandler);
-        services.AddSingleton(this.LibcFunctionHandler);
         services.AddSingleton(this.GameNetworkHandler);
         services.AddSingleton(this.GameFramework);
         services.AddSingleton(this.SignatureScanner);

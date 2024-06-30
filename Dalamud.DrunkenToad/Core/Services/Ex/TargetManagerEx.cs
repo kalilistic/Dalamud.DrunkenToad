@@ -32,7 +32,7 @@ public class TargetManagerEx
             return;
         }
 
-        if (this.targetManager.Target?.ObjectId == obj.ObjectId)
+        if (this.targetManager.Target?.EntityId == obj.EntityId)
         {
             this.targetManager.Target = null;
             return;
@@ -54,7 +54,7 @@ public class TargetManagerEx
             return;
         }
 
-        if (this.targetManager.FocusTarget?.ObjectId == obj.ObjectId)
+        if (this.targetManager.FocusTarget?.EntityId == obj.EntityId)
         {
             this.targetManager.FocusTarget = null;
             return;
@@ -69,7 +69,7 @@ public class TargetManagerEx
     /// <param name="objectId">The object ID for which to open the plate window.</param>
     public unsafe void OpenPlateWindow(uint objectId)
     {
-        var obj = DalamudContext.ObjectCollection.FirstOrDefault(i => i.ObjectId == objectId);
+        var obj = DalamudContext.ObjectCollection.FirstOrDefault(i => i.EntityId == objectId);
         if (obj == null)
         {
             return;

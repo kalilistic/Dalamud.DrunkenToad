@@ -1,4 +1,7 @@
-﻿namespace Dalamud.DrunkenToad.Core.Models;
+﻿// ReSharper disable InconsistentNaming
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+namespace Dalamud.DrunkenToad.Core.Models;
 
 /// <summary>
 /// ToadUIColor model.

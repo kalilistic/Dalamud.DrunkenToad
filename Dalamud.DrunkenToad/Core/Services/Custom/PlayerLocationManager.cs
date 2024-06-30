@@ -9,17 +9,11 @@ using Plugin.Services;
 /// Manages player locations based on territory changes and game data.
 /// Provides events for location start and end points.
 /// </summary>
-public class PlayerLocationManager
+public class PlayerLocationManager(IClientState clientStateHandler, DataManagerEx dataManager)
 {
-    private readonly IClientState clientStateHandler;
-    private readonly DataManagerEx dataManager;
+    private readonly IClientState clientStateHandler = clientStateHandler ?? throw new ArgumentNullException(nameof(clientStateHandler));
+    private readonly DataManagerEx dataManager = dataManager ?? throw new ArgumentNullException(nameof(dataManager));
     private ushort currentTerritoryType;
-
-    public PlayerLocationManager(IClientState clientStateHandler, DataManagerEx dataManager)
-    {
-        this.clientStateHandler = clientStateHandler ?? throw new ArgumentNullException(nameof(clientStateHandler));
-        this.dataManager = dataManager ?? throw new ArgumentNullException(nameof(dataManager));
-    }
 
     public delegate void LocationDelegate(ToadLocation toadLocation);
 

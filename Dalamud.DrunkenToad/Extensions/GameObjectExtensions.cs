@@ -1,4 +1,6 @@
-﻿namespace Dalamud.DrunkenToad.Extensions;
+﻿// ReSharper disable MergeIntoPattern
+// ReSharper disable MergeSequentialChecks
+namespace Dalamud.DrunkenToad.Extensions;
 
 using Core;
 using Game.ClientState.Objects.SubKinds;
@@ -14,10 +16,10 @@ public static class GameObjectExtensions
     /// </summary>
     /// <param name="value">actor.</param>
     /// <returns>Indicator if player character is valid.</returns>
-    public static bool IsValidPlayerCharacter(this GameObject? value) =>
+    public static bool IsValidIPlayerCharacter(this IGameObject? value) =>
         value != null &&
-        value is PlayerCharacter character &&
-        value.ObjectId > 0 &&
+        value is IPlayerCharacter character &&
+        value.EntityId > 0 &&
         DalamudContext.DataManager.Worlds.ContainsKey(character.HomeWorld.Id) &&
         DalamudContext.DataManager.Worlds.ContainsKey(character.CurrentWorld.Id) &&
         DalamudContext.DataManager.ClassJobs.ContainsKey(character.ClassJob.Id);

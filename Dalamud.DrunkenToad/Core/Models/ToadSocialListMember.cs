@@ -1,4 +1,8 @@
-﻿namespace Dalamud.DrunkenToad.Core.Models;
+﻿// ReSharper disable UnassignedField.Global
+// ReSharper disable ClassNeverInstantiated.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable FieldCanBeMadeReadOnly.Global
+namespace Dalamud.DrunkenToad.Core.Models;
 
 using Utility;
 

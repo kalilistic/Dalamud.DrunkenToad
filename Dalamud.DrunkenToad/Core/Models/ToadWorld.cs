@@ -1,4 +1,5 @@
-﻿namespace Dalamud.DrunkenToad.Core.Models;
+﻿// ReSharper disable UnusedAutoPropertyAccessor.Global
+namespace Dalamud.DrunkenToad.Core.Models;
 
 /// <summary>
 /// World data.

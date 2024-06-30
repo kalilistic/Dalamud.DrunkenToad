@@ -1,7 +1,7 @@
 ﻿namespace Dalamud.DrunkenToad.Core.Models;
 
 /// <summary>
-/// Subset of key properties from PlayerCharacter for eventing.
+/// Subset of key properties from IPlayerCharacter for eventing.
 /// </summary>
 public class ToadPlayer
 {

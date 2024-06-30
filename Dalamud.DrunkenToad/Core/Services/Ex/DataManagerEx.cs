@@ -1,4 +1,8 @@
-﻿namespace Dalamud.DrunkenToad.Core.Services;
+﻿// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable InconsistentNaming
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable ArrangeMissingParentheses
+namespace Dalamud.DrunkenToad.Core.Services;
 
 using System;
 using System.Collections.Generic;
@@ -20,14 +24,14 @@ using Plugin.Services;
 public class DataManagerEx
 {
     private readonly IDataManager dataManager;
-    private readonly DalamudPluginInterface pluginInterface;
+    private readonly IDalamudPluginInterface pluginInterface;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DataManagerEx" /> class.
     /// </summary>
     /// <param name="dataManager">dalamud command manager.</param>
     /// <param name="pluginInterface">dalamud plugin interface.</param>
-    public DataManagerEx(IDataManager dataManager, DalamudPluginInterface pluginInterface)
+    public DataManagerEx(IDataManager dataManager, IDalamudPluginInterface pluginInterface)
     {
         this.dataManager = dataManager;
         this.pluginInterface = pluginInterface;

@@ -1,4 +1,5 @@
-﻿namespace Dalamud.DrunkenToad.Consumers;
+﻿// ReSharper disable MemberCanBePrivate.Global
+namespace Dalamud.DrunkenToad.Consumers;
 
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using Plugin.Ipc;
 public class VisibilityConsumer
 {
     private const string RequiredVisibilityVersion = "1";
-    private readonly DalamudPluginInterface pluginInterface;
+    private readonly IDalamudPluginInterface pluginInterface;
     private ICallGateSubscriber<string, uint, string, object> consumerAddToVoidList = null!;
     private ICallGateSubscriber<string, uint, string, object> consumerAddToWhiteList = null!;
     private ICallGateSubscriber<string> consumerApiVersion = null!;
@@ -25,7 +26,7 @@ public class VisibilityConsumer
     /// Initializes a new instance of the <see cref="VisibilityConsumer" /> class.
     /// </summary>
     /// <param name="pluginInterface">Dalamud Plugin Interface.</param>
-    public VisibilityConsumer(DalamudPluginInterface pluginInterface)
+    public VisibilityConsumer(IDalamudPluginInterface pluginInterface)
     {
         this.pluginInterface = pluginInterface;
         this.Subscribe();

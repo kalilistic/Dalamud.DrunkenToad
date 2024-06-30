@@ -1,3 +1,4 @@
+// ReSharper disable ArrangeMissingParentheses
 namespace Dalamud.DrunkenToad.Extensions;
 
 using System.Reflection;

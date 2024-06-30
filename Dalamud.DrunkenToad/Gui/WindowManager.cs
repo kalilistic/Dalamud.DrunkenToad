@@ -1,7 +1,6 @@
-﻿namespace Dalamud.DrunkenToad.Gui;
+﻿// ReSharper disable MemberCanBePrivate.Global
+namespace Dalamud.DrunkenToad.Gui;
 
-using System;
-using System.Collections.Generic;
 using Interface.Windowing;
 using Plugin;
 
@@ -10,14 +9,14 @@ using Plugin;
 /// </summary>
 public class WindowManager
 {
-    private readonly DalamudPluginInterface pluginInterface;
+    private readonly IDalamudPluginInterface pluginInterface;
     private readonly WindowSystem windowSystem;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="WindowManager" /> class.
     /// </summary>
     /// <param name="pluginInterface">The plugin interface.</param>
-    public WindowManager(DalamudPluginInterface pluginInterface)
+    public WindowManager(IDalamudPluginInterface pluginInterface)
     {
         this.pluginInterface = pluginInterface;
         this.windowSystem = new WindowSystem(this.pluginInterface.InternalName);

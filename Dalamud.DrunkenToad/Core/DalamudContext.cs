@@ -1,4 +1,6 @@
-﻿namespace Dalamud.DrunkenToad.Core;
+﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+namespace Dalamud.DrunkenToad.Core;
 
 using System;
 using Game;
@@ -37,7 +39,7 @@ public class DalamudContext
     public static TargetManagerEx TargetManager { get; private set; } = null!;
 
     /// <summary>
-    /// Gets service that provides access to the PlayerCharacterManager for interacting with the game object table.
+    /// Gets service that provides access to the IPlayerCharacterManager for interacting with the game object table.
     /// </summary>
     public static PlayerEventDispatcher PlayerEventDispatcher { get; private set; } = null!;
 
@@ -155,12 +157,6 @@ public class DalamudContext
     public static IGameGui GameGuiHandler { get; private set; } = null!;
 
     /// <summary>
-    /// Gets service that provides functionality for creating C strings using native game methods.
-    /// </summary>
-    [PluginService]
-    public static ILibcFunction LibcFunctionHandler { get; private set; } = null!;
-
-    /// <summary>
     /// Gets service that handles interaction with game network events.
     /// </summary>
     [PluginService]
@@ -194,7 +190,7 @@ public class DalamudContext
     /// Gets service that acts as an interface to various objects required for interaction with Dalamud and the game.
     /// </summary>
     [PluginService]
-    public static DalamudPluginInterface PluginInterface { get; private set; } = null!;
+    public static IDalamudPluginInterface PluginInterface { get; private set; } = null!;
 
     /// <summary>
     /// Gets or sets service that provides access to the Dalamud plugin logger.
@@ -225,7 +221,7 @@ public class DalamudContext
     /// </summary>
     /// <param name="pluginInterface">dalamud plugin interface.</param>
     /// <returns>indicator if initialized successfully.</returns>
-    public static bool Initialize(DalamudPluginInterface pluginInterface)
+    public static bool Initialize(IDalamudPluginInterface pluginInterface)
     {
         try
         {

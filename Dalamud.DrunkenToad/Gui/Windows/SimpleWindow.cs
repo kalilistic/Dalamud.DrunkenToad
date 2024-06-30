@@ -10,7 +10,7 @@ public abstract class SimpleWindow
     /// <summary>
     /// Gets the plugin interface.
     /// </summary>
-    protected readonly DalamudPluginInterface pluginInterface;
+    protected readonly IDalamudPluginInterface pluginInterface;
 
     /// <summary>
     /// Gets a value indicating whether the window is open.
@@ -21,7 +21,7 @@ public abstract class SimpleWindow
     /// Initializes a new instance of the <see cref="SimpleWindow" /> class.
     /// </summary>
     /// <param name="pluginInterface">dalamud plugin interface.</param>
-    protected SimpleWindow(DalamudPluginInterface pluginInterface)
+    protected SimpleWindow(IDalamudPluginInterface pluginInterface)
     {
         this.pluginInterface = pluginInterface;
         this.pluginInterface.UiBuilder.Draw += this.Draw;

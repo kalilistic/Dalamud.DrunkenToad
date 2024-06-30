@@ -1,4 +1,7 @@
-﻿namespace Dalamud.DrunkenToad.Core.Models;
+﻿// ReSharper disable PropertyCanBeMadeInitOnly.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+namespace Dalamud.DrunkenToad.Core.Models;
 
 using Enums;
 
@@ -28,14 +31,14 @@ public class ToadLocation
     public string ContentName { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets Location type (e.g. overworld, duty, high end duty).
+    /// Gets or sets Location type (e.g. overworld, duty, high-end duty).
     /// </summary>
     public ToadLocationType LocationType { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether the location is in content.
     /// </summary>
-    /// <returns>indicator whether or not in content.</returns>
+    /// <returns>indicator whether in content.</returns>
     public bool InContent() => this.ContentId != 0;
 
     /// <summary>

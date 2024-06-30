@@ -1,4 +1,5 @@
-﻿namespace Dalamud.DrunkenToad.Gui;
+﻿// ReSharper disable MemberCanBePrivate.Global
+namespace Dalamud.DrunkenToad.Gui;
 
 using System.Numerics;
 using Core;

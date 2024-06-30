@@ -17,7 +17,7 @@ public class ErrorWindow : SimpleWindow
     /// </summary>
     /// <param name="pluginInterface">dalamud plugin interface.</param>
     /// <param name="message">error message.</param>
-    public ErrorWindow(DalamudPluginInterface pluginInterface, string message)
+    public ErrorWindow(IDalamudPluginInterface pluginInterface, string message)
         : base(pluginInterface) => this.message = message;
 
     /// <inheritdoc />

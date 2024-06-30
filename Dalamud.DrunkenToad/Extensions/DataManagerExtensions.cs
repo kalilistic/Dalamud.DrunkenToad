@@ -1,3 +1,4 @@
+// ReSharper disable UseCollectionExpression
 namespace Dalamud.DrunkenToad.Extensions;
 
 using System;
@@ -175,7 +176,7 @@ public static class DataManagerExtensions
     /// <param name="value">data manager.</param>
     /// <param name="worldId">world id.</param>
     /// <returns>indicator whether world is a test data center.</returns>
-    public static bool IsTestDC(this IDataManager value, uint worldId)
+    public static bool IsTestDc(this IDataManager value, uint worldId)
     {
         var world = value.GetExcelSheet<World>()?.GetRow(worldId);
         return world?.DataCenter?.Value?.RowId == 13;

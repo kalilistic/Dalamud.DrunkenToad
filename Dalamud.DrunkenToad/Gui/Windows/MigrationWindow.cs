@@ -1,4 +1,5 @@
-﻿namespace Dalamud.DrunkenToad.Gui.Windows;
+﻿// ReSharper disable UseCollectionExpression
+namespace Dalamud.DrunkenToad.Gui.Windows;
 
 using System;
 using System.Collections.Concurrent;
@@ -24,7 +25,7 @@ public class MigrationWindow : SimpleWindow
     private bool isMigrationFinished;
     private int previousStepCount;
 
-    public MigrationWindow(DalamudPluginInterface pluginInterface)
+    public MigrationWindow(IDalamudPluginInterface pluginInterface)
         : base(pluginInterface)
     {
         this.stopwatch = new Stopwatch();

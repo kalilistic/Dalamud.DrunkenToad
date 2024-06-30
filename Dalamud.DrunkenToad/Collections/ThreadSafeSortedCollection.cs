@@ -1,4 +1,6 @@
-﻿namespace Dalamud.DrunkenToad.Collections;
+﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UseCollectionExpression
+namespace Dalamud.DrunkenToad.Collections;
 
 using System;
 using System.Collections.Concurrent;

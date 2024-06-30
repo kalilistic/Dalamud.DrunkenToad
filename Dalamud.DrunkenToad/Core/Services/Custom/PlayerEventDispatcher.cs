@@ -13,7 +13,7 @@ using Plugin.Services;
 /// </summary>
 public class PlayerEventDispatcher : IDisposable
 {
-    private readonly uint[] existingObjectIds = new uint[100];
+    private readonly uint[] existingEntityIds = new uint[100];
     private readonly IFramework gameFramework;
     private readonly IObjectTable objectCollection;
     private readonly ReaderWriterLockSlim locker = new ();
@@ -32,7 +32,7 @@ public class PlayerEventDispatcher : IDisposable
     /// <summary>
     /// Add Players Delegate.
     /// </summary>
-    /// <param name="toadPlayers">Player objects with key properties from PlayerCharacter.</param>
+    /// <param name="toadPlayers">Player objects with key properties from IPlayerCharacter.</param>
     public delegate void DalamudAddPlayersDelegate(List<ToadPlayer> toadPlayers);
 
     /// <summary>
@@ -44,7 +44,7 @@ public class PlayerEventDispatcher : IDisposable
     /// <summary>
     /// Update Players Delegate.
     /// </summary>
-    /// <param name="toadPlayers">Player objects with key properties from PlayerCharacter.</param>
+    /// <param name="toadPlayers">Player objects with key properties from IPlayerCharacter.</param>
     public delegate void DalamudUpdatePlayersDelegate(List<ToadPlayer> toadPlayers);
 
     /// <summary>
@@ -72,11 +72,12 @@ public class PlayerEventDispatcher : IDisposable
         this.locker.EnterReadLock();
         try
         {
-            for (var i = 0; i < this.existingObjectIds.Length; i++)
+            for (var i = 0; i < this.existingEntityIds.Length; i++)
             {
-                if (this.existingObjectIds[i] == id)
+                // ReSharper disable once InvertIf
+                if (this.existingEntityIds[i] == id)
                 {
-                    if (this.objectCollection[i * 2] is PlayerCharacter playerCharacter)
+                    if (this.objectCollection[i * 2] is IPlayerCharacter playerCharacter)
                     {
                         return MapToadPlayer(playerCharacter);
                     }
@@ -104,7 +105,7 @@ public class PlayerEventDispatcher : IDisposable
         {
             foreach (var gameObject in this.objectCollection)
             {
-                if (gameObject is PlayerCharacter playerCharacter)
+                if (gameObject is IPlayerCharacter playerCharacter)
                 {
                     if (playerCharacter.Name.ToString().Equals(name, StringComparison.Ordinal) && playerCharacter.HomeWorld.Id == worldId)
                     {
@@ -131,9 +132,9 @@ public class PlayerEventDispatcher : IDisposable
         this.locker.Dispose();
     }
 
-    private static ToadPlayer MapToadPlayer(PlayerCharacter character) => new ()
+    private static ToadPlayer MapToadPlayer(IPlayerCharacter character) => new ()
     {
-        Id = character.ObjectId,
+        Id = character.EntityId,
         Name = character.Name.ToString(),
         HomeWorld = character.HomeWorld.Id,
         ClassJob = character.ClassJob.Id,
@@ -155,11 +156,11 @@ public class PlayerEventDispatcher : IDisposable
             for (var i = 2; i < 200; i += 2)
             {
                 var index = i / 2;
-                var currentObjectId = this.objectCollection[i]?.ObjectId ?? 0;
-                var existingId = this.existingObjectIds[index];
+                var currentEntityId = this.objectCollection[i]?.EntityId ?? 0;
+                var existingId = this.existingEntityIds[index];
 
                 // check if same
-                if (currentObjectId == existingId)
+                if (currentEntityId == existingId)
                 {
                     continue;
                 }
@@ -170,16 +171,16 @@ public class PlayerEventDispatcher : IDisposable
                     if (existingId != 0)
                     {
                         removedPlayers.Add(existingId);
-                        this.existingObjectIds[i / 2] = 0;
+                        this.existingEntityIds[i / 2] = 0;
                     }
 
                     continue;
                 }
 
-                PlayerCharacter character;
-                if (this.objectCollection[i].IsValidPlayerCharacter())
+                IPlayerCharacter character;
+                if (this.objectCollection[i].IsValidIPlayerCharacter())
                 {
-                    character = (this.objectCollection[i] as PlayerCharacter) !;
+                    character = (this.objectCollection[i] as IPlayerCharacter) !;
                 }
                 else
                 {
@@ -190,14 +191,14 @@ public class PlayerEventDispatcher : IDisposable
                 if (existingId == 0)
                 {
                     addedPlayers.Add(MapToadPlayer(character));
-                    this.existingObjectIds[i / 2] = currentObjectId;
+                    this.existingEntityIds[i / 2] = currentEntityId;
                     continue;
                 }
 
                 // otherwise replaced
                 removedPlayers.Add(existingId);
                 addedPlayers.Add(MapToadPlayer(character));
-                this.existingObjectIds[i / 2] = currentObjectId;
+                this.existingEntityIds[i / 2] = currentEntityId;
             }
 
             if (removedPlayers.Count > 0)

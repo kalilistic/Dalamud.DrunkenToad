@@ -1,4 +1,5 @@
-﻿namespace Dalamud.DrunkenToad.Extensions;
+﻿// ReSharper disable UseCollectionExpression
+namespace Dalamud.DrunkenToad.Extensions;
 
 using System;
 using System.IO;

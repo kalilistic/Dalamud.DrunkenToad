@@ -1,4 +1,6 @@
-﻿namespace Dalamud.DrunkenToad.Helpers;
+﻿// ReSharper disable ArrangeMissingParentheses
+// ReSharper disable InconsistentNaming
+namespace Dalamud.DrunkenToad.Helpers;
 
 using System;
 using System.Collections.Generic;

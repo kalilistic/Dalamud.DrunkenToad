@@ -1,4 +1,7 @@
-﻿namespace Dalamud.DrunkenToad.Extensions;
+﻿// ReSharper disable ConvertIfStatementToReturnStatement
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable MergeIntoPattern
+namespace Dalamud.DrunkenToad.Extensions;
 
 using System;
 using System.IO;
@@ -17,7 +20,7 @@ public static class PluginInterfaceExtensions
     /// <param name="value">dalamud plugin interface with sanitizer initialized.</param>
     /// <param name="str">string to sanitize.</param>
     /// <returns>Indicator if player character is valid.</returns>
-    public static string Sanitize(this DalamudPluginInterface value, string str)
+    public static string Sanitize(this IDalamudPluginInterface value, string str)
     {
         if (string.IsNullOrEmpty(str))
         {
@@ -33,7 +36,7 @@ public static class PluginInterfaceExtensions
     /// <param name="value">dalamud plugin interface with sanitizer initialized.</param>
     /// <param name="str">string to sanitize.</param>
     /// <returns>Indicator if player character is valid.</returns>
-    public static string Sanitize(this DalamudPluginInterface value, SeString str) => Sanitize(value, str.ToString());
+    public static string Sanitize(this IDalamudPluginInterface value, SeString str) => Sanitize(value, str.ToString());
 
     /// <summary>
     /// Sanitize lumina se string to remove unprintable characters (short hand method).
@@ -41,14 +44,14 @@ public static class PluginInterfaceExtensions
     /// <param name="value">dalamud plugin interface with sanitizer initialized.</param>
     /// <param name="str">string to sanitize.</param>
     /// <returns>Indicator if player character is valid.</returns>
-    public static string Sanitize(this DalamudPluginInterface value, Lumina.Text.SeString str) => Sanitize(value, str.ToString());
+    public static string Sanitize(this IDalamudPluginInterface value, Lumina.Text.SeString str) => Sanitize(value, str.ToString());
 
     /// <summary>
     /// Get the plugin backup directory for windows (don't use for Wine).
     /// </summary>
     /// <param name="value">dalamud plugin interface.</param>
     /// <returns>Plugin backup directory.</returns>
-    public static string WindowsPluginBackupDirectory(this DalamudPluginInterface value)
+    public static string WindowsPluginBackupDirectory(this IDalamudPluginInterface value)
     {
         var appDataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         var backupsDir = Path.Combine(appDataDir, "XIVLauncher", $"{value.InternalName.FirstCharToLower()}Backups");
@@ -61,7 +64,7 @@ public static class PluginInterfaceExtensions
     /// </summary>
     /// <param name="value">dalamud plugin interface.</param>
     /// <returns>Plugin backup directory.</returns>
-    public static string PluginBackupDirectory(this DalamudPluginInterface value)
+    public static string PluginBackupDirectory(this IDalamudPluginInterface value)
     {
         var configDir = value.ConfigDirectory.Parent;
         var appDir = configDir?.Parent;
@@ -81,7 +84,7 @@ public static class PluginInterfaceExtensions
     /// <param name="value">dalamud plugin interface.</param>
     /// <param name="version">version to check.</param>
     /// <returns>Indicator if another version of the plugin is loaded.</returns>
-    public static bool IsDifferentVersionLoaded(this DalamudPluginInterface value, string version = "Canary")
+    public static bool IsDifferentVersionLoaded(this IDalamudPluginInterface value, string version = "Canary")
     {
         var internalName = value.InternalName;
         if (!internalName.EndsWith(version, StringComparison.CurrentCulture))
@@ -93,7 +96,7 @@ public static class PluginInterfaceExtensions
         return IsPluginLoaded(value, stableName);
     }
 
-    private static bool IsPluginLoaded(DalamudPluginInterface pluginInterface, string pluginName)
+    private static bool IsPluginLoaded(IDalamudPluginInterface pluginInterface, string pluginName)
     {
         var plugin = pluginInterface.InstalledPlugins.FirstOrDefault(p => p.Name == pluginName);
         return plugin != null && plugin.IsLoaded;

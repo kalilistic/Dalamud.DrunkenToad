@@ -1,3 +1,4 @@
+// ReSharper disable InconsistentNaming
 namespace Dalamud.DrunkenToad.Gui;
 
 using System;
