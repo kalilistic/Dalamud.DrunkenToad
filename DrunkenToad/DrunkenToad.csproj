@@ -1,0 +1,114 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Title>Dalamud.DrunkenToad</Title>
+    <Authors>kalilistic</Authors>
+    <Description>A set of common utilities to use in dalamud plugins.</Description>
+    <RepositoryUrl>https://github.com/kalilistic/Dalamud.DrunkenToad</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>icon.png</PackageIcon>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NoWarn>SA1401,SA1633,CA1859</NoWarn>
+    <RootNamespace>Dalamud.DrunkenToad</RootNamespace>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <None Remove="stylecop.json" />
+    <AdditionalFiles Include="..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="..\assets\icon.png" Pack="true" PackagePath="" />
+	<None Include="..\README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+  
+  <Choose>
+    <When Condition="'$(DALAMUD_HOME)' != ''">
+      <PropertyGroup>
+        <BaseDalamudPath>$(DALAMUD_HOME)</BaseDalamudPath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <Choose>
+        <When Condition="Exists('$(AppData)\XIVLauncher\addon\Hooks\dev')">
+          <PropertyGroup>
+            <BaseDalamudPath>$(AppData)\XIVLauncher\addon\Hooks\dev</BaseDalamudPath>
+          </PropertyGroup>
+        </When>
+        <Otherwise>
+          <PropertyGroup>
+            <BaseDalamudPath>/home/runner/Dalamud</BaseDalamudPath>
+          </PropertyGroup>
+        </Otherwise>
+      </Choose>
+    </Otherwise>
+  </Choose>
+  
+  <ItemGroup>
+    <Reference Include="Dalamud">
+      <HintPath>$(BaseDalamudPath)\Dalamud.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="FFXIVClientStructs">
+      <HintPath>$(BaseDalamudPath)\FFXIVClientStructs.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Lumina">
+      <HintPath>$(BaseDalamudPath)\Lumina.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Lumina.Excel">
+      <HintPath>$(BaseDalamudPath)\Lumina.Excel.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ImGui.NET">
+      <HintPath>$(BaseDalamudPath)\ImGui.NET.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(BaseDalamudPath)\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Dalamud.Loc" Version="1.2.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>
