@@ -5,7 +5,6 @@
     <Description>A set of common utilities to use in dalamud plugins.</Description>
     <RepositoryUrl>https://github.com/kalilistic/Dalamud.DrunkenToad</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIcon>icon.png</PackageIcon>
     <TargetFramework>net8.0-windows</TargetFramework>
     <Platforms>x64</Platforms>
     <LangVersion>latest</LangVersion>
@@ -16,13 +15,12 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <OutputPath>bin\$(Configuration)\</OutputPath>
-    <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <NoWarn>SA1401,SA1633,CA1859</NoWarn>
     <RootNamespace>Dalamud.DrunkenToad</RootNamespace>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <BaseDalamudPath>$(AppData)\XIVLauncher\addon\Hooks\dev</BaseDalamudPath>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
@@ -52,34 +50,7 @@
       <Link>stylecop.json</Link>
     </AdditionalFiles>
   </ItemGroup>
-  
-  <ItemGroup>
-    <None Include="assets\icon.png" Pack="true" PackagePath="" />
-    <None Include="README.md" Pack="true" PackagePath="" />
-  </ItemGroup>
-  
-  <Choose>
-    <When Condition="'$(DALAMUD_HOME)' != ''">
-      <PropertyGroup>
-        <BaseDalamudPath>$(DALAMUD_HOME)</BaseDalamudPath>
-      </PropertyGroup>
-    </When>
-    <Otherwise>
-      <Choose>
-        <When Condition="Exists('$(AppData)\XIVLauncher\addon\Hooks\dev')">
-          <PropertyGroup>
-            <BaseDalamudPath>$(AppData)\XIVLauncher\addon\Hooks\dev</BaseDalamudPath>
-          </PropertyGroup>
-        </When>
-        <Otherwise>
-          <PropertyGroup>
-            <BaseDalamudPath>/home/runner/Dalamud</BaseDalamudPath>
-          </PropertyGroup>
-        </Otherwise>
-      </Choose>
-    </Otherwise>
-  </Choose>
-  
+
   <ItemGroup>
     <Reference Include="Dalamud">
       <HintPath>$(BaseDalamudPath)\Dalamud.dll</HintPath>

@@ -1,5 +1,4 @@
 # Dalamud.DrunkenToad
-[![Nuget](https://img.shields.io/nuget/v/Dalamud.DrunkenToad)](https://www.nuget.org/packages/Dalamud.DrunkenToad/)
 
 A set of utilities to use in developing dalamud plugins. Equal in prestige to its in-game namesake.
 
@@ -16,7 +15,7 @@ A set of utilities to use in developing dalamud plugins. Equal in prestige to it
 - Provides a set of common ImGui components.
 
 ## How to use
-Add the nuget package or as a submodule to your project.
+Add as a submodule to your plugin project.
 
 ## Examples
 
