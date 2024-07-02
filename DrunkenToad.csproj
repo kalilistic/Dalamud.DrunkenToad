@@ -8,7 +8,6 @@
     <PackageIcon>icon.png</PackageIcon>
     <TargetFramework>net8.0-windows</TargetFramework>
     <Platforms>x64</Platforms>
-    <PlatformTarget>x64</PlatformTarget>
     <LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
@@ -16,6 +15,11 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <NoWarn>SA1401,SA1633,CA1859</NoWarn>
     <RootNamespace>Dalamud.DrunkenToad</RootNamespace>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -51,7 +55,7 @@
   
   <ItemGroup>
     <None Include="assets\icon.png" Pack="true" PackagePath="" />
-	<None Include="README.md" Pack="true" PackagePath="" />
+    <None Include="README.md" Pack="true" PackagePath="" />
   </ItemGroup>
   
   <Choose>
