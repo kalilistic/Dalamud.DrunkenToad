@@ -14,15 +14,11 @@ using Models;
 /// </summary>
 public unsafe class SocialListHandler
 {
-    private bool isEnabled;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="SocialListHandler" /> class.
     /// </summary>
     public SocialListHandler()
     {
-        DalamudContext.PluginLog.Verbose("Entering SocialListHandler.Start()");
-        throw new NotImplementedException("Temporarily disabled due to Dawntrail changes.");
     }
 
     public delegate void FriendListReceivedDelegate(List<ToadSocialListMember> members);
@@ -55,7 +51,11 @@ public unsafe class SocialListHandler
 
     public event BlackListReceivedDelegate? BlackListReceived;
 
-    public static void Dispose() => DalamudContext.PluginLog.Verbose("Entering SocialListHandler.Dispose()");
+    public static void Dispose()
+    {
+    }
 
-    public void Start() => this.isEnabled = true;
+    public void Start()
+    {
+    }
 }
