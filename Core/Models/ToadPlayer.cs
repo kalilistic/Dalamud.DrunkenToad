@@ -51,6 +51,11 @@ public class ToadPlayer
     public string Name = null!;
 
     /// <summary>
+    /// Player Content ID.
+    /// </summary>
+    public ulong ContentId;
+
+    /// <summary>
     /// Is Player Valid.
     /// </summary>
     /// <remarks>
@@ -58,6 +63,7 @@ public class ToadPlayer
     /// </remarks>
     /// <returns>Indicator if player is valid.</returns>
     public bool IsValid() => this.Id > 0 &&
+                             this.ContentId > 0 &&
                              this.HomeWorld != ushort.MaxValue &&
                              this.HomeWorld != 0 &&
                              this.ClassJob != 0;

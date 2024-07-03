@@ -3,9 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Dalamud.Game.ClientState.Objects.SubKinds;
+using Game.ClientState.Objects.SubKinds;
 using Dalamud.Plugin.Services;
 using Extensions;
+using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using Models;
 
 /// <summary>
@@ -132,9 +133,10 @@ public class PlayerEventDispatcher : IDisposable
         this.locker.Dispose();
     }
 
-    private static ToadPlayer MapToadPlayer(IPlayerCharacter character) => new ()
+    private static unsafe ToadPlayer MapToadPlayer(IPlayerCharacter character) => new ()
     {
         Id = character.EntityId,
+        ContentId = ((Character*)character.Address)->ContentId,
         Name = character.Name.ToString(),
         HomeWorld = character.HomeWorld.Id,
         ClassJob = character.ClassJob.Id,
