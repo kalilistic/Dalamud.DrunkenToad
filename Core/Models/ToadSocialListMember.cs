@@ -4,7 +4,7 @@
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 namespace Dalamud.DrunkenToad.Core.Models;
 
-using Dalamud.Utility;
+using Utility;
 
 public class ToadSocialListMember
 {
@@ -29,11 +29,21 @@ public class ToadSocialListMember
     public bool IsUnableToRetrieve;
 
     /// <summary>
-    /// Validate if player is valid.
+    /// Player is expected to have content id (set to false where not available).
+    /// </summary>
+    public bool ShouldHaveContentId = true;
+
+    /// <summary>
+    /// Validate if player is valid (expected to have content id).
     /// </summary>
     /// <returns>Indicator if player is valid.</returns>
     public bool IsValid()
     {
+        if (!this.ShouldHaveContentId)
+        {
+            return DalamudContext.DataManager.IsValidWorld(this.HomeWorld) && this.Name.IsValidCharacterName();
+        }
+
         if (this.ContentId == 0)
         {
             return false;

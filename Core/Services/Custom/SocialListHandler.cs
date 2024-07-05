@@ -9,6 +9,7 @@ using Memory;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Client.UI.Info;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using Lumina.Excel.GeneratedSheets2;
 using Models;
 
 /// <summary>
@@ -18,6 +19,7 @@ public unsafe class SocialListHandler
 {
     private const int BlackListStringArray = 14;
     private const int BlackListWorldStartIndex = 200;
+    private static string unableToRetrieveMessage = null!;
 
     private Hook<InfoProxyInterface.Delegates.EndRequest>? infoProxyFriendListEndRequestHook;
 
@@ -37,6 +39,7 @@ public unsafe class SocialListHandler
     public SocialListHandler()
     {
         DalamudContext.PluginLog.Verbose("Entering SocialListHandler.Start()");
+        SetupUnavailableMessage();
         this.SetupFriendList();
         this.SetupFreeCompany();
         this.SetupLinkShell();
@@ -112,34 +115,41 @@ public unsafe class SocialListHandler
         var members = new List<ToadSocialListMember>();
         for (var i = 0; i < infoProxyInterface->EntryCount; i++)
         {
-            var member = new ToadSocialListMember
-            {
-                //ContentId = (ulong)((InfoProxyBlacklist*)infoProxyInterface)->ContentIds[i], // InfoProxyBlacklist changed
-            };
-
             var data = (nint*)AtkStage.Instance()->AtkArrayDataHolder->StringArrays[BlackListStringArray]->StringArray;
             var worldName = MemoryHelper.ReadStringNullTerminated(data[BlackListWorldStartIndex + i]);
-            if (!string.IsNullOrEmpty(worldName))
+            var member = new ToadSocialListMember
             {
-                member.Name = MemoryHelper.ReadStringNullTerminated(data[i]);
-                member.HomeWorld = (ushort)DalamudContext.DataManager.GetWorldIdByName(worldName);
-            }
-            else
+                Name = MemoryHelper.ReadStringNullTerminated(data[i]),
+                HomeWorld = (ushort)DalamudContext.DataManager.GetWorldIdByName(worldName),
+                ShouldHaveContentId = false,
+            };
+
+            if (member.Name.Equals(unableToRetrieveMessage, StringComparison.Ordinal))
             {
-                member.Name = string.Empty;
-                member.HomeWorld = 0;
-                member.IsUnableToRetrieve = true;
+                DalamudContext.PluginLog.Verbose($"Skipping Blacklist Member: {i} {worldName}");
+                continue;
             }
 
             if (!member.IsValid())
             {
-                throw new DataException($"Invalid member: {member.Name} {member.ContentId} {member.HomeWorld}");
+                throw new DataException($"Invalid blacklist member: {member.Name} {member.HomeWorld}");
             }
 
             members.Add(member);
         }
 
         return members;
+    }
+
+    private static void SetupUnavailableMessage()
+    {
+        var isUnavailable = DalamudContext.DataManager.Excel.GetSheet<Addon>() !.GetRow(964)?.Text.RawString;
+        if (string.IsNullOrEmpty(isUnavailable))
+        {
+            throw new DataException("Unable to retrieve the message for unavailable players.");
+        }
+
+        unableToRetrieveMessage = isUnavailable;
     }
 
     private void SetupFriendList()
