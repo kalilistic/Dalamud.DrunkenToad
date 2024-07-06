@@ -26,9 +26,14 @@ public class ToadPlayer
     public uint HomeWorld;
 
     /// <summary>
-    /// GameObject ID.
+    /// Player Entity ID assigned to networked GameObjects.
     /// </summary>
-    public uint Id;
+    public uint EntityId;
+
+    /// <summary>
+    /// Player GameObject ID.
+    /// </summary>
+    public ulong GameObjectId;
 
     /// <summary>
     /// Is Player Dead.
@@ -62,8 +67,7 @@ public class ToadPlayer
     /// Use Dalamud's IsValidCharacterName() for more robust checks.
     /// </remarks>
     /// <returns>Indicator if player is valid.</returns>
-    public bool IsValid() => this.Id > 0 &&
-                             this.ContentId > 0 &&
+    public bool IsValid() => this.ContentId > 0 &&
                              this.HomeWorld != ushort.MaxValue &&
                              this.HomeWorld != 0 &&
                              this.ClassJob != 0;

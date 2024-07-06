@@ -14,7 +14,7 @@ using Models;
 /// </summary>
 public class PlayerEventDispatcher : IDisposable
 {
-    private readonly uint[] existingEntityIds = new uint[100];
+    private readonly ulong[] existingContentIds = new ulong[100];
     private readonly IFramework gameFramework;
     private readonly IObjectTable objectCollection;
     private readonly ReaderWriterLockSlim locker = new ();
@@ -40,7 +40,7 @@ public class PlayerEventDispatcher : IDisposable
     /// Remove Players Delegate.
     /// </summary>
     /// <param name="playerIds">Player object ids.</param>
-    public delegate void DalamudRemovePlayersDelegate(List<uint> playerIds);
+    public delegate void DalamudRemovePlayersDelegate(List<ulong> playerIds);
 
     /// <summary>
     /// Update Players Delegate.
@@ -73,10 +73,10 @@ public class PlayerEventDispatcher : IDisposable
         this.locker.EnterReadLock();
         try
         {
-            for (var i = 0; i < this.existingEntityIds.Length; i++)
+            for (var i = 0; i < this.existingContentIds.Length; i++)
             {
                 // ReSharper disable once InvertIf
-                if (this.existingEntityIds[i] == id)
+                if (this.existingContentIds[i] == id)
                 {
                     if (this.objectCollection[i * 2] is IPlayerCharacter playerCharacter)
                     {
@@ -135,7 +135,8 @@ public class PlayerEventDispatcher : IDisposable
 
     private static unsafe ToadPlayer MapToadPlayer(IPlayerCharacter character) => new ()
     {
-        Id = character.EntityId,
+        GameObjectId = character.GameObjectId,
+        EntityId = character.EntityId,
         ContentId = ((Character*)character.Address)->ContentId,
         Name = character.Name.ToString(),
         HomeWorld = character.HomeWorld.Id,
@@ -147,22 +148,28 @@ public class PlayerEventDispatcher : IDisposable
         IsDead = character.IsDead,
     };
 
-    private void OnFrameworkUpdate(IFramework framework)
+    private unsafe void OnFrameworkUpdate(IFramework framework)
     {
         this.locker.EnterWriteLock();
         try
         {
             var addedPlayers = new List<ToadPlayer>();
-            var removedPlayers = new List<uint>();
+            var removedPlayers = new List<ulong>();
 
             for (var i = 2; i < 200; i += 2)
             {
                 var index = i / 2;
-                var currentEntityId = this.objectCollection[i]?.EntityId ?? 0;
-                var existingId = this.existingEntityIds[index];
+                var gameObject = this.objectCollection[i];
+                if (gameObject == null)
+                {
+                    continue;
+                }
+
+                var currentContentId = ((Character*)gameObject.Address)->ContentId;
+                var existingId = this.existingContentIds[index];
 
                 // check if same
-                if (currentEntityId == existingId)
+                if (currentContentId == existingId)
                 {
                     continue;
                 }
@@ -173,7 +180,7 @@ public class PlayerEventDispatcher : IDisposable
                     if (existingId != 0)
                     {
                         removedPlayers.Add(existingId);
-                        this.existingEntityIds[i / 2] = 0;
+                        this.existingContentIds[i / 2] = 0;
                     }
 
                     continue;
@@ -193,14 +200,14 @@ public class PlayerEventDispatcher : IDisposable
                 if (existingId == 0)
                 {
                     addedPlayers.Add(MapToadPlayer(character));
-                    this.existingEntityIds[i / 2] = currentEntityId;
+                    this.existingContentIds[i / 2] = currentContentId;
                     continue;
                 }
 
                 // otherwise replaced
                 removedPlayers.Add(existingId);
                 addedPlayers.Add(MapToadPlayer(character));
-                this.existingEntityIds[i / 2] = currentEntityId;
+                this.existingContentIds[i / 2] = currentContentId;
             }
 
             if (removedPlayers.Count > 0)
