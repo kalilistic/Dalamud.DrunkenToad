@@ -68,7 +68,7 @@ public class PlayerEventDispatcher : IDisposable
     /// </summary>
     /// <param name="id">object (actor) id.</param>
     /// <returns>player if exists.</returns>
-    public ToadPlayer? GetPlayerById(uint id)
+    public ToadPlayer? GetPlayerByContentId(ulong id)
     {
         this.locker.EnterReadLock();
         try

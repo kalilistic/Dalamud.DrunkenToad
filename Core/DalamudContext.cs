@@ -205,6 +205,12 @@ public class DalamudContext
     public static IGameInteropProvider HookManager { get; set; } = null!;
 
     /// <summary>
+    /// Gets or sets service that provides methods for interacting with the game's context menu.
+    /// </summary>
+    [PluginService]
+    public static IContextMenu ContextMenuHandler { get; set; } = null!;
+
+    /// <summary>
     /// Gets or sets service that provides access to game data for Dalamud and plugins.
     /// </summary>
     [PluginService]
