@@ -211,6 +211,12 @@ public class DalamudContext
     public static IContextMenu ContextMenuHandler { get; set; } = null!;
 
     /// <summary>
+    /// Gets or sets service that provides access to the game's action manager.
+    /// </summary>
+    [PluginService]
+    public static IAddonLifecycle AddonLifecycleHandler { get; set; } = null!;
+
+    /// <summary>
     /// Gets or sets service that provides access to game data for Dalamud and plugins.
     /// </summary>
     [PluginService]
