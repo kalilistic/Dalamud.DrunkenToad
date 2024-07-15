@@ -132,7 +132,8 @@ public unsafe class SocialListHandler
 
             if (!member.IsValid())
             {
-                throw new DataException($"Invalid blacklist member: {member.Name} {member.HomeWorld}");
+                DalamudContext.PluginLog.Warning($"Invalid Blacklist member: {member.Name} {member.HomeWorld}");
+                continue;
             }
 
             members.Add(member);
