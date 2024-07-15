@@ -3,12 +3,12 @@
 namespace Dalamud.DrunkenToad.Core;
 
 using System;
-using Dalamud.Game;
-using Dalamud.Game.ClientState.Objects;
-using Dalamud.IoC;
-using Dalamud.Plugin;
-using Dalamud.Plugin.Services;
+using Game;
+using Game.ClientState.Objects;
 using Gui;
+using IoC;
+using Plugin;
+using Plugin.Services;
 using Services;
 using PluginLocalization = Loc.Localization;
 
@@ -37,11 +37,6 @@ public class DalamudContext
     /// Gets the collection of player targets with extension methods for interacting with them.
     /// </summary>
     public static TargetManagerEx TargetManager { get; private set; } = null!;
-
-    /// <summary>
-    /// Gets service that provides access to the IPlayerCharacterManager for interacting with the game object table.
-    /// </summary>
-    public static PlayerEventDispatcher PlayerEventDispatcher { get; private set; } = null!;
 
     /// <summary>
     /// Gets service for providing events when social list data is available.
@@ -241,7 +236,6 @@ public class DalamudContext
             DataManager = new DataManagerEx(DalamudDataManager, pluginInterface);
             TargetManager = new TargetManagerEx(DalamudTargetManager);
             PlayerLocationManager = new PlayerLocationManager(ClientStateHandler, DataManager);
-            PlayerEventDispatcher = new PlayerEventDispatcher(GameFramework, ObjectCollection);
             SocialListHandler = new SocialListHandler();
             LocManager = new PluginLocalization(pluginInterface);
             WindowManager = new WindowManager(pluginInterface);
@@ -264,7 +258,6 @@ public class DalamudContext
         {
             WindowManager.Dispose();
             LocManager.Dispose();
-            PlayerEventDispatcher.Dispose();
             SocialListHandler.Dispose();
             PlayerLocationManager.Dispose();
         }

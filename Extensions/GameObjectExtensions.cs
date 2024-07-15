@@ -3,8 +3,8 @@
 namespace Dalamud.DrunkenToad.Extensions;
 
 using Core;
-using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
+using Game.ClientState.Objects.SubKinds;
+using Game.ClientState.Objects.Types;
 
 /// <summary>
 /// Dalamud GameObject extensions.

@@ -231,7 +231,6 @@ public class ToadServiceInitializer
         services.AddSingleton<DataManagerEx>();
         services.AddSingleton<TargetManagerEx>();
         services.AddSingleton<PlayerLocationManager>();
-        services.AddSingleton<PlayerEventDispatcher>();
         services.AddSingleton<SocialListHandler>();
         services.AddSingleton<PluginLocalization>();
         services.AddSingleton<WindowManager>();
