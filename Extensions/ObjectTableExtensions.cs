@@ -22,6 +22,7 @@ public static class ObjectTableExtensions
             .Where(x => x.ObjectKind == ObjectKind.Player && x is IPlayerCharacter)
             .OfType<IPlayerCharacter>()
             .Select(pc => pc.ToToadPlayer())
+            .Where(tp => tp.IsValid())
             .ToList();
 
     /// <summary>

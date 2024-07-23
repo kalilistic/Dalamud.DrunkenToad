@@ -3,6 +3,7 @@
 /// <summary>
 /// Subset of key properties from IPlayerCharacter for eventing.
 /// </summary>
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
 public class ToadPlayer
 {
     /// <summary>
@@ -68,7 +69,10 @@ public class ToadPlayer
     /// </remarks>
     /// <returns>Indicator if player is valid.</returns>
     public bool IsValid() => this.ContentId > 0 &&
+                             !string.IsNullOrEmpty(this.Name) &&
                              this.HomeWorld != ushort.MaxValue &&
                              this.HomeWorld != 0 &&
-                             this.ClassJob != 0;
+                             this.ClassJob != 0 &&
+                             this.EntityId >= 0 &&
+                             this.EntityId != uint.MaxValue;
 }
