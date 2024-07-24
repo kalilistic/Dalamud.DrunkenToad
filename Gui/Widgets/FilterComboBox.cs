@@ -59,6 +59,11 @@ public class FilterComboBox
         var localizedLabel = DalamudContext.LocManager.GetString(label);
         if (ImGui.BeginCombo(localizedLabel, previewValue, flags | ImGuiComboFlags.HeightLargest))
         {
+            if (!this.comboOpened)
+            {
+                ImGui.SetKeyboardFocusHere();
+            }
+
             this.comboOpened = true;
             this.DrawFilter();
             ImGui.Separator();
@@ -83,10 +88,13 @@ public class FilterComboBox
 
     private void DrawFilter()
     {
+        ImGui.PushItemWidth(ImGui.GetWindowContentRegionMax().X - ImGui.GetWindowContentRegionMin().X);
         if (LocGui.InputTextWithHint("#FilterText", this.filterTextHint, ref this.filter, 256))
         {
             this.UpdateFilter();
         }
+
+        ImGui.PopItemWidth();
     }
 
     private int? DrawItems(float itemHeight)
@@ -98,7 +106,7 @@ public class FilterComboBox
         var childHeight = System.Math.Max(totalItemsHeight, minHeight);
         childHeight = System.Math.Min(childHeight, maxHeight);
 
-        ImGui.BeginChild("##ItemList", ImGuiHelpers.ScaledVector2(0, childHeight), true, totalItemsHeight >= maxHeight ? ImGuiWindowFlags.AlwaysVerticalScrollbar : ImGuiWindowFlags.None);
+        ImGui.BeginChild("##ItemList", ImGuiHelpers.ScaledVector2(0, childHeight), true, ImGuiWindowFlags.AlwaysVerticalScrollbar);
 
         int? selectedIndex = null;
 
