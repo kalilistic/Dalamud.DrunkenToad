@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using Dalamud.Plugin;
+using Plugin;
 using Dalamud.Plugin.Services;
 using Enums;
 using Extensions;
@@ -209,14 +209,14 @@ public class DataManagerEx
     {
         var worldSheet = this.dataManager.GetExcelSheet<World>() !;
         var luminaWorlds = worldSheet.Where(
-            world => !string.IsNullOrEmpty(world.Name) &&
+            world => !string.IsNullOrEmpty(world.InternalName) &&
                      world.DataCenter.Row != 0
-                     && char.IsUpper((char)world.Name.RawData[0]) &&
+                     && char.IsUpper((char)world.InternalName.RawData[0]) &&
                      !this.IsTestDC(world.RowId));
 
         return luminaWorlds.ToDictionary(
             luminaWorld => luminaWorld.RowId,
-            luminaWorld => new ToadWorld { Id = luminaWorld.RowId, Name = this.pluginInterface.Sanitize(luminaWorld.Name), DataCenterId = luminaWorld.DataCenter.Row });
+            luminaWorld => new ToadWorld { Id = luminaWorld.RowId, Name = this.pluginInterface.Sanitize(luminaWorld.InternalName), DataCenterId = luminaWorld.DataCenter.Row });
     }
 
     private Dictionary<uint, ToadDataCenter> LoadDataCenters()
