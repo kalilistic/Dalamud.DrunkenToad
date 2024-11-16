@@ -27,7 +27,7 @@ public static class MenuItemClickedArgsExtensions
         }
 
         var playerName = menuTargetDefault.TargetName;
-        var worldId = menuTargetDefault.TargetHomeWorld.Id;
+        var worldId = menuTargetDefault.TargetHomeWorld.RowId;
         var contentId = menuTargetDefault.TargetContentId;
         var objectId = menuTargetDefault.TargetObjectId;
         if (playerName.IsValidCharacterName() && DalamudContext.DataManager.IsValidWorld(worldId) && contentId != 0 &&

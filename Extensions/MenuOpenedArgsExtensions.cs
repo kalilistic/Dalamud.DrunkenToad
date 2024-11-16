@@ -40,13 +40,13 @@ public static class MenuOpenedArgsExtensions
             case "CrossWorldLinkshell":
             case "ContentMemberList":
             case "BeginnerChatList":
-                if (menuTargetDefault.TargetName != string.Empty && DalamudContext.DataManager.IsValidWorld(menuTargetDefault.TargetHomeWorld.Id))
+                if (menuTargetDefault.TargetName != string.Empty && DalamudContext.DataManager.IsValidWorld(menuTargetDefault.TargetHomeWorld.RowId))
                 {
                     if (!includeSelf)
                     {
                         var name = DalamudContext.ClientStateHandler.LocalPlayer?.Name.TextValue;
-                        var worldId = DalamudContext.ClientStateHandler.LocalPlayer?.HomeWorld.Id;
-                        if (menuTargetDefault.TargetName == name && menuTargetDefault.TargetHomeWorld.Id == worldId)
+                        var worldId = DalamudContext.ClientStateHandler.LocalPlayer?.HomeWorld.RowId;
+                        if (menuTargetDefault.TargetName == name && menuTargetDefault.TargetHomeWorld.RowId == worldId)
                         {
                             DalamudContext.PluginLog.Verbose("ContextMenu: Self context menu.");
                             return false;

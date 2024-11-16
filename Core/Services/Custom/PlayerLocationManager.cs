@@ -68,7 +68,7 @@ public class PlayerLocationManager(IClientState clientStateHandler, DataManagerE
         this.currentTerritoryType = newTerritoryType;
     }
 
-    private void OnLogout()
+    private void OnLogout(int type, int code)
     {
         this.LocationEnded?.Invoke(this.dataManager.Locations[this.currentTerritoryType]);
         this.ProcessTerritoryChange(0);

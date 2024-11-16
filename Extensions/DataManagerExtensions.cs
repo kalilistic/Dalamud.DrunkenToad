@@ -3,8 +3,8 @@ namespace Dalamud.DrunkenToad.Extensions;
 
 using System;
 using System.Linq;
-using Dalamud.Plugin.Services;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
+using Plugin.Services;
 
 /// <summary>
 /// Dalamud DataManager extensions.
@@ -33,7 +33,7 @@ public static class DataManagerExtensions
             return string.Empty;
         }
 
-        return value.GetExcelSheet<ContentFinderCondition>()?.GetRow(contentId)?.Name ?? string.Empty;
+        return value.GetExcelSheet<ContentFinderCondition>().GetRowOrDefault(contentId)?.Name.ExtractText() ?? string.Empty;
     }
 
     /// <summary>
@@ -59,13 +59,8 @@ public static class DataManagerExtensions
         }
 
         var content = value.GetExcelSheet<ContentFinderCondition>();
-        var contentRow = content?.GetRow(contentId);
-        if (contentRow == null)
-        {
-            return false;
-        }
-
-        return contentRow.HighEndDuty;
+        var contentRow = content.GetRowOrDefault(contentId);
+        return contentRow is { HighEndDuty: true };
     }
 
     /// <summary>
@@ -76,11 +71,6 @@ public static class DataManagerExtensions
     public static string[] WorldNames(this IDataManager value)
     {
         var worldSheet = value.GetExcelSheet<World>();
-        if (worldSheet == null)
-        {
-            return Array.Empty<string>();
-        }
-
         return worldSheet.Where(world => world.IsPublic)
             .Select(world => world.Name.ToString())
             .OrderBy(worldName => worldName).ToArray();
@@ -101,9 +91,14 @@ public static class DataManagerExtensions
         }
 
         var raceSheet = value.GetExcelSheet<Race>();
-        var race = raceSheet?.FirstOrDefault(raceEntry => raceEntry.RowId == id);
+        var raceResult = raceSheet.TryGetFirst(raceEntry => raceEntry.RowId == id, out var race);
 
-        return race == null ? string.Empty : genderId == 0 ? race.Masculine : race.Feminine;
+        if (!raceResult)
+        {
+            return string.Empty;
+        }
+
+        return genderId == 0 ? race.Masculine.ExtractText() : race.Feminine.ExtractText();
     }
 
     /// <summary>
@@ -121,9 +116,14 @@ public static class DataManagerExtensions
         }
 
         var tribeSheet = value.GetExcelSheet<Tribe>();
-        var tribe = tribeSheet?.FirstOrDefault(tribeEntry => tribeEntry.RowId == id);
+        var tribeResult = tribeSheet.TryGetFirst(tribeEntry => tribeEntry.RowId == id, out var tribe);
 
-        return tribe == null ? string.Empty : genderId == 0 ? tribe.Masculine : tribe.Feminine;
+        if (!tribeResult)
+        {
+            return string.Empty;
+        }
+
+        return genderId == 0 ? tribe.Masculine.ExtractText() : tribe.Feminine.ExtractText();
     }
 
     /// <summary>
@@ -133,7 +133,7 @@ public static class DataManagerExtensions
     /// <param name="classJobId">job code id.</param>
     /// <returns>job code.</returns>
     public static string ClassJobCode(this IDataManager value, uint classJobId) =>
-        value.GetExcelSheet<ClassJob>()?.GetRow(classJobId)?.Abbreviation ?? string.Empty;
+        value.GetExcelSheet<ClassJob>().GetRowOrDefault(classJobId)?.Abbreviation.ExtractText() ?? string.Empty;
 
     /// <summary>
     /// Get place name.
@@ -142,7 +142,7 @@ public static class DataManagerExtensions
     /// <param name="territoryTypeId">territory type id.</param>
     /// <returns>place name.</returns>
     public static string PlaceName(this IDataManager value, uint territoryTypeId) =>
-        value.GetExcelSheet<TerritoryType>()?.GetRow(territoryTypeId)?.PlaceName.Value?.Name.ToString() ??
+        value.GetExcelSheet<TerritoryType>().GetRowOrDefault(territoryTypeId)?.PlaceName.Value.Name.ExtractText() ??
         string.Empty;
 
     /// <summary>
@@ -154,12 +154,8 @@ public static class DataManagerExtensions
     public static uint WorldId(this IDataManager value, string worldName)
     {
         var worldSheet = value.GetExcelSheet<World>();
-        if (worldSheet == null)
-        {
-            return 0;
-        }
-
-        return worldSheet.FirstOrDefault(world => world.Name.ToString().Equals(worldName, StringComparison.Ordinal))?.RowId ?? 0;
+        var worldResult = worldSheet.TryGetFirst(w => w.Name.ToString().Equals(worldName, StringComparison.Ordinal), out var world);
+        return !worldResult ? 0 : world.RowId;
     }
 
     /// <summary>
@@ -168,7 +164,7 @@ public static class DataManagerExtensions
     /// <param name="value">data manager.</param>
     /// <param name="worldId">world id.</param>
     /// <returns>world name.</returns>
-    public static string WorldName(this IDataManager value, uint worldId) => value.GetExcelSheet<World>()?.GetRow(worldId)?.Name.ToString() ?? string.Empty;
+    public static string WorldName(this IDataManager value, uint worldId) => value.GetExcelSheet<World>().GetRowOrDefault(worldId)?.Name.ExtractText() ?? string.Empty;
 
     /// <summary>
     /// Get indicator whether world is a test data center.
@@ -178,12 +174,14 @@ public static class DataManagerExtensions
     /// <returns>indicator whether world is a test data center.</returns>
     public static bool IsTestDc(this IDataManager value, uint worldId)
     {
-        var world = value.GetExcelSheet<World>()?.GetRow(worldId);
-        return world?.DataCenter?.Value?.RowId == 13;
+        var world = value.GetExcelSheet<World>().GetRowOrDefault(worldId);
+        return world?.DataCenter.RowId == 13;
     }
 
-    private static uint GetContentId(IDataManager value, ushort territoryType) => value.GetExcelSheet<ContentFinderCondition>() !
-                                                                                     .FirstOrDefault(condition =>
-                                                                                         condition.TerritoryType.Row == territoryType)?.RowId ??
-                                                                                 0;
+    private static uint GetContentId(IDataManager value, ushort territoryType)
+    {
+        var cfcs = value.GetExcelSheet<ContentFinderCondition>();
+        var cfcResult = cfcs.TryGetFirst(c => c.TerritoryType.RowId == territoryType, out var cfc);
+        return !cfcResult ? 0 : cfc.RowId;
+    }
 }

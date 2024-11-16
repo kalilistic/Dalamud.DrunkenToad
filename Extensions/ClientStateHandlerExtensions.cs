@@ -1,7 +1,7 @@
 ﻿namespace Dalamud.DrunkenToad.Extensions;
 
 using Core.Models;
-using Dalamud.Plugin.Services;
+using Plugin.Services;
 
 /// <summary>
 /// Dalamud ClientStateHandler extensions.
@@ -23,7 +23,7 @@ public static class ClientStateHandlerExtensions
         var localPlayer = new ToadLocalPlayer
         {
             Name = value.LocalPlayer.Name.ToString(),
-            HomeWorld = value.LocalPlayer.HomeWorld.Id,
+            HomeWorld = value.LocalPlayer.HomeWorld.RowId,
             ContentId = value.LocalContentId,
             Customize = value.LocalPlayer.Customize,
         };

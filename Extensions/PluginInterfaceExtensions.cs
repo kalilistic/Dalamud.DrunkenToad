@@ -6,8 +6,9 @@ namespace Dalamud.DrunkenToad.Extensions;
 using System;
 using System.IO;
 using System.Linq;
-using Dalamud.Game.Text.SeStringHandling;
-using Dalamud.Plugin;
+using Game.Text.SeStringHandling;
+using Plugin;
+using Lumina.Text.ReadOnly;
 
 /// <summary>
 /// Dalamud PluginInterface extensions.
@@ -31,19 +32,27 @@ public static class PluginInterfaceExtensions
     }
 
     /// <summary>
-    /// Sanitize dalamud se string to remove unprintable characters (short hand method).
+    /// Sanitize dalamud se string to remove unprintable characters (shorthand method).
     /// </summary>
     /// <param name="value">dalamud plugin interface with sanitizer initialized.</param>
     /// <param name="str">string to sanitize.</param>
-    /// <returns>Indicator if player character is valid.</returns>
+    /// <returns>Sanitized string.</returns>
     public static string Sanitize(this IDalamudPluginInterface value, SeString str) => Sanitize(value, str.ToString());
 
     /// <summary>
-    /// Sanitize lumina se string to remove unprintable characters (short hand method).
+    /// Sanitize ReadOnlySeString to remove unprintable characters (shorthand method).
     /// </summary>
     /// <param name="value">dalamud plugin interface with sanitizer initialized.</param>
     /// <param name="str">string to sanitize.</param>
-    /// <returns>Indicator if player character is valid.</returns>
+    /// <returns>Sanitized string.</returns>
+    public static string Sanitize(this IDalamudPluginInterface value, ReadOnlySeString str) => Sanitize(value, str.ToString());
+
+    /// <summary>
+    /// Sanitize lumina se string to remove unprintable characters (shorthand method).
+    /// </summary>
+    /// <param name="value">dalamud plugin interface with sanitizer initialized.</param>
+    /// <param name="str">string to sanitize.</param>
+    /// <returns>Sanitized string.</returns>
     public static string Sanitize(this IDalamudPluginInterface value, Lumina.Text.SeString str) => Sanitize(value, str.ToString());
 
     /// <summary>

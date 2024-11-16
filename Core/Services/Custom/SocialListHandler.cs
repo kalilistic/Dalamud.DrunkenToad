@@ -4,12 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using Core;
+using Extensions;
 using Hooking;
 using Memory;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Client.UI.Info;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using Lumina.Excel.GeneratedSheets2;
+using Lumina.Excel.Sheets;
 using Models;
 
 /// <summary>
@@ -144,7 +145,7 @@ public unsafe class SocialListHandler
 
     private static void SetupUnavailableMessage()
     {
-        var isUnavailable = DalamudContext.DataManager.Excel.GetSheet<Addon>() !.GetRow(964)?.Text.RawString;
+        var isUnavailable = DalamudContext.DataManager.Excel.GetSheet<Addon>().GetRowOrDefault(964)?.Text.ToRawString();
         if (string.IsNullOrEmpty(isUnavailable))
         {
             throw new DataException("Unable to retrieve the message for unavailable players.");

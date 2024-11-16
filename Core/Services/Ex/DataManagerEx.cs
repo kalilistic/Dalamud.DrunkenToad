@@ -14,7 +14,7 @@ using Enums;
 using Extensions;
 using Helpers;
 using Lumina.Excel;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 using Models;
 
 /// <summary>
@@ -185,13 +185,13 @@ public class DataManagerEx
     {
         var worlds = this.dataManager.GetExcelSheet<World>();
         var dcs = this.dataManager.GetExcelSheet<WorldDCGroupType>();
-        var world = worlds?.GetRow(worldId);
+        var world = worlds.GetRowOrDefault(worldId);
         if (world == null)
         {
             return false;
         }
 
-        var region = dcs?.GetRow(world.DataCenter.Row)?.Region ?? 0;
+        var region = dcs.GetRowOrDefault(world.Value.DataCenter.RowId)?.Region ?? 0;
         return region == 7;
     }
 
@@ -207,22 +207,22 @@ public class DataManagerEx
 
     private Dictionary<uint, ToadWorld> LoadWorlds()
     {
-        var worldSheet = this.dataManager.GetExcelSheet<World>() !;
+        var worldSheet = this.dataManager.GetExcelSheet<World>();
         var luminaWorlds = worldSheet.Where(
-            world => !string.IsNullOrEmpty(world.InternalName) &&
-                     world.DataCenter.Row != 0
-                     && char.IsUpper((char)world.InternalName.RawData[0]) &&
+            world => !world.InternalName.IsEmpty &&
+                     world.DataCenter.RowId != 0
+                     && char.IsUpper(world.InternalName.ToString()[0]) &&
                      !this.IsTestDC(world.RowId));
 
         return luminaWorlds.ToDictionary(
             luminaWorld => luminaWorld.RowId,
-            luminaWorld => new ToadWorld { Id = luminaWorld.RowId, Name = this.pluginInterface.Sanitize(luminaWorld.InternalName), DataCenterId = luminaWorld.DataCenter.Row });
+            luminaWorld => new ToadWorld { Id = luminaWorld.RowId, Name = this.pluginInterface.Sanitize(luminaWorld.InternalName), DataCenterId = luminaWorld.DataCenter.RowId });
     }
 
     private Dictionary<uint, ToadDataCenter> LoadDataCenters()
     {
-        var dataCenterSheet = this.dataManager.GetExcelSheet<WorldDCGroupType>() !;
-        var luminaDataCenters = dataCenterSheet.Where(dataCenter => !string.IsNullOrEmpty(dataCenter.Name) && dataCenter.Region != 0 && dataCenter.Region != 7);
+        var dataCenterSheet = this.dataManager.GetExcelSheet<WorldDCGroupType>();
+        var luminaDataCenters = dataCenterSheet.Where(dataCenter => !dataCenter.Name.IsEmpty && dataCenter.Region != 0 && dataCenter.Region != 7);
 
         return luminaDataCenters.ToDictionary(
             luminaDataCenter => luminaDataCenter.RowId,
@@ -231,20 +231,21 @@ public class DataManagerEx
 
     private Dictionary<ushort, ToadLocation> LoadLocations()
     {
-        var territoryTypeSheet = this.dataManager.GetExcelSheet<TerritoryType>() !;
-        var cfcSheet = this.dataManager.GetExcelSheet<ContentFinderCondition>() !;
+        var territoryTypeSheet = this.dataManager.GetExcelSheet<TerritoryType>();
+        var cfcSheet = this.dataManager.GetExcelSheet<ContentFinderCondition>();
 
         return territoryTypeSheet.ToDictionary(
             territoryTypeSheetItem => (ushort)territoryTypeSheetItem.RowId,
             territoryTypeSheetItem =>
             {
                 var location = new ToadLocation { TerritoryId = (ushort)territoryTypeSheetItem.RowId };
-                location.TerritoryName = territoryTypeSheet.GetRow(location.TerritoryId)?.PlaceName.Value?.Name.ToString() ?? string.Empty;
-                var cfc = cfcSheet.FirstOrDefault(condition => condition.TerritoryType.Row == location.TerritoryId);
-                var cfcId = cfc?.RowId ?? 0;
-                if (cfc != null && cfcId != 0)
+                location.TerritoryName = territoryTypeSheet.GetRowOrDefault(location.TerritoryId)?.PlaceName.Value.Name.ToString() ?? string.Empty;
+                var cfcFound = cfcSheet.TryGetFirst(
+                    condition => condition.TerritoryType.RowId == location.TerritoryId,
+                    out var cfc);
+                if (cfcFound && cfc.RowId != 0)
                 {
-                    location.ContentId = cfcId;
+                    location.ContentId = cfc.RowId;
                     location.ContentName = this.pluginInterface.Sanitize(cfc.Name);
                     location.LocationType = cfc.HighEndDuty ? ToadLocationType.HighEndContent : ToadLocationType.Content;
                 }
@@ -260,7 +261,7 @@ public class DataManagerEx
 
     private Dictionary<uint, ToadClassJob> LoadClassJobs()
     {
-        var classJobSheet = this.dataManager.GetExcelSheet<ClassJob>() !;
+        var classJobSheet = this.dataManager.GetExcelSheet<ClassJob>();
 
         return classJobSheet.ToDictionary(
             luminaClassJob => luminaClassJob.RowId,
@@ -274,7 +275,7 @@ public class DataManagerEx
 
     private Dictionary<uint, ToadRace> LoadRaces()
     {
-        var raceSheet = this.dataManager.GetExcelSheet<Race>() !;
+        var raceSheet = this.dataManager.GetExcelSheet<Race>();
 
         return raceSheet.ToDictionary(
             luminaRace => luminaRace.RowId,
@@ -288,7 +289,7 @@ public class DataManagerEx
 
     private Dictionary<uint, ToadTribe> LoadTribes()
     {
-        var tribeSheet = this.dataManager.GetExcelSheet<Tribe>() !;
+        var tribeSheet = this.dataManager.GetExcelSheet<Tribe>();
 
         return tribeSheet.ToDictionary(
             luminaTribe => luminaTribe.RowId,
@@ -302,7 +303,7 @@ public class DataManagerEx
 
     private Dictionary<uint, ToadUIColor> LoadUIColors()
     {
-        var uiColorSheet = this.dataManager.GetExcelSheet<UIColor>() !;
+        var uiColorSheet = this.dataManager.GetExcelSheet<UIColor>();
 
         var uiColors = new Dictionary<uint, ToadUIColor>();
 

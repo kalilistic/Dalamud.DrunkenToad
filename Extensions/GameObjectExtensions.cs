@@ -20,7 +20,7 @@ public static class GameObjectExtensions
         value != null &&
         value is IPlayerCharacter character &&
         value.EntityId > 0 &&
-        DalamudContext.DataManager.Worlds.ContainsKey(character.HomeWorld.Id) &&
-        DalamudContext.DataManager.Worlds.ContainsKey(character.CurrentWorld.Id) &&
-        DalamudContext.DataManager.ClassJobs.ContainsKey(character.ClassJob.Id);
+        DalamudContext.DataManager.Worlds.ContainsKey(character.HomeWorld.RowId) &&
+        DalamudContext.DataManager.Worlds.ContainsKey(character.CurrentWorld.RowId) &&
+        DalamudContext.DataManager.ClassJobs.ContainsKey(character.ClassJob.RowId);
 }

@@ -1,5 +1,6 @@
 ﻿namespace Dalamud.DrunkenToad.Extensions;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,5 +23,36 @@ public static class EnumerableExtensions
             group item by i++ % parts into part
             select part.AsEnumerable();
         return splits;
+    }
+
+    public static bool TryGetFirst<T>(this IEnumerable<T> values, out T result) where T : struct
+    {
+        using var e = values.GetEnumerator();
+        if (e.MoveNext())
+        {
+            result = e.Current;
+            return true;
+        }
+
+        result = default;
+        return false;
+    }
+
+    public static bool TryGetFirst<T>(this IEnumerable<T> values, Predicate<T> predicate, out T result) where T : struct
+    {
+        using var e = values.GetEnumerator();
+        while (e.MoveNext())
+        {
+            if (!predicate(e.Current))
+            {
+                continue;
+            }
+
+            result = e.Current;
+            return true;
+        }
+
+        result = default;
+        return false;
     }
 }
