@@ -25,6 +25,13 @@ public static class EnumerableExtensions
         return splits;
     }
 
+    /// <summary>
+    /// Try to get the first element of a collection.
+    /// </summary>
+    /// <param name="values">collection to get first element from.</param>
+    /// <param name="result">first element of collection.</param>
+    /// <typeparam name="T">type of elements in collection.</typeparam>
+    /// <returns>true if first element was found, false otherwise.</returns>
     public static bool TryGetFirst<T>(this IEnumerable<T> values, out T result) where T : struct
     {
         using var e = values.GetEnumerator();
@@ -38,6 +45,14 @@ public static class EnumerableExtensions
         return false;
     }
 
+    /// <summary>
+    /// Try to get the first element of a collection that matches a predicate.
+    /// </summary>
+    /// <param name="values">collection to get first element from.</param>
+    /// <param name="predicate">predicate to match.</param>
+    /// <param name="result">first element of collection.</param>
+    /// <typeparam name="T">type of elements in collection.</typeparam>
+    /// <returns>true if first element was found, false otherwise.</returns>
     public static bool TryGetFirst<T>(this IEnumerable<T> values, Predicate<T> predicate, out T result) where T : struct
     {
         using var e = values.GetEnumerator();

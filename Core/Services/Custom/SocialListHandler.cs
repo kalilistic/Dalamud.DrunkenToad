@@ -145,7 +145,7 @@ public unsafe class SocialListHandler
 
     private static void SetupUnavailableMessage()
     {
-        var isUnavailable = DalamudContext.DataManager.Excel.GetSheet<Addon>().GetRowOrDefault(964)?.Text.ToRawString();
+        var isUnavailable = DalamudContext.DataManager.Excel.GetSheet<Addon>().GetRowOrDefault(964)?.Text.ExtractText();
         if (string.IsNullOrEmpty(isUnavailable))
         {
             throw new DataException("Unable to retrieve the message for unavailable players.");
