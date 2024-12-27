@@ -17,7 +17,7 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-    <NoWarn>SA1401,SA1633,CA1859</NoWarn>
+    <NoWarn>SA1401;SA1633;CA1859</NoWarn>
     <RootNamespace>Dalamud.DrunkenToad</RootNamespace>
     <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev</DalamudLibPath>
   </PropertyGroup>
