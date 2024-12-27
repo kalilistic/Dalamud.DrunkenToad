@@ -7,11 +7,11 @@ using System.Linq;
 using System.Numerics;
 using Core;
 using Core.Services;
-using Dalamud.Interface;
-using Dalamud.Interface.Colors;
-using Dalamud.Interface.Components;
+using Interface;
+using Interface.Colors;
+using Interface.Components;
 using Dalamud.Interface.Utility;
-using Dalamud.Loc.ImGui;
+using Loc.ImGui;
 using Enums;
 using Helpers;
 using ImGuiNET;
@@ -180,6 +180,52 @@ public static class ToadGui
         {
             isChanged = true;
         }
+
+        return isChanged;
+    }
+
+    /// <summary>
+    /// Styled and localized ComboBox with suffix.
+    /// </summary>
+    /// <typeparam name="T">Enum for combobox list.</typeparam>
+    /// <param name="key">primary key.</param>
+    /// <param name="value">current selected index value.</param>
+    /// <param name="suffix">suffix for key.</param>
+    /// <returns>indicates if combo value is changed.</returns>
+    public static bool Combo<T>(string key, ref T value, string suffix) where T : Enum
+    {
+        var isChanged = false;
+
+        var localizedOptions = Enum.GetNames(typeof(T))
+            .Select(option => Localization.GetString(option))
+            .ToList();
+
+        var currentValueIndex = Convert.ToInt32(value);
+        var activeValueDisplay = $"{localizedOptions[currentValueIndex]} {suffix}";
+
+        ImGui.SetNextItemWidth(-1);
+
+        if (!ImGui.BeginCombo($"###{key}_Combo", activeValueDisplay))
+        {
+            return isChanged;
+        }
+
+        for (var i = 0; i < localizedOptions.Count; i++)
+        {
+            var isSelected = i == currentValueIndex;
+            if (ImGui.Selectable(localizedOptions[i], isSelected))
+            {
+                value = (T)(object)i;
+                isChanged = true;
+            }
+
+            if (isSelected)
+            {
+                ImGui.SetItemDefaultFocus();
+            }
+        }
+
+        ImGui.EndCombo();
 
         return isChanged;
     }
