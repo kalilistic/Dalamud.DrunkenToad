@@ -212,6 +212,12 @@ public class DalamudContext
     public static IAddonLifecycle AddonLifecycleHandler { get; set; } = null!;
 
     /// <summary>
+    /// Gets or sets service that provides access to nameplate data for players.
+    /// </summary>
+    [PluginService]
+    public static INamePlateGui NamePlateGuiHandler { get; set; } = null!;
+
+    /// <summary>
     /// Gets or sets service that provides access to game data for Dalamud and plugins.
     /// </summary>
     [PluginService]
