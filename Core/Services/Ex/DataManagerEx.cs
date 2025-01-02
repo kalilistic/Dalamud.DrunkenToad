@@ -152,6 +152,21 @@ public class DataManagerEx
     public string GetWorldNameById(uint id) => this.Worlds.TryGetValue(id, out var world) ? world.Name : "Etheirys";
 
     /// <summary>
+    /// Gets the data center name by world id.
+    /// </summary>
+    /// <param name="id">world id.</param>
+    /// <returns>data center name.</returns>
+    public string GetDataCenterNameByWorldId(uint id)
+    {
+        if (this.Worlds.TryGetValue(id, out var world))
+        {
+            return this.DataCenters.TryGetValue(world.DataCenterId, out var dataCenter) ? dataCenter.Name : "Etheirys";
+        }
+
+        return "Etheirys";
+    }
+
+    /// <summary>
     /// Gets the world id by name.
     /// </summary>
     /// <param name="worldName">world name.</param>
